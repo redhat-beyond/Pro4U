@@ -15,4 +15,4 @@ pipenv run python manage.py migrate
 
 # run our app. Nohup and "&" are used to let the setup script finish
 # while our app stays up. The app logs will be collected in nohup.out
-nohup pipenv run python manage.py runserver 0.0.0.0:8000 &
+setsid pipenv run python manage.py runserver 0.0.0.0:8000 > runserver.log 2>&1 &
