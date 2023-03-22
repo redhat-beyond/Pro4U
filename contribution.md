@@ -49,8 +49,8 @@ A step by step series that tell you how to get Pro4U up and running
 ## Reviewing PRs
 1.  Verify Githab actions tests status = PASSED
 2.  Select Reviewers under Reviewers section
-3.	Once you have the sign-off of two developers and one of the maintainers, your PR will be merged.
 **Note: at least 2 LGTM, Approves needed for Core reviewers to review**
+3.  Once you have the sign-off of two developers and one of the maintainers, your PR will be merged.
 
 ##  Reviewers and CoreReviewers
 1.  The reviewers are feedback given by team members.
