@@ -12,10 +12,10 @@ To contribute to our community project,please download and install the following
 
 ### Run the project on your local machine
 
-A step by step series that tell you how to get Hotails up and running
+A step by step series that tell you how to get Pro4U up and running
 
 1. Clone the repository
-2. Open command prompt in Hotails directory
+2. Open command prompt in Pro4U directory
 3. Spin the environment using `vagrant up` 
 4. That's it! your virtual machine is up and running 
 5. Go to http://localhost:8000 in your web browser
@@ -34,32 +34,29 @@ A step by step series that tell you how to get Hotails up and running
 
 **Note: If your PR does not meet one of the requirements, the PR will not be reviewed!**
 
-## Issue a pull request:
-1.	Set yourself as an Assignee
-2.	Try to make your changes small as you can
-3.	Write useful descriptions and titles
-4.	Ask cotributors to review your PR.
-5.	Once you have the sign-off of two developers and one of the maintainers, your PR will be merged.
+## Commit decsription
+1.  The first line is the title of the message, it should be no longer than 63 characters.
+2.  The second line should be left empty.
+3.  The remaining consist of the body of the message, they should be no longer than 72 characters each. We can include some MarkDown here and it will be displayed by GitHub.
 
-## Pull request template:
-1. Making changes/Creating XFILE
-2. Empty line
-3. What, why & how?
-4. Testing
-5. Add Screenshots(if needed)
+## Create PR
+1.  Clear subject
+2.  Clear description
+3.  AddResolve #Issue
+4.  Assign PR to yourself
+5. 	Ask cotributors and reviewers to review your PR.
 
+## Reviewing PRs
+1.  Verify Githab actions tests status = PASSED
+2.  Select Reviewers under Reviewers section
+3.	Once you have the sign-off of two developers and one of the maintainers, your PR will be merged.
+**Note: at least 2 LGTM, Approves needed for Core reviewers to review**
 
-## Reviewing PRs:
-1. Allways provide constructive feedback
-2. Be precise about what needs to be improved
-3. Visualize the bigger picture
+##  Reviewers and CoreReviewers
+1.  The reviewers are feedback given by team members.
+2.  The coreReviewers are feedback given by the mentors.
 
 # Code Testing
-
-This project uses Pytest as its test framework.
-
-* [Pytest - Quick guide](https://docs.pytest.org/en/7.2.x/getting-started.html)
-* Please note that Pytest is already installed in this project's virtual environment.
 
 # Coding Conventions
 Before adding code to our project please note that we use PEP8 standards & Flake8 test checking. You can read about it in the reference below.
