@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/jpeg" href="{% static '/Pro4U_logo.jpeg' %}" />
+	<link rel="stylesheet" href="{% static 'style.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pro4U Website Landing Page</title>
+  </head>
+  <body>
+	<section>
+		<header>
+			<h2>
+				<a href="#" class="logo"><img src="{% static '/Pro4U_logo.jpeg' %}" alt="Facebook link" height="200" width="209" /></img></a>
+			</h2>
+			<div class="navigation">
+				<a href="#">Home</a>
+				<a href="#">About</a>
+				<a href="#">Info</a>
+				<a href="#">Services</a>
+				<a href="#">Contact</a>
+			</div>
+		</header>
+		<div class="content">
+			<div class="info">
+				<h2>Pro4U <br><span>Innovative Solution!</span></h2>
+				<ul>
+					<p>
+						Pro4U (professional for you) is an application that works like a social network.<br>
+						It gives you an option to schedule appointments with private professionals throughout the country. (cosmetologists/ plumbers/ tinsmiths/ glaziers/ gardeners, etc.)
+					</p>
+					<li>Professionals can add the types of work done, products for sale, appointment availability, and prices.</li>
+					<li>Users can add opinions about professionals and schedule appointments during working hours.</li>
+				</ul>
+				<a href="#" class="info-btn">More Info</a>
+			</div>
+		</div>
+		<div class="media-icons">
+			<a href="#">
+					<img src="{% static '/facebook-f.svg' %}" alt="Facebook link" height="10%" width="10%" />
+			</a>
+			<a href="#">
+					<img src="{% static 'instagram.svg' %}" alt="Instagram link"  height="10%" width="10%" />
+			</a>
+			<a href="#">
+					<img src="{% static 'twitter.svg' %}" alt="Twitter link"  height="10%" width="10%" />
+			</a>
+			<a href="#">
+					<img src="{% static 'linkedin-in.svg' %}" alt="LinkedIn link"  height="10%" width="10%" />
+			</a>
+		</div>
+	</section>
+  </body>
+</html>
