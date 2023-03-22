@@ -44,7 +44,7 @@ A step by step series that tell you how to get Pro4U up and running
 2.  Clear description
 3.  AddResolve #Issue
 4.  Assign PR to yourself
-5. 	Ask cotributors and reviewers to review your PR.
+5.  Ask cotributors and reviewers to review your PR.
 
 ## Reviewing PRs
 1.  Verify Githab actions tests status = PASSED
@@ -55,8 +55,6 @@ A step by step series that tell you how to get Pro4U up and running
 ##  Reviewers and CoreReviewers
 1.  The reviewers are feedback given by team members.
 2.  The coreReviewers are feedback given by the mentors.
-
-# Code Testing
 
 # Coding Conventions
 Before adding code to our project please note that we use PEP8 standards & Flake8 test checking. You can read about it in the reference below.
