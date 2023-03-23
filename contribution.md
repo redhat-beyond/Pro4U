@@ -23,8 +23,6 @@ A step by step series that tell you how to get Pro4U up and running
 7. When finished, run `vagrant destroy -f` to tear down the environment\
 **_NOTE:_** By running this command all changes on the virtual machine will be deleted.
 
-**Note: Vagrant may not work on some machines (such as Apple M1-based machines), so please make sure to find a suitable solution.** 
-
 # Pull Request Process
 1.	Fork the repository and create a separate branch regarding your contribution.
 2.	Update the CHANGELOG file with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations, and container parameters.
@@ -32,12 +30,16 @@ A step by step series that tell you how to get Pro4U up and running
 4.	Issue a pull request and ask us to review it. Don't forget to link the PR to a relevant issue if it exists, **If not CREATE it!**
 5.	Make sure your code is conformed to the PEP8 standard
 
-**Note: If your PR does not meet one of the requirements, the PR will not be reviewed!**
+**Note: for fast maintainers review please refer Reviewing PRs**
 
 ## Commit decsription
 1.  The first line is the title of the message, it should be no longer than 63 characters.
 2.  The second line should be left empty.
 3.  The remaining consist of the body of the message, they should be no longer than 72 characters each. We can include some MarkDown here and it will be displayed by GitHub.
+
+##  Reviewers and Maintainers
+1.  The Reviewers are feedback given by team members.
+2.  The Maintainers are final decision makers on which portions of source code go into a build or release.
 
 ## Create PR
 1.  Clear subject
@@ -51,10 +53,6 @@ A step by step series that tell you how to get Pro4U up and running
 2.  Select Reviewers under Reviewers section
 **Note: at least 2 LGTM, Approves needed for Maintainers to review**
 3.  Once you have the sign-off of two Reviewers and one of the Maintainers, your PR will be merged.
-
-##  Reviewers and Maintainers
-1.  The Reviewers are feedback given by team members.
-2.  The Maintainers are feedback given by the mentors.
 
 # Coding Conventions
 Before adding code to our project please note that we use PEP8 standards & Flake8 test checking. You can read about it in the reference below.
