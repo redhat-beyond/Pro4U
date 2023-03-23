@@ -52,9 +52,9 @@ A step by step series that tell you how to get Pro4U up and running
 **Note: at least 2 LGTM, Approves needed for Core reviewers to review**
 3.  Once you have the sign-off of two developers and one of the maintainers, your PR will be merged.
 
-##  Reviewers and CoreReviewers
+##  Reviewers and Maintainers
 1.  The reviewers are feedback given by team members.
-2.  The coreReviewers are feedback given by the mentors.
+2.  The Maintainers are feedback given by the mentors.
 
 # Coding Conventions
 Before adding code to our project please note that we use PEP8 standards & Flake8 test checking. You can read about it in the reference below.
