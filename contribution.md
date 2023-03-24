@@ -30,7 +30,7 @@ A step by step series that tell you how to get Pro4U up and running
 4.	Issue a pull request and ask us to review it. Don't forget to link the PR to a relevant issue if it exists, **If not CREATE it!**
 5.	Make sure your code is conformed to the PEP8 standard
 
-**Note: for fast maintainers review please refer Reviewing PRs**
+**Note: for fast Maintainers review please refer Reviewing PRs**
 
 ## Commit decsription
 1.  The first line is the title of the message, it should be no longer than 63 characters.
@@ -51,7 +51,7 @@ A step by step series that tell you how to get Pro4U up and running
 ## Reviewing PRs
 1.  Verify Githab actions tests status = PASSED
 2.  Select Reviewers under Reviewers section
-**Note: at least 2 LGTM, Approves needed for Maintainers to review**
+**Note: at least two LGTM and two approvals from Reviewers for Maintainers to review**
 3.  Once you have the sign-off of two Reviewers and one of the Maintainers, your PR will be merged.
 
 # Coding Conventions
