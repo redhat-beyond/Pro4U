@@ -10,3 +10,4 @@ class SearchHistory(models.Model):
 	# ProfessionalID = models.ForeignKey(Professional, on_delete=models.CASCADE)
 	# ClientID = models.ForeignKey(Client, on_delete=models.CASCADE)
 	Date = models.DateTimeField(default=timezone.now)
+	
