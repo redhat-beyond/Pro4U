@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'landing.apps.LandingConfig',
     'SearchHistory.apps.SearchHistoryConfig',
+    
 ]
 
 MIDDLEWARE = [
