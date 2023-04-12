@@ -9,6 +9,7 @@ sudo -n dnf install -y pipenv
 cd /vagrant
 # Install dependencies with Pipenv
 pipenv sync --dev
+pipenv install pillow
 
 # Run database migrations
 pipenv run python manage.py migrate
