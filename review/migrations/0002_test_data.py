@@ -1,4 +1,4 @@
-from django.db import migrations, transaction
+from django.db import migrations, transaction, models
 
 
 class Migration(migrations.Migration):
@@ -9,20 +9,27 @@ class Migration(migrations.Migration):
 
     def generate_data(apps, schema_editor):
         from review.models import Review, Rating
-        from django.contrib.auth.models import User
-
-        user1 = User.objects.create_user(username='example_user1', email='user1@example.com', password='password')
-        user2 = User.objects.create_user(username='example_user2', email='user2@example.com', password='password')
 
         test_data = [
-            (user1, Rating.UNSPECIFIED, "2011-09-01T13:20:30+03:00", 'A simple test review'),
-            (user2, Rating.FIVE_STARS,  "2011-09-01T13:20:30+03:00", 'Another simple test review'),
+            ("user1", "pro1", Rating.UNSPECIFIED, "2011-09-01T13:20:30+03:00", 'A simple test review'),
+            ("user2", "pro1", Rating.FIVE_STARS,  "2011-09-01T13:20:30+03:00", 'Another simple test review'),
         ]
 
         with transaction.atomic():
-            for author, rating, date_posted, description in test_data:
-                Review(author=author, rating=rating, date_posted=date_posted, description=description).save()
+            for client_id, professional_id, rating, date_posted, description in test_data:
+                Review(
+                    rating=rating,
+                    description=description,
+                    date_posted=date_posted,
+                    client_id=client_id,
+                    professional_id=professional_id
+                ).save()
 
     operations = [
+        migrations.AddField(
+            model_name='review',
+            name='client_id',
+            field=models.CharField(max_length=512),
+        ),
         migrations.RunPython(generate_data),
     ]

@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-from django.urls import reverse
 
 
 class Rating(models.TextChoices):
@@ -14,16 +12,8 @@ class Rating(models.TextChoices):
 
 
 class Review(models.Model):
-    description = models.TextField(blank=True)
     rating = models.CharField(max_length=2, choices=Rating.choices, default=Rating.UNSPECIFIED)
+    description = models.TextField(blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.username}'s Review"
-
-    def save(self, *args, **kwargs):
-        super().save(args, kwargs)
-
-    def get_absolute_url(self):
-        return reverse('review-detail', kwargs={'pk': self.pk})
+    client_id = models.CharField(max_length=512)
+    professional_id = models.CharField(max_length=512)
