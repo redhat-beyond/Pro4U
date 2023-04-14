@@ -1,6 +1,5 @@
 from django.db import models
 from user.models import Profile
-# from reservation.model import Appointment, TypeOfJob, Schedule
 
 
 class Professions(models.TextChoices):
@@ -20,12 +19,9 @@ class Professions(models.TextChoices):
 
 class Professional(models.Model):
     professional_id = models.BigAutoField(primary_key=True)
-    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
     profession = models.CharField(max_length=3, choices=Professions.choices, blank=True)
-    description = models.TextField()
-    # schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, default=None)
-    # typeOfJob = models.ForeignKey(TypeOfJob, on_delete=models.CASCADE, default=None)
-    # appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, default=None)
+    description = models.TextField(blank=True)
 
     class Meta:
         db_table = 'professional'

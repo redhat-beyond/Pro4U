@@ -9,7 +9,7 @@ class UserType(models.TextChoices):
 
 class Profile(models.Model):
     profile_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=1, choices=UserType.choices, default='C', blank=True)
     phone_number = models.CharField(max_length=50, unique=True)
     country = models.CharField(max_length=20)
