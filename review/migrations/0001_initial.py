@@ -16,7 +16,11 @@ class Migration(migrations.Migration):
             name='Review',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating', models.CharField(choices=[('1', '★☆☆☆☆ (1/5)'), ('2', '★★☆☆☆ (2/5)'), ('3', '★★★☆☆ (3/5)'), ('4', '★★★★☆ (4/5)'), ('5', '★★★★★ (5/5)'), ('UN', 'Unspecified rating')], default='UN', max_length=2)),
+                ('rating', models.CharField(choices=[('1', '★☆☆☆☆ (1/5)'), ('2', '★★☆☆☆ (2/5)'),
+                                                     ('3', '★★★☆☆ (3/5)'), ('4', '★★★★☆ (4/5)'),
+                                                     ('5', '★★★★★ (5/5)'), ('UN', 'Unspecified rating')],
+                                            default='UN', max_length=2)
+                 ),
                 ('description', models.TextField(blank=True)),
                 ('date_posted', models.DateTimeField(default=django.utils.timezone.now)),
                 ('client_id', models.CharField(max_length=512)),

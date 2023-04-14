@@ -11,16 +11,16 @@ class ReviewManager(models.Manager):
     def sort_review_by_oldest(self):
         # Sorts reviews by dates (oldest first)
         return self.get_queryset().order_by('date_posted')
-        
+
     def sort_review_by_newest(self):
         # Sorts reviews by dates (newest first)
         return self.get_queryset().order_by('-date_posted')
-    
+
     # rating
     def sort_review_by_lowest_rating(self):
         # Sorts reviews by rating (lowest first)
         return self.get_queryset().order_by('rating')
-        
+
     def sort_review_by_highest_rating(self):
         # Sorts reviews by rating (highest first)
         return self.get_queryset().order_by('-rating')
@@ -34,13 +34,13 @@ class Review(models.Model):
         FOUR_STARS = ('4', '★★★★☆ (4/5)')
         FIVE_STARS = ('5', '★★★★★ (5/5)')
         UNSPECIFIED = ('UN', 'Unspecified rating')
-        
+
     rating = models.CharField(max_length=2, choices=Rating.choices, default=Rating.UNSPECIFIED)
     description = models.TextField(blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
     client_id = models.CharField(max_length=512)
     professional_id = models.CharField(max_length=512)
-    
+
     objects = ReviewManager()
 
     @staticmethod
