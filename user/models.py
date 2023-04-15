@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 class UserType(models.TextChoices):
@@ -20,4 +21,21 @@ class Profile(models.Model):
         db_table = 'profile'
 
     def __str__(self):
-        return self.title
+        return str(self)
+
+    @staticmethod
+    def filter_by_city(city):
+
+        return Profile.objects.filter(city=city) if city else []
+
+    @staticmethod
+    def filter_by_first_name(first_name):
+        users_ids = User.objects.filter(first_name=first_name).values('id') if first_name else []
+
+        return Profile.objects.filter(Q(user_id__in=users_ids)) if users_ids else []
+
+    @staticmethod
+    def filter_by_last_name(last_name):
+        users_ids = User.objects.filter(last_name=last_name).values('id') if last_name else []
+
+        return Profile.objects.filter(Q(user_id__in=users_ids)) if users_ids else []

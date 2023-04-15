@@ -12,4 +12,4 @@ class Client(models.Model):
         db_table = 'client'
 
     def __str__(self):
-        return self.title
+        return str(self.client_id)
