@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'landing.apps.LandingConfig',
     'review.apps.ReviewConfig',
     'reservation.apps.ReservationConfig',
+    'chatmessage.apps.ChatmessageConfig',
 ]
 
 MIDDLEWARE = [
