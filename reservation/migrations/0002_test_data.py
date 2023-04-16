@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                     professional_id=professional_id,
                     typeOfJob_name=typeOfJob_name,
                     price=price
-                ).save()           
+                ).save()
 
     def generate_data3(apps, schema_editor):
         from reservation.models import Appointment, TypeOfJob
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                     end_appointment=end_appointment,
                     summary=summary
                 ).save()
-                
+
     operations = [
         migrations.RunPython(generate_data),
         migrations.RunPython(generate_data2),

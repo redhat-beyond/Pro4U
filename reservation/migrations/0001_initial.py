@@ -46,7 +46,8 @@ class Migration(migrations.Migration):
                 ('start_appointment', models.DateTimeField()),
                 ('end_appointment', models.DateTimeField()),
                 ('summary', models.TextField(blank=True)),
-                ('typeOfJob_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='reservation.typeofjob')),
+                ('typeOfJob_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                   to='reservation.typeofjob')),
             ],
             options={
                 'db_table': 'Appointment',
