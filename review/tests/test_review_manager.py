@@ -25,11 +25,11 @@ def reviews():
 def get_single_reviews(review, rating, description, date_posted, client_id, professional_id):
     # Checks if there are at least one object of the same Review and then deletes it
     if len(review) > 0:
-            review.delete()
+        review.delete()
     # Returns a new Review object
     return Review.objects.create(rating=rating, description=description,
-                                        date_posted=date_posted,
-                                        client_id=client_id, professional_id=professional_id)
+                                 date_posted=date_posted,
+                                 client_id=client_id, professional_id=professional_id)
 
 
 def tear_down(review1, review2, review3):

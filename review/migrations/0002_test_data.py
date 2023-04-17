@@ -1,5 +1,5 @@
 from datetime import timedelta
-from django.db import migrations, transaction, models
+from django.db import migrations, transaction
 from django.utils import timezone
 
 

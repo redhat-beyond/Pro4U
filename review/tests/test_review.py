@@ -10,12 +10,12 @@ def review():
     review = Review.objects.filter(client_id='client_id', professional_id='professional_id')
     # Checks if there are at least one object of the same Review and then deletes it
     if len(review) > 0:
-            review.delete()
+        review.delete()
     # Creates and returns a new review object
     now = timezone.now()
     review = Review.objects.create(rating='4', description='Creating a test review...',
-                          date_posted=now - timedelta(days=50),
-                          client_id='client_id', professional_id='professional_id')
+                                   date_posted=now - timedelta(days=50),
+                                   client_id='client_id', professional_id='professional_id')
     yield review        # Returns review object
     review.delete()     # TearDown
 
@@ -26,6 +26,7 @@ def test_method_filter_by_professional_id(review):
     filtered_reviews_lst = list(filtered_reviews)
 
     try:
+        from django.template.backends import django
         if type(review) is Review:
             assert filtered_reviews_lst == [review]
         elif type(review) is django.db.models.query.QuerySet:
