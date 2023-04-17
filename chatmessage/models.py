@@ -14,7 +14,7 @@ class Chatmessage(models.Model):
 
     def __str__(self):
         return f"From {self.professional_id} to {self.client_id}: {self.message} [{self.date}]"
-    
+
     @staticmethod
     def get_all_professional_contacts(professional_id):
 
