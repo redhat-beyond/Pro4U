@@ -1,6 +1,6 @@
 from django.db import models
-from user.models import Profile
 from django.db.models import Q
+from .profile import Profile
 
 
 class Professions(models.TextChoices):
@@ -28,7 +28,21 @@ class Professional(models.Model):
         db_table = 'professional'
 
     def __str__(self):
-        return str(self)
+        return f"Pro id: {self.professional_id}, profession: [{self.profession}], description: {self.description}"
+
+    @staticmethod
+    def create_new_professional(username, password, first_name, last_name, email, phone_number,
+                                country, city, address, profession, description):
+        profile = Profile.create_new_profile(username, password, first_name,
+                                             last_name, email, phone_number,
+                                             country, city, address)
+        professional = Professional(profile_id=profile, profession=profession, description=description)
+        professional.save()
+
+    @staticmethod
+    def filter_by_professional_id(professional_id):
+
+        return Professional.objects.filter(professional_id=professional_id) if professional_id else []
 
     @staticmethod
     def filter_by_profession(profession):
@@ -51,4 +65,4 @@ class Professional(models.Model):
     def filter_professionals_by_city(city):
         profile_ids = Profile.filter_by_city(city).values('profile_id') if city else []
 
-        return Profile.objects.filter(Q(profile_id__in=profile_ids)) if city else []
+        return Professional.objects.filter(Q(profile_id__in=profile_ids)) if city else []

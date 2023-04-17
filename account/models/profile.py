@@ -21,7 +21,15 @@ class Profile(models.Model):
         db_table = 'profile'
 
     def __str__(self):
-        return str(self)
+        return f"Profile id: {self.profile_id}, live in {self.city}, phone number: {self.phone_number}"
+
+    @staticmethod
+    def create_new_profile(username, password, first_name, last_name, email, phone_number, country, city, address):
+        profile = Profile(user_id=User.objects.create_user(username=username, password=password, first_name=first_name,
+                                                           last_name=last_name, email=email),
+                          phone_number=phone_number, country=country, city=city, address=address)
+        profile.user_id.save()
+        profile.save()
 
     @staticmethod
     def filter_by_city(city):
