@@ -1,5 +1,6 @@
 from django.db import models
 from .profile import Profile
+from django.db.models import Q
 
 
 class Client(models.Model):
