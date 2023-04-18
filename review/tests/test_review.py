@@ -1,3 +1,10 @@
+# Enables debugging
+import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Pro4U.settings')
+django.setup()
+
 import pytest
 from datetime import timedelta
 from django.utils import timezone
@@ -47,3 +54,23 @@ def test_method_get_professional_avg_rating(review):
 def test_method_str(review):
     assert "Review: #" in str(review)
     assert ", by client_id for professional_id (★★★★☆ (4/5))" in str(review)
+
+
+# TODO: when we add views
+# from django.urls import reverse
+# @pytest.mark.django_db
+# def test_review_list_view(client, review):
+#     # Displays the review list view (a view that displays a list of all reviews from the database)
+#     url = reverse("review_list")
+#     response = client.get(url)
+#     assert response.status_code == 200
+#     assert review in response.context["review_list"]
+#
+#
+# @pytest.mark.django_db
+# def test_review_detail_view(client, review):
+#     # Displays the review list view (a view that displays the details of a single review from the database)
+#     url = reverse("review_detail", args=[review.pk])
+#     response = client.get(url)
+#     assert response.status_code == 200
+#     assert response.context["review"] == review

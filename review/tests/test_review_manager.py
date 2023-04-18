@@ -1,3 +1,10 @@
+# Enables debugging
+import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Pro4U.settings')
+django.setup()
+
 import pytest
 from datetime import timedelta
 from django.utils import timezone
