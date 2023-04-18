@@ -1,5 +1,5 @@
 import pytest
-from . import models
+from .models import TypeOfJob, Appointment, Schedule
 from datetime import datetime
 
 PROFESSIONAL_ID = 4
@@ -18,12 +18,12 @@ MEETING_TIME = 60
 
 @pytest.fixture
 def typeOfJob():
-    return models.TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name=TYPEOFJOB_NAME, price=PRICE)
+    return TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name=TYPEOFJOB_NAME, price=PRICE)
 
 
 @pytest.fixture
 def persisted_typeOfJob_pool(typeOfJob):
-    typeOfJob_object = models.TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
+    typeOfJob_object = TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
     typeOfJob.save()
     typeOfJob_object.save()
     return [(typeOfJob.typeOfJob_name, typeOfJob.price), (typeOfJob_object.typeOfJob_name, typeOfJob_object.price)]
@@ -31,8 +31,8 @@ def persisted_typeOfJob_pool(typeOfJob):
 
 @pytest.fixture
 def appointment(typeOfJob):
-    return models.Appointment(professional_id=PROFESSIONAL_ID, client_id=CLIENT_ID, typeOfJob_id=typeOfJob,
-                              start_appointment=START_APPOINTMENT, end_appointment=END_APPOINTMENT, summary=SUMMARY)
+    return Appointment(professional_id=PROFESSIONAL_ID, client_id=CLIENT_ID, typeOfJob_id=typeOfJob,
+                       start_appointment=START_APPOINTMENT, end_appointment=END_APPOINTMENT, summary=SUMMARY)
 
 
 @pytest.fixture
@@ -44,13 +44,13 @@ def persisted_appointment(db, appointment):
 
 @pytest.fixture
 def persisted_appointment_pool(persisted_appointment):
-    typeOfJob_object = models.TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
-    appointment_object = models.Appointment(professional_id=PROFESSIONAL_ID,
-                                            client_id=10,
-                                            typeOfJob_id=typeOfJob_object,
-                                            start_appointment=datetime(2023, 4, 20, 12, 0, 0),
-                                            end_appointment=datetime(2023, 4, 20, 13, 0, 0),
-                                            summary=SUMMARY)
+    typeOfJob_object = TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
+    appointment_object = Appointment(professional_id=PROFESSIONAL_ID,
+                                     client_id=10,
+                                     typeOfJob_id=typeOfJob_object,
+                                     start_appointment=datetime(2023, 4, 20, 12, 0, 0),
+                                     end_appointment=datetime(2023, 4, 20, 13, 0, 0),
+                                     summary=SUMMARY)
     typeOfJob_object.save()
     appointment_object.save()
     return [persisted_appointment.client_id, appointment_object.client_id]
@@ -58,21 +58,21 @@ def persisted_appointment_pool(persisted_appointment):
 
 @pytest.fixture
 def schedule():
-    return models.Schedule(professional_id=PROFESSIONAL_ID,
-                           start_day=START_DAY,
-                           end_day=END_DAY,
-                           meeting_time=MEETING_TIME)
+    return Schedule(professional_id=PROFESSIONAL_ID,
+                    start_day=START_DAY,
+                    end_day=END_DAY,
+                    meeting_time=MEETING_TIME)
 
 
 @pytest.fixture
 def persisted_schedule_pool(persisted_appointment, schedule):
-    typeOfJob_object = models.TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
-    appointment_object1 = models.Appointment(professional_id=PROFESSIONAL_ID,
-                                             client_id=10,
-                                             typeOfJob_id=typeOfJob_object,
-                                             start_appointment=datetime(2023, 4, 17, 13, 0, 0),
-                                             end_appointment=datetime(2023, 4, 17, 14, 0, 0),
-                                             summary=SUMMARY)
+    typeOfJob_object = TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
+    appointment_object1 = Appointment(professional_id=PROFESSIONAL_ID,
+                                      client_id=10,
+                                      typeOfJob_id=typeOfJob_object,
+                                      start_appointment=datetime(2023, 4, 17, 13, 0, 0),
+                                      end_appointment=datetime(2023, 4, 17, 14, 0, 0),
+                                      summary=SUMMARY)
 
     typeOfJob_object.save()
     appointment_object1.save()
@@ -92,16 +92,16 @@ class TestTypeOfJobModel:
 
     def test_persist_typeOfJob(self, typeOfJob):
         typeOfJob.save()
-        assert typeOfJob in models.TypeOfJob.objects.all()
+        assert typeOfJob in TypeOfJob.objects.all()
 
     def test_del_typeOfJob(self, typeOfJob):
         typeOfJob.save()
         typeOfJob.delete()
-        assert typeOfJob not in models.TypeOfJob.objects.all()
+        assert typeOfJob not in TypeOfJob.objects.all()
 
     def test_get_typeofjobs_name_and_price_by_professional(self, persisted_typeOfJob_pool):
         assert persisted_typeOfJob_pool == \
-               list(models.TypeOfJob.get_typeofjobs_name_and_price(professional_id=PROFESSIONAL_ID))
+               list(TypeOfJob.get_typeofjobs_name_and_price(professional_id=PROFESSIONAL_ID))
 
 
 @pytest.mark.django_db()
@@ -119,23 +119,23 @@ class TestAppointmentModel:
     def test_persist_appointment(self, appointment):
         appointment.typeOfJob_id.save()
         appointment.save()
-        assert appointment in models.Appointment.objects.all()
+        assert appointment in Appointment.objects.all()
 
     def test_delete_ref_typeOfJob(self, persisted_appointment):
         persisted_appointment.typeOfJob_id.delete()
-        assert persisted_appointment not in models.Appointment.objects.all()
+        assert persisted_appointment not in Appointment.objects.all()
 
     def test_del_appointment(self, persisted_appointment):
         persisted_appointment.delete()
-        assert persisted_appointment not in models.TypeOfJob.objects.all()
+        assert persisted_appointment not in TypeOfJob.objects.all()
 
     def test_get_clients_by_professional(self, persisted_appointment_pool):
-        assert persisted_appointment_pool == list(models.Appointment.get_clients(professional_id=PROFESSIONAL_ID))
+        assert persisted_appointment_pool == list(Appointment.get_clients(professional_id=PROFESSIONAL_ID))
 
     def test_get_client_list_on_certain_day_by_professional_and_date(self, persisted_appointment_pool):
         assert [persisted_appointment_pool[0]] == \
-               list(models.Appointment.get_client_list_on_certain_day(professional_id=PROFESSIONAL_ID,
-                                                                      date=datetime(2023, 4, 17)))
+               list(Appointment.get_client_list_on_certain_day(professional_id=PROFESSIONAL_ID,
+                                                               date=datetime(2023, 4, 17)))
 
 
 @pytest.mark.django_db()
@@ -148,17 +148,17 @@ class TestScheduleModel:
 
     def test_persist_schedule(self, schedule):
         schedule.save()
-        assert schedule in models.Schedule.objects.all()
+        assert schedule in Schedule.objects.all()
 
     def test_del_schedule(self, schedule):
         schedule.save()
         schedule.delete()
-        assert schedule not in models.Schedule.objects.all()
+        assert schedule not in Schedule.objects.all()
 
     def test_get_possible_meetings_by_professional_and_date(self, persisted_schedule_pool):
         assert persisted_schedule_pool[1] == \
-               list(models.Schedule.get_possible_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
+               list(Schedule.get_possible_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
 
     def test_get_free_meetings_by_professional_and_date(self, persisted_schedule_pool):
         assert persisted_schedule_pool[0] == \
-               list(models.Schedule.get_free_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
+               list(Schedule.get_free_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
