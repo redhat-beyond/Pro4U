@@ -21,7 +21,7 @@ class Professions(models.TextChoices):
 class Professional(models.Model):
     professional_id = models.BigAutoField(primary_key=True)
     profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    profession = models.CharField(max_length=3, choices=Professions.choices, blank=True)
+    profession = models.CharField(max_length=3, choices=Professions.choices)
     description = models.TextField(blank=True)
 
     class Meta:
