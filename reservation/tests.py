@@ -1,5 +1,5 @@
 import pytest
-from .models import TypeOfJob, Appointment, Schedule
+from reservation.models import TypeOfJob, Appointment, Schedule
 from datetime import datetime
 
 PROFESSIONAL_ID = 4
