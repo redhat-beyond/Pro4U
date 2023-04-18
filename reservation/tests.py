@@ -22,7 +22,7 @@ def typeOfJob():
 
 
 @pytest.fixture
-def persisted_typeOfJob_pool(typeOfJob):
+def persisted_type_of_job_pool(typeOfJob):
     typeOfJob_object = TypeOfJob(professional_id=PROFESSIONAL_ID, typeOfJob_name="Hair cut", price=100)
     typeOfJob.save()
     typeOfJob_object.save()
@@ -36,7 +36,7 @@ def appointment(typeOfJob):
 
 
 @pytest.fixture
-def persisted_appointment(db, appointment):
+def persisted_appointment(appointment):
     appointment.typeOfJob_id.save()
     appointment.save()
     return appointment
@@ -99,8 +99,8 @@ class TestTypeOfJobModel:
         typeOfJob.delete()
         assert typeOfJob not in TypeOfJob.objects.all()
 
-    def test_get_typeofjobs_name_and_price_by_professional(self, persisted_typeOfJob_pool):
-        assert persisted_typeOfJob_pool == \
+    def test_get_typeofjobs_name_and_price_by_professional(self, persisted_type_of_job_pool):
+        assert persisted_type_of_job_pool == \
                list(TypeOfJob.get_typeofjobs_name_and_price(professional_id=PROFESSIONAL_ID))
 
 
