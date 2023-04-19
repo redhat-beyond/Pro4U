@@ -39,6 +39,8 @@ class Professional(models.Model):
         professional = Professional(profile_id=profile, profession=profession, description=description)
         professional.save()
 
+        return professional
+
     @staticmethod
     def filter_by_professional_id(professional_id):
 

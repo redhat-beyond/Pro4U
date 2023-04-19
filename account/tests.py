@@ -119,12 +119,12 @@ class TestProfileModel:
                 address='too long address test!'
             ).full_clean()
 
-    def test_create_profile_with_blank_phone_number(self, user):
+    def test_create_profile_with_blank_address(self, user):
         with pytest.raises(ValidationError):
             Profile.objects.create(
                 user_id=user,
                 user_type=UserType.Professional,
-                phone_number='',
+                phone_number='0000000000',
                 country='testcountry',
                 city='testcity',
                 address=''

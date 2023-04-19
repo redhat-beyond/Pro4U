@@ -23,6 +23,8 @@ class Client(models.Model):
         client = Client(profile_id=profile, birthday=birthday)
         client.save()
 
+        return client
+
     @staticmethod
     def filter_by_client_id(client_id):
 

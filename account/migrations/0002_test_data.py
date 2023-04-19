@@ -10,44 +10,41 @@ class Migration(migrations.Migration):
     ]
 
     def generate_data(apps, schema_editor):
-        test_data = [('Tal', 'Tel Aviv', Professions.Handyman, '111111111'),
-                     ('Ido', 'Rishon', Professions.Handyman, '222222222'),
-                     ('Ido2', 'Tel Aviv', Professions.Plumber, '333333333'),
-                     ('Patricia', 'Netanya', Professions.Electrician, '444444444'),
-                     ('Ofir', 'Tel Aviv', Professions.Handyman, '555555555'),
-                     ('Guy', 'Givatayim', Professions.Electrician, '666666666')]
+        test_data = [('TalTheUser', 'TalPassword', 'Tal', 'Reinfeld', 'tal@email.com', '111111111',
+                      'Israel', 'Tel Aviv', 'Address', Professions.Handyman, 'I am Tal'),
+                     ('IdoTheUser', 'TalPassword', 'Ido', 'Singer', 'ido@email.com', '222222222', 'Israel',
+                      'Rishon', 'Address', Professions.Handyman, 'I am Ido'),
+                     ('Ido2TheUser', 'Ido2Password', 'Ido2', 'Yekutiel', 'ido2@email.com', '333333333', 'Israel',
+                      'Tel Aviv', 'Address', Professions.Plumber, 'I am Ido2'),
+                     ('PatTheUser', 'PatPassword', 'Pat', 'Kaplun', 'pat@email.com', '444444444', 'Israel',
+                      'Netanya', 'Address', Professions.Electrician, 'I am Pat'),
+                     ('OfirTheUser', 'OfirPassword', 'Ofir', 'Bachar', 'ofir@email.com', '555555555', 'Israel',
+                      'Tel Aviv', 'Address', Professions.Handyman, 'I am Ofir'),
+                     ('GuyTheUser', 'GuyPassword', 'Guy', 'Beckenstain', 'guy@email.com', '666666666', 'Israel',
+                      'Givatayim', 'Address', Professions.Electrician, 'I am Guy')]
         with transaction.atomic():
-            for (name, city, profession, phone_number) in test_data:
-                Migration.create_test_professional(name=name, city=city,
-                                                   profession=profession, phone_number=phone_number)
-
-    @staticmethod
-    def create_test_professional(name, city, profession, phone_number):
-        username = password = name + name + name
-        email = name + '@' + name + '.' + name
-        address = name + '123'
-        description = 'My name is ' + name + ' and I am a ' + profession + '!'
-        Professional.create_new_professional(username=username, password=password, first_name=name, last_name=name,
-                                             email=email, phone_number=phone_number, country='Israel', city=city,
-                                             address=address,
-                                             profession=profession, description=description)
+            for (username, password, first_name, last_name, email, phone_number, country, city, address, profession,
+                 description) in test_data:
+                Professional.create_new_professional(username=username, password=password, first_name=first_name,
+                                                     last_name=last_name,
+                                                     email=email, phone_number=phone_number, country=country,
+                                                     city=city,
+                                                     address=address,
+                                                     profession=profession, description=description)
 
     def generate_data2(apps, schema_editor):
-        test_data = [('Yariv', 'Tel Aviv', '777777777'),
-                     ('Benny', 'Rishon', '888888888'),
-                     ('Daniel', 'Tel Aviv', '999999999')]
+        test_data = [('C1TheUser', 'C1Password', 'Client1', 'Client1', 'Client1@email.com', '7777777777', 'Israel',
+                      'Tel Aviv', 'Address'),
+                     ('C2TheUser', 'C2Password', 'Client2', 'Client2', 'Client2@email.com', '8888888888', 'Israel',
+                      'Netanya', 'Address'),
+                     ('C3TheUser', 'C3Password', 'Client3', 'Client3', 'Client3@email.com', '9999999999', 'Israel',
+                      'Tel Aviv', 'Address')]
         with transaction.atomic():
-            for (name, city, phone_number) in test_data:
-                Migration.create_test_client(name=name, city=city, phone_number=phone_number)
-
-    @staticmethod
-    def create_test_client(name, city, phone_number):
-        username = password = name + name + name
-        email = name + '@' + name + '.' + name
-        address = name + '123'
-        Client.create_new_client(username=username, password=password, first_name=name, last_name=name,
-                                 email=email, phone_number=phone_number, country='Israel', city=city,
-                                 address=address, birthday=datetime.date(2000, 1, 1))
+            for (username, password, first_name, last_name, email, phone_number, country, city, address) in test_data:
+                Client.create_new_client(username=username, password=password, first_name=first_name,
+                                         last_name=last_name,
+                                         email=email, phone_number=phone_number, country=country, city=city,
+                                         address=address, birthday=datetime.date(2000, 1, 1))
 
     operations = [
         migrations.RunPython(generate_data),
