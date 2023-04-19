@@ -161,4 +161,4 @@ class TestScheduleModel:
 
     def test_get_free_meetings_by_professional_and_date(self, persisted_schedule_pool):
         assert persisted_schedule_pool[0] == \
-               list(Schedule.get_free_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
+              list(Schedule.get_free_meetings(professional_id=PROFESSIONAL_ID, date=datetime(2023, 4, 17)))
