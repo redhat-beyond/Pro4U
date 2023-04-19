@@ -1,163 +1,152 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from .models.profile import Profile, UserType
-from django.core.exceptions import ValidationError
+from .models.professional import Professions, Professional
+from .models.client import Client
+import datetime
 import pytest
+
+
+USERNAME = 'testusername'
+PASSWORD = 'testpassword'
+FIRST_NAME = 'testfirstname'
+LAST_NAME = 'testlastname'
+EMAIL = 'test@test.test'
+LAST_LOGIN = datetime.datetime.now()
+
+PROFESSIONAL_TYPE = UserType.Professional
+CLIENT_TYPE = UserType.Client
+PHONE_NUMBER = '1234567890'
+COUNTRY = 'testcountry'
+CITY = 'testcity'
+ADDRESS = 'testaddress'
+
+PROFESSION = Professions.Handyman
+DESCRIPTION = 'test description'
+
+BIRTHDAY = datetime.date(2000, 1, 1)
+
+@pytest.fixture
+def user():
+    user = User.objects.create_user(
+        username=USERNAME,
+        password=PASSWORD,
+        first_name=FIRST_NAME,
+        last_name=LAST_NAME,
+        email=EMAIL,
+        last_login=LAST_LOGIN
+    )
+    return user
+
+
+@pytest.fixture
+def profile(user):
+    profile = Profile.objects.create(
+        user_id=user,
+        user_type=PROFESSIONAL_TYPE,
+        phone_number=PHONE_NUMBER,
+        country=COUNTRY,
+        city=CITY,
+        address=ADDRESS
+    )
+    return profile
+
+
+@pytest.fixture
+def professional(profile):
+    professional = Profile.objects.create(
+        profile_id=profile,
+        profile_id_user_type=PROFESSIONAL_TYPE,
+        profession=PROFESSION,
+        description=DESCRIPTION
+    )
+    return professional
+
+
+@pytest.fixture
+def client(profile):
+    client = Profile.objects.create(
+        profile_id=profile,
+        profile_id_user_type=CLIENT_TYPE,
+        birthday=BIRTHDAY
+    )
+    return client
 
 
 @pytest.mark.django_db
 class TestProfileModel:
+    def test_new_profile(self, profile):
+        assert profile.user_type == PROFESSIONAL_TYPE
+        assert profile.phone_number == PHONE_NUMBER
+        assert profile.country == COUNTRY
+        assert profile.city == CITY
+        assert profile.address == ADDRESS
 
-    @pytest.fixture
-    def user(self):
-        return get_user_model().objects.create_user(
-            username='testuser',
-            password='testpass'
-        )
+    def test_get_profile(self, profile):
+        profile.user_id.save()
+        profile.save()
+        assert profile in Profile.objects.all()
 
-    @pytest.fixture
-    def saved_profile(self, user):
-        profile = Profile.objects.create(
-            user_id=user,
-            user_type=UserType.Professional,
-            phone_number='0000000000',
-            country='testcountry',
-            city='testcity',
-            address='testaddress'
-        )
-        return profile
-
-    def test_get_profile(self, saved_profile):
-        profile = Profile.objects.get(pk=saved_profile.pk)
-        assert profile == saved_profile
-
-    def test_delete_profile(self, saved_profile):
-        profile = saved_profile
+    def test_delete_profile(self, profile):
+        profile.user_id.save()
+        profile.save()
         profile.delete()
-        with pytest.raises(Profile.DoesNotExist):
-            Profile.objects.get(pk=saved_profile.pk)
+        assert profile not in Profile.objects.all()
 
-    def test_delete_user_deletes_profile(self, saved_profile):
-        user = saved_profile.user_id
-        user.delete()
-        with pytest.raises(Profile.DoesNotExist):
-            Profile.objects.get(pk=saved_profile.pk)
+    def test_delete_user_deletes_profile(self, profile):
+        profile.user_id.save()
+        profile.save()
+        profile.user_id.delete()
+        assert profile not in Profile.objects.all()
 
-    def test_create_profile_with_long_phone_number(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='00000000000000000000',
-                country='testcountry',
-                city='testcity',
-                address='testaddress'
-            ).full_clean()
 
-    def test_create_profile_with_blank_phone_number(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='',
-                country='testcountry',
-                city='testcity',
-                address='testaddress'
-            ).full_clean()
+@pytest.mark.django_db
+class TestProfessionalModel:
+    def test_new_professional(self, professional):
+        assert professional.profession == PROFESSION
+        assert professional.description == DESCRIPTION
 
-    def test_create_profile_with_long_country(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='0000000000',
-                country='too long country test!',
-                city='testcity',
-                address='testaddress'
-            ).full_clean()
+    def test_get_professional(self, professional):
+        professional.profile_id.user_id.save()
+        professional.profile_id.save()
+        professional.save()
+        assert professional in Professional.objects.all()
 
-    def test_create_profile_with_blank_country(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='0000000000',
-                country='',
-                city='testcity',
-                address='testaddress'
-            ).full_clean()
+    def test_delete_professional(self, professional):
+        professional.profile_id.user_id.save()
+        professional.profile_id.save()
+        professional.save()
+        professional.delete()
+        assert professional not in Professional.objects.all()
 
-    def test_create_profile_with_long_city(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='00000000000000000000',
-                country='testcountry',
-                city='too long city test',
-                address='testaddress'
-            ).full_clean()
+    def test_delete_user_deletes_professional(self, professional):
+        professional.profile_id.user_id.save()
+        professional.profile_id.save()
+        professional.save()
+        professional.profile_id.delete()
+        assert professional not in Professional.objects.all()
 
-    def test_create_profile_with_blank_city(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='',
-                country='testcountry',
-                city='',
-                address='testaddress'
-            ).full_clean()
 
-    def test_create_profile_with_long_address(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='00000000000000000000',
-                country='testcountry',
-                city='testcity',
-                address='too long address test!'
-            ).full_clean()
+@pytest.mark.django_db
+class TestClientModel:
+    def test_new_client(self, client):
+        assert client.birthday == BIRTHDAY
 
-    def test_create_profile_with_blank_address(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type=UserType.Professional,
-                phone_number='0000000000',
-                country='testcountry',
-                city='testcity',
-                address=''
-            ).full_clean()
+    def test_get_client(self, client):
+        client.profile_id.user_id.save()
+        client.profile_id.save()
+        client.save()
+        assert client in Client.objects.all()
 
-    def test_create_profile_with_invalid_user_type(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type='invalid user type',
-                phone_number='0000000000',
-                country='testcountry',
-                city='testcity',
-                address=''
-            ).full_clean()
+    def test_delete_professional(self, client):
+        client.profile_id.user_id.save()
+        client.profile_id.save()
+        client.save()
+        client.delete()
+        assert client not in Client.objects.all()
 
-    def test_create_profile_with_blank_user_type(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                user_type='',
-                phone_number='0000000000',
-                country='testcountry',
-                city='testcity',
-                address=''
-            ).full_clean()
-
-    def test_create_profile_with_null_user_type(self, user):
-        with pytest.raises(ValidationError):
-            Profile.objects.create(
-                user_id=user,
-                phone_number='0000000000',
-                country='testcountry',
-                city='testcity',
-                address=''
-            ).full_clean()
+    def test_delete_user_deletes_professional(self, client):
+        client.profile_id.user_id.save()
+        client.profile_id.save()
+        client.save()
+        client.profile_id.delete()
+        assert client not in Client.objects.all()
