@@ -40,7 +40,7 @@ class TestChatmessageModel:
 
     def test_get_client_contacts(self, persisted_chatmessage):
         assert [persisted_chatmessage[1]] == \
-            Chatmessage.get_all_client_contacts(client_id=CLIENT_ID)
+          Chatmessage.get_all_client_contacts(client_id=CLIENT_ID)
 
     def get_chat_between_professional_and_client(self, persisted_chatmessage):
         assert persisted_chatmessage == \
