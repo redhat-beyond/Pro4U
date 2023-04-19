@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'review.apps.ReviewConfig',
     'reservation.apps.ReservationConfig',
     'chatmessage.apps.ChatmessageConfig',
+    'SearchHistory.apps.SearchHistoryConfig',
 ]
 
 MIDDLEWARE = [
