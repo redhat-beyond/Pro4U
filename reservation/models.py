@@ -18,10 +18,10 @@ class TypeOfJob(models.Model):
         db_table = 'TypeOfJob'
 
     @staticmethod
-    def get_typeofjobs_name(professional_id: int):
-        typeofjobs_name_list = TypeOfJob.objects.filter(professional_id=professional_id)\
-                                                        .values_list('typeOfJob_name', flat=True)
-        return typeofjobs_name_list
+    def get_typeofjobs_name_and_price(professional_id: int):
+        typeofjobs_name_and_price_list = TypeOfJob.objects.filter(professional_id=professional_id)\
+                                                    .values_list('typeOfJob_name', 'price')
+        return typeofjobs_name_and_price_list
 
 
 class Appointment(models.Model):
