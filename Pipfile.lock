@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "caec253f5b5e92df671b0c33a693fa71fa631a47a2b8d69212ba76134659cff1"
+            "sha256": "9d70566323ce8fb79ad4c84aa66c228c9e6b8752768d2b103e1d742d376a5f87"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,8 +31,6 @@
             ],
             "index": "pypi",
             "version": "==4.2"
-<<<<<<< HEAD
-=======
         },
         "pillow": {
             "hashes": [
@@ -121,7 +119,6 @@
             ],
             "markers": "python_full_version >= '3.6.8'",
             "version": "==3.0.9"
->>>>>>> d6c7dea (Adding Images app)
         },
         "sqlparse": {
             "hashes": [
