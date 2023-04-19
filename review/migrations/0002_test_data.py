@@ -1,4 +1,6 @@
-from django.db import migrations, transaction, models
+from datetime import timedelta
+from django.db import migrations, transaction
+from django.utils import timezone
 
 
 class Migration(migrations.Migration):
@@ -8,15 +10,21 @@ class Migration(migrations.Migration):
     ]
 
     def generate_data(apps, schema_editor):
-        from review.models import Review, Rating
+        from review.models import Review
+
+        now = timezone.now()
 
         test_data = [
-            ("user1", "pro1", Rating.UNSPECIFIED, "2011-09-01T13:20:30+03:00", 'A simple test review'),
-            ("user2", "pro1", Rating.FIVE_STARS,  "2011-09-01T13:20:30+03:00", 'Another simple test review'),
+            ('5', 'Excellent!', now - timedelta(days=10), 'user1', 'pro1'),
+            ('4', 'Good', now - timedelta(days=20), 'user2', 'pro2'),
+            ('3', 'Average', now - timedelta(days=5), 'user3', 'pro3'),
+            ('2', 'A simple test review', now - timedelta(days=2), 'user1', 'pro3'),
+            (Review.Rating.FOUR_STARS, 'Another test review', now - timedelta(days=2), 'user3', 'pro2'),
+            (Review.Rating.ONE_STAR, 'Really bad.', now - timedelta(days=2), 'user3', 'pro2'),
         ]
 
         with transaction.atomic():
-            for client_id, professional_id, rating, date_posted, description in test_data:
+            for rating, description, date_posted, client_id, professional_id in test_data:
                 Review(
                     rating=rating,
                     description=description,
@@ -26,10 +34,5 @@ class Migration(migrations.Migration):
                 ).save()
 
     operations = [
-        migrations.AddField(
-            model_name='review',
-            name='client_id',
-            field=models.CharField(max_length=512),
-        ),
         migrations.RunPython(generate_data),
     ]
