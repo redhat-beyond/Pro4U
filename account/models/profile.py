@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
+import datetime
 
 
 class UserType(models.TextChoices):
@@ -11,8 +12,8 @@ class UserType(models.TextChoices):
 class Profile(models.Model):
     profile_id = models.BigAutoField(primary_key=True)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_type = models.CharField(max_length=1, choices=UserType.choices, default='C', blank=True)
-    phone_number = models.CharField(max_length=50, unique=True)
+    user_type = models.CharField(max_length=1, choices=UserType.choices, default='C')
+    phone_number = models.CharField(max_length=15, unique=True)
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     address = models.CharField(max_length=30)
@@ -26,10 +27,13 @@ class Profile(models.Model):
     @staticmethod
     def create_new_profile(username, password, first_name, last_name, email, phone_number, country, city, address):
         profile = Profile(user_id=User.objects.create_user(username=username, password=password, first_name=first_name,
-                                                           last_name=last_name, email=email),
+                                                           last_name=last_name, email=email,
+                                                           last_login=datetime.datetime.now()),
                           phone_number=phone_number, country=country, city=city, address=address)
         profile.user_id.save()
         profile.save()
+
+        return profile
 
     @staticmethod
     def filter_by_city(city):

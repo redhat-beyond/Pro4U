@@ -21,7 +21,7 @@ class Professions(models.TextChoices):
 class Professional(models.Model):
     professional_id = models.BigAutoField(primary_key=True)
     profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    profession = models.CharField(max_length=3, choices=Professions.choices, blank=True)
+    profession = models.CharField(max_length=3, choices=Professions.choices)
     description = models.TextField(blank=True)
 
     class Meta:
@@ -38,6 +38,8 @@ class Professional(models.Model):
                                              country, city, address)
         professional = Professional(profile_id=profile, profession=profession, description=description)
         professional.save()
+
+        return professional
 
     @staticmethod
     def filter_by_professional_id(professional_id):
