@@ -1,9 +1,7 @@
 from account.models.professional import Professional, Professions
 from account.models.client import Client
-from account.models.profile import Profile, UserType
 import datetime
 from django.db import migrations, transaction
-from django.contrib.auth.models import User
 
 
 class Migration(migrations.Migration):
@@ -27,12 +25,12 @@ class Migration(migrations.Migration):
         with transaction.atomic():
             for (username, password, first_name, last_name, email, phone_number, country, city, address, profession,
                  description) in test_data:
-                user = User.objects.create_user(username=username, password=password, first_name=first_name,
-                                                         last_name=last_name, email=email,
-                                                         last_login=datetime.datetime.now()).save()
-                profile = Profile(user_id=user, user_type=UserType.Professional, phone_number=phone_number,
-                        country=country, city=city, address=address).save()
-                Professional(profile_id=profile, profession=profession, description=description).save()
+                Professional.create_new_professional(username=username, password=password, first_name=first_name,
+                                                     last_name=last_name,
+                                                     email=email, phone_number=phone_number, country=country,
+                                                     city=city,
+                                                     address=address,
+                                                     profession=profession, description=description)
 
     def generate_data2(apps, schema_editor):
         test_data = [('C1TheUser', 'C1Password', 'Client1', 'Client1', 'Client1@email.com', '7777777777', 'Israel',
@@ -43,12 +41,10 @@ class Migration(migrations.Migration):
                       'Tel Aviv', 'Address')]
         with transaction.atomic():
             for (username, password, first_name, last_name, email, phone_number, country, city, address) in test_data:
-                user = User.objects.create_user(username=username, password=password, first_name=first_name,
-                                                         last_name=last_name, email=email,
-                                                         last_login=datetime.datetime.now()).save()
-                profile = Profile(user_id=user, user_type=UserType.Professional, phone_number=phone_number,
-                        country=country, city=city, address=address).save()
-                Client(profile_id=profile, birthday=datetime.date(2000, 1, 1)).save()
+                Client.create_new_client(username=username, password=password,
+                                         first_name=first_name, last_name=last_name,
+                                         email=email, phone_number=phone_number, country=country, city=city,
+                                         address=address, birthday=datetime.date(2000, 1, 1))
 
     operations = [
         migrations.RunPython(generate_data),

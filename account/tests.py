@@ -25,6 +25,7 @@ DESCRIPTION = 'test description'
 
 BIRTHDAY = datetime.date(2000, 1, 1)
 
+
 @pytest.fixture
 def user():
     user = User.objects.create_user(
@@ -53,9 +54,10 @@ def profile(user):
 
 @pytest.fixture
 def professional(profile):
-    professional = Profile.objects.create(
-        profile_id=profile,
-        profile_id_user_type=PROFESSIONAL_TYPE,
+    professional_profile = profile
+    professional_profile.user_type = PROFESSIONAL_TYPE,
+    professional = Professional.objects.create(
+        profile_id=professional_profile,
         profession=PROFESSION,
         description=DESCRIPTION
     )
@@ -64,9 +66,10 @@ def professional(profile):
 
 @pytest.fixture
 def client(profile):
-    client = Profile.objects.create(
+    client_profile = profile
+    client_profile.user_type = CLIENT_TYPE,
+    client = Client.objects.create(
         profile_id=profile,
-        profile_id_user_type=CLIENT_TYPE,
         birthday=BIRTHDAY
     )
     return client
