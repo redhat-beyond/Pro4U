@@ -1,5 +1,5 @@
 from .models import SearchHistory
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytest
 
 PROFESSIONAL_ID = 101
@@ -37,6 +37,8 @@ class TestSearchHistoryModel:
 
     def test_get_5_last_professionals_search_by_client(self, persisted_search_history):
         persisted_client_id = persisted_search_history[2]
-        expected_result = SearchHistory.objects.filter(client_id=persisted_client_id).order_by('-date')[:5].values_list('professional_id', flat=True)
+        expected_result = SearchHistory.objects.filter(client_id=persisted_client_id)
+        expected_result = expected_result.order_by('-date')[:5]
+        expected_result = expected_result.values_list('professional_id', flat=True)
         result = SearchHistory.get_5_last_professionals_search_by_client(persisted_search_history[2])
-        assert sorted(result) == sorted(expected_result)       
+        assert sorted(result) == sorted(expected_result)

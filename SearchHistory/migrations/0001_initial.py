@@ -18,9 +18,9 @@ class Migration(migrations.Migration):
                 ('search_id', models.BigAutoField(primary_key=True, serialize=False)),
                 ('professional_id', models.PositiveIntegerField(null=False, blank=False)),
                 ('client_id', models.PositiveIntegerField(null=False, blank=False)),
-                ('date', models.DateTimeField(default=django.utils.timezone.now)),
+                ('date', models.DateTimeField(default=django.utils.timezone.now))
             ],
-             options={
+            options={
                 'db_table': 'SearchHistory',
             },
         ),
