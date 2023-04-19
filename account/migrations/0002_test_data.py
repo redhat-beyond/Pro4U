@@ -5,6 +5,7 @@ import datetime
 from django.db import migrations, transaction
 from django.contrib.auth.models import User
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ('account', '0001_initial'),
@@ -27,8 +28,8 @@ class Migration(migrations.Migration):
             for (username, password, first_name, last_name, email, phone_number, country, city, address, profession,
                  description) in test_data:
                 user = User.objects.create_user(username=username, password=password, first_name=first_name,
-                                                           last_name=last_name, email=email,
-                                                           last_login=datetime.datetime.now())
+                                                last_name=last_name, email=email,
+                                                last_login=datetime.datetime.now())
                 profile = Profile(user_id=user, user_type=UserType.Professional, phone_number=phone_number,
                                   country=country, city=city, address=address)
                 professional = Professional(profile_id=profile, profession=profession, description=description)
@@ -46,8 +47,8 @@ class Migration(migrations.Migration):
         with transaction.atomic():
             for (username, password, first_name, last_name, email, phone_number, country, city, address) in test_data:
                 user = User.objects.create_user(username=username, password=password, first_name=first_name,
-                                                           last_name=last_name, email=email,
-                                                           last_login=datetime.datetime.now())
+                                                last_name=last_name, email=email,
+                                                last_login=datetime.datetime.now())
                 profile = Profile(user_id=user, user_type=UserType.Client, phone_number=phone_number,
                                   country=country, city=city, address=address)
                 client = Client(profile_id=profile, birthday=datetime.date(2000, 1, 1))
