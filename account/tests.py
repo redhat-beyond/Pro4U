@@ -140,14 +140,14 @@ class TestClientModel:
         client.save()
         assert client in Client.objects.all()
 
-    def test_delete_professional(self, client):
+    def test_delete_client(self, client):
         client.profile_id.user_id.save()
         client.profile_id.save()
         client.save()
         client.delete()
         assert client not in Client.objects.all()
 
-    def test_delete_user_deletes_professional(self, client):
+    def test_delete_user_deletes_client(self, client):
         client.profile_id.user_id.save()
         client.profile_id.save()
         client.save()
