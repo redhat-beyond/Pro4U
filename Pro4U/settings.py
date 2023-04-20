@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'reservation.apps.ReservationConfig',
     'chatmessage.apps.ChatmessageConfig',
     'account.apps.AccountConfig',
+    'proImages.apps.ProImagesConfig',
 ]
 
 MIDDLEWARE = [
