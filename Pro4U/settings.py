@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'reservation.apps.ReservationConfig',
     'chatmessage.apps.ChatmessageConfig',
     'account.apps.AccountConfig',
+    'proImages.apps.ProImagesConfig',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_ROOT = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
