@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'review.apps.ReviewConfig',
     'reservation.apps.ReservationConfig',
     'chatmessage.apps.ChatmessageConfig',
-    'account.apps.AccountConfig',
+    'SearchHistory.apps.SearchHistoryConfig',
     'proImages.apps.ProImagesConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
