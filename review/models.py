@@ -9,20 +9,20 @@ class ReviewManager(models.Manager):
     """
     # date
     def sort_review_by_oldest(self):
-        # Sorts reviews by dates (oldest first)
+        # Sorts reviews by dates (the oldest first)
         return self.get_queryset().order_by('date_posted')
 
     def sort_review_by_newest(self):
-        # Sorts reviews by dates (newest first)
+        # Sorts reviews by dates (the newest first)
         return self.get_queryset().order_by('-date_posted')
 
     # rating
     def sort_review_by_lowest_rating(self):
-        # Sorts reviews by rating (lowest first)
+        # Sorts reviews by rating (the lowest first)
         return self.get_queryset().order_by('rating')
 
     def sort_review_by_highest_rating(self):
-        # Sorts reviews by rating (highest first)
+        # Sorts reviews by rating (the highest first)
         return self.get_queryset().order_by('-rating')
 
 
@@ -50,6 +50,7 @@ class Review(models.Model):
     @staticmethod
     def get_professional_avg_rating(professional_id):
         filtered_reviews = Review.filter_by_professional_id(professional_id=professional_id)
+        filtered_reviews = filtered_reviews.exclude(rating=Review.Rating.UNSPECIFIED)  # Cannot be calculated in average
         return filtered_reviews.aggregate(Avg('rating'))['rating__avg']
 
     def __str__(self):
@@ -58,4 +59,4 @@ class Review(models.Model):
         client = self.client_id
         professional = self.professional_id
         rating = self.get_rating_display()
-        return f"Review {id} by client {client} for professional {professional} ({rating})"
+        return f"Review: #{id}, by {client} for {professional} ({rating})"
