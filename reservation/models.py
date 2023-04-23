@@ -1,13 +1,13 @@
 from django.db import models
 from datetime import date, datetime, timedelta
-# from professional.models import Professional
-# from client.models import Client
+from account.models.profile import Profile, UserType
+from account.models.professional import Professions, Professional
+from account.models.client import Client
 
 
 class TypeOfJob(models.Model):
     typeOfJob_id = models.BigAutoField(primary_key=True)
-    # professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
-    professional_id = models.PositiveIntegerField(null=False, blank=False)
+    professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
     typeOfJob_name = models.CharField(max_length=120)
     price = models.PositiveIntegerField(null=False, blank=False)
 
@@ -26,10 +26,8 @@ class TypeOfJob(models.Model):
 
 class Appointment(models.Model):
     appointment_id = models.BigAutoField(primary_key=True)
-    # professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
-    # client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
-    professional_id = models.PositiveIntegerField(null=False, blank=False)
-    client_id = models.PositiveIntegerField(null=False, blank=False)
+    professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
     typeOfJob_id = models.ForeignKey(TypeOfJob, on_delete=models.CASCADE)
     start_appointment = models.DateTimeField()
     end_appointment = models.DateTimeField()
@@ -55,8 +53,7 @@ class Appointment(models.Model):
 
 class Schedule(models.Model):
     schedule_id = models.BigAutoField(primary_key=True)
-    # professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
-    professional_id = models.PositiveIntegerField(null=False, blank=False)
+    professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
     start_day = models.DateTimeField()
     end_day = models.DateTimeField()
     meeting_time = models.PositiveIntegerField(null=False, blank=False)

@@ -1,60 +1,63 @@
 from django.db import migrations, transaction
 from datetime import datetime
+from account.models.professional import Professional
+from account.models.client import Client
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('reservation', '0001_initial'),
+        ('reservation', '0002_alter_appointment_client_id_and_more'),
+        ('account', '0002_test_data'),
     ]
 
     def generate_data(apps, schema_editor):
-        from reservation.models import Schedule
-        test_data = [
+        from reservation.models import Schedule, Appointment, TypeOfJob
+
+        schedule_test_data = [
+        
             (1, 1, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
             (2, 1, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
             (3, 2, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
             (4, 2, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
         ]
-        with transaction.atomic():
-            for schedule_id, professional_id, start_day, end_day, meeting_time in test_data:
+        
+        typeOfJob_test_data = [
+            (1, 1, "man haircut", 70),
+            (2, 1, "woman haircut", 100),
+            (3, 2, "Gel nail polish", 80),
+        ]
+        
+        appointment_test_data = [
+            (1, 2, 2, 2, datetime(2023, 4, 16, 15, 00, 0), datetime(2023, 4, 16, 16, 00, 0), ""),
+            (2, 1, 2, 2, datetime(2023, 4, 16, 16, 00, 0), datetime(2023, 4, 16, 17, 00, 0), ""),
+            (3, 2, 1, 1, datetime(2023, 4, 16, 18, 00, 0), datetime(2023, 4, 16, 19, 00, 0), ""),
+        ]
+        
+        with transaction.atomic():    
+            for schedule_id, professional_id, start_day, end_day, meeting_time in schedule_test_data:
                 Schedule(
                     schedule_id=schedule_id,
-                    professional_id=professional_id,
+                    professional_id=Professional.objects.get(pk=professional_id),
                     start_day=start_day,
                     end_day=end_day,
                     meeting_time=meeting_time
                 ).save()
 
-    def generate_data2(apps, schema_editor):
-        from reservation.models import TypeOfJob
-        test_data = [
-            (1, 1, "man haircut", 70),
-            (2, 1, "woman haircut", 100),
-            (3, 2, "Gel nail polish", 80),
-        ]
-        with transaction.atomic():
-            for typeOfJob_id, professional_id, typeOfJob_name, price in test_data:
+
+            for typeOfJob_id, professional_id, typeOfJob_name, price in typeOfJob_test_data:
                 TypeOfJob(
                     typeOfJob_id=typeOfJob_id,
-                    professional_id=professional_id,
+                    professional_id=Professional.objects.get(pk=professional_id),
                     typeOfJob_name=typeOfJob_name,
                     price=price
                 ).save()
 
-    def generate_data3(apps, schema_editor):
-        from reservation.models import Appointment, TypeOfJob
-        test_data = [
-            (1, 1, 1, 1, datetime(2023, 4, 16, 15, 00, 0), datetime(2023, 4, 16, 16, 00, 0), ""),
-            (2, 1, 2, 2, datetime(2023, 4, 16, 16, 00, 0), datetime(2023, 4, 16, 17, 00, 0), ""),
-            (3, 2, 1, 1, datetime(2023, 4, 16, 18, 00, 0), datetime(2023, 4, 16, 19, 00, 0), ""),
-        ]
-        with transaction.atomic():
             for appointment_id, professional_id, client_id, typeOfJob_id, start_appointment, end_appointment, summary \
-                                                                                                        in test_data:
+                                                                                                        in appointment_test_data:
                 Appointment(
                     appointment_id=appointment_id,
-                    professional_id=professional_id,
-                    client_id=client_id,
+                    professional_id=Professional.objects.get(pk=professional_id),
+                    client_id=Client.objects.get(pk=client_id),
                     typeOfJob_id=TypeOfJob.objects.get(pk=typeOfJob_id),
                     start_appointment=start_appointment,
                     end_appointment=end_appointment,
@@ -63,6 +66,4 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(generate_data),
-        migrations.RunPython(generate_data2),
-        migrations.RunPython(generate_data3),
     ]
