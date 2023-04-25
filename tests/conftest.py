@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
 from reservation.models import TypeOfJob, Appointment, Schedule
-from account.models.profile import Profile, UserType
+from account.models.profile import Profile
 from account.models.professional import Professions, Professional
 from account.models.client import Client
-from review.models import Review
 from chatmessage.models import Chatmessage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from proImages.models import Images
@@ -32,50 +31,50 @@ MESSAGE = "message1"
 @pytest.fixture
 def user1():
     return User.objects.create_user(username='client1', password='password123', first_name='John', last_name='Doe',
-                                    email='john.doe@example.com', last_login=LAST_LOGIN, )
+                                    email='john.doe@example.com', last_login=LAST_LOGIN)
 
 
-@pytest.fixture    
+@pytest.fixture
 def user2():
     return User.objects.create_user(username='client2', password='password456', first_name='Jane',
-                                    last_name='Doe', email='jane.doe@example.com', last_login=LAST_LOGIN, )
+                                    last_name='Doe', email='jane.doe@example.com', last_login=LAST_LOGIN)
 
 
-@pytest.fixture    
+@pytest.fixture
 def user3():
     return User.objects.create_user(username='professional1', password='password789', first_name='Bob',
-                                    last_name='Builder', email='bob.builder@example.com', last_login=LAST_LOGIN, )
+                                    last_name='Builder', email='bob.builder@example.com', last_login=LAST_LOGIN)
 
 
-@pytest.fixture    
-def profile1(user1):    
+@pytest.fixture
+def profile1(user1):
     return Profile.objects.create(user_id=user1, phone_number='123456789', country='USA', city='New York',
                                   address='123 Main St', user_type='C')
 
-    
-@pytest.fixture    
-def profile2(user2):    
+
+@pytest.fixture
+def profile2(user2):
     return Profile.objects.create(user_id=user2, phone_number='987654321', country='Canada', city='Toronto',
                                   address='456 King St', user_type='C')
 
-    
-@pytest.fixture    
-def client(profile1):     
+
+@pytest.fixture
+def client(profile1):
     return Client.objects.create(profile_id=profile1, birthday=BIRTHDAY)
 
 
 @pytest.fixture
-def client2(profile2): 
+def client2(profile2):
     return Client.objects.create(profile_id=profile2, birthday=BIRTHDAY)
 
 
-@pytest.fixture    
-def profile3(user3):    
+@pytest.fixture
+def profile3(user3):
     return Profile.objects.create(user_id=user3, phone_number='5551234', country='UK', city='London',
                                   address='10 Downing St', user_type='P')
 
-    
-@pytest.fixture    
+
+@pytest.fixture
 def professional(profile3):
     return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
                                        description='I')
@@ -125,7 +124,7 @@ def persisted_schedule(schedule):
 
 @pytest.fixture
 def chatmessage():
-    return Chatmessage(professional_id=PROFESSIONAL_ID, client_id=CLIENT_ID, message=MESSAGE)
+    return Chatmessage(professional_id=professional, client_id=client, message=MESSAGE)
 
 
 @pytest.fixture
@@ -133,11 +132,11 @@ def persisted_chatmessage(chatmessage):
     chatmessage.save()
     return [(chatmessage.message_id), (chatmessage.professional_id),
             (chatmessage.client_id), (chatmessage.date), (chatmessage.message)]
-            
+
 
 @pytest.fixture
 def searchHistory():
-    return SearchHistory(professional_id=PROFESSIONAL_ID, client_id=CLIENT_ID, date=START_DAY)
+    return SearchHistory(professional_id=professional, client_id=client, date=START_DAY)
 
 
 @pytest.fixture
@@ -149,13 +148,13 @@ def persisted_search_history(searchHistory):
 
 @pytest.fixture
 def image():
-    return Images(professional_id=PROFESSIONAL_ID, image=IMAGE_UPLOAD, likes=LIKES)
+    return Images(professional_id=professional, image=IMAGE_UPLOAD, likes=LIKES)
 
 
 @pytest.fixture
 def persisted_image(image):
     images_object = Images(
-        professional_id=PROFESSIONAL_ID,
+        professional_id=professional,
         image=SimpleUploadedFile("test_image1.jpg", b"binary_data"),
         likes=50
         )
