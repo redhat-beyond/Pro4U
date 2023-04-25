@@ -16,7 +16,6 @@ LAST_LOGIN = datetime.now()
 TYPEOFJOB_NAME = "Gel nail polish"
 PRICE = 90
 
-
 START_APPOINTMENT = datetime(2023, 4, 17, 12, 0, 0)
 END_APPOINTMENT = datetime(2023, 4, 17, 13, 0, 0)
 SUMMARY = ""
@@ -26,6 +25,9 @@ END_DAY = datetime(2023, 4, 17, 18, 0, 0)
 MEETING_TIME = 60
 
 MESSAGE = "message1"
+
+IMAGE_UPLOAD = SimpleUploadedFile(IMAGE_NAME, b"binary_data")
+LIKES = 100
 
 
 @pytest.fixture
