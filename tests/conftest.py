@@ -26,6 +26,7 @@ MEETING_TIME = 60
 
 MESSAGE = "message1"
 
+IMAGE_NAME = "test_image.jpg"
 IMAGE_UPLOAD = SimpleUploadedFile(IMAGE_NAME, b"binary_data")
 LIKES = 100
 
