@@ -14,13 +14,7 @@ import pytest
 
 BIRTHDAY = datetime(2000, 1, 1)
 LAST_LOGIN = datetime.now()
-PROFESSIONAL_TYPE = 'C'
-PROFESSION = Professions.Locksmith
-PHONE_NUMBER = '123456789'
-COUNTRY = 'USA'
-CITY = 'New York'
-ADDRESS = '123 Main St'
-DESCRIPTION = 'I'
+
 
 TYPEOFJOB_NAME = "Gel nail polish"
 PRICE = 90

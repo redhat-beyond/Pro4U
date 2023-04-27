@@ -1,4 +1,17 @@
-from tests.conftest import *
+from account.models.profile import Profile
+from account.models.professional import Professions, Professional
+from account.models.client import Client
+from datetime import datetime
+import pytest
+
+PROFESSIONAL_TYPE = 'C'
+PROFESSION = Professions.Locksmith
+PHONE_NUMBER = '123456789'
+COUNTRY = 'USA'
+CITY = 'New York'
+ADDRESS = '123 Main St'
+DESCRIPTION = 'I'
+BIRTHDAY = datetime(2000, 1, 1)
 
 
 @pytest.mark.django_db
