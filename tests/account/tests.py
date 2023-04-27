@@ -4,7 +4,7 @@ from account.models.client import Client
 from datetime import datetime
 import pytest
 
-PROFESSIONAL_TYPE = 'C'
+PROFILE_TYPE = 'C'
 PROFESSION = Professions.Locksmith
 PHONE_NUMBER = '123456789'
 COUNTRY = 'USA'
@@ -17,7 +17,7 @@ BIRTHDAY = datetime(2000, 1, 1)
 @pytest.mark.django_db
 class TestProfileModel:
     def test_new_profile(self, profile1):
-        assert profile1.user_type == PROFESSIONAL_TYPE
+        assert profile1.user_type == PROFILE_TYPE
         assert profile1.phone_number == PHONE_NUMBER
         assert profile1.country == COUNTRY
         assert profile1.city == CITY
