@@ -7,11 +7,20 @@ from chatmessage.models import Chatmessage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from proImages.models import Images
 from SearchHistory.models import SearchHistory
-from datetime import datetime
+from review.models import Review
+from datetime import datetime, timedelta
+from django.utils import timezone
 import pytest
 
 BIRTHDAY = datetime(2000, 1, 1)
 LAST_LOGIN = datetime.now()
+PROFESSIONAL_TYPE = 'C'
+PROFESSION = Professions.Locksmith
+PHONE_NUMBER = '123456789'
+COUNTRY = 'USA'
+CITY = 'New York'
+ADDRESS = '123 Main St'
+DESCRIPTION = 'I'
 
 TYPEOFJOB_NAME = "Gel nail polish"
 PRICE = 90
@@ -164,3 +173,24 @@ def persisted_image(image):
     image.save()
     images_object.save()
     return [(image.image, image.likes), (images_object.image, images_object.likes)]
+
+
+@pytest.fixture
+def review():
+    now = timezone.now()
+    review = Review.objects.create(rating='4', description='Creating a test review...',
+                                   date_posted=now - timedelta(days=50),
+                                   client_id='client_id', professional_id='professional_id')
+    return review
+
+
+@pytest.fixture
+def reviews_manager():
+    now = timezone.now()
+    review1 = Review.objects.create(rating='5', description='Excellent!', date_posted=now - timedelta(days=3),
+                                    client_id='user4', professional_id='pro1')
+    review2 = Review.objects.create(rating='4', description='Good', date_posted=now - timedelta(days=1),
+                                    client_id='user5', professional_id='pro2')
+    review3 = Review.objects.create(rating='3', description='Average', date_posted=now - timedelta(days=2),
+                                    client_id='user6', professional_id='pro3')
+    return [review1, review2, review3]
