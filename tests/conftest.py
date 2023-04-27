@@ -1,37 +1,12 @@
 from django.contrib.auth.models import User
-from reservation.models import TypeOfJob, Appointment, Schedule
 from account.models.profile import Profile
 from account.models.professional import Professions, Professional
 from account.models.client import Client
-from chatmessage.models import Chatmessage
-from django.core.files.uploadedfile import SimpleUploadedFile
-from proImages.models import Images
-from SearchHistory.models import SearchHistory
-from review.models import Review
-from datetime import datetime, timedelta
-from django.utils import timezone
+from datetime import datetime
 import pytest
 
 BIRTHDAY = datetime(2000, 1, 1)
 LAST_LOGIN = datetime.now()
-
-
-TYPEOFJOB_NAME = "Gel nail polish"
-PRICE = 90
-
-START_APPOINTMENT = datetime(2023, 4, 17, 12, 0, 0)
-END_APPOINTMENT = datetime(2023, 4, 17, 13, 0, 0)
-SUMMARY = ""
-
-START_DAY = datetime(2023, 4, 17, 10, 0, 0)
-END_DAY = datetime(2023, 4, 17, 18, 0, 0)
-MEETING_TIME = 60
-
-MESSAGE = "message1"
-
-IMAGE_NAME = "test_image.jpg"
-IMAGE_UPLOAD = SimpleUploadedFile(IMAGE_NAME, b"binary_data")
-LIKES = 100
 
 
 @pytest.fixture
