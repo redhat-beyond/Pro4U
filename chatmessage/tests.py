@@ -6,12 +6,6 @@ MESSAGE = "message1"
 
 
 @pytest.fixture
-def chatmessage(professional, client):
-    return Chatmessage(professional_id=professional,
-                       client_id=client, message=MESSAGE, sender_type=SenderType.Client)
-
-
-@pytest.fixture
 def persisted_chatmessage(chatmessage):
     chatmessage.save()
     return [(chatmessage.message_id), (chatmessage.professional_id),

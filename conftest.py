@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from account.models.profile import Profile
 from account.models.professional import Professions, Professional
 from account.models.client import Client
+from chatmessage.models import Chatmessage, SenderType
 from datetime import datetime
 import pytest
 
@@ -59,3 +60,9 @@ def profile3(user3):
 def professional(profile3):
     return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
                                        description='I')
+
+
+@pytest.fixture
+def chatmessage(professional, client):
+    return Chatmessage(professional_id=professional,
+                       client_id=client, message="message1", sender_type=SenderType.Client)
