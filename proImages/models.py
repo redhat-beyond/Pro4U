@@ -1,9 +1,10 @@
 from django.db import models
+from account.models.professional import Professional
 
 
 class Images(models.Model):
     image_id = models.BigAutoField(primary_key=True)
-    professional_id = models.PositiveIntegerField()
+    professional_id = models.ForeignKey(Professional, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     likes = models.PositiveIntegerField()
 
