@@ -4,22 +4,30 @@ from django.db import migrations, transaction
 class Migration(migrations.Migration):
     dependencies = [
         ('chatmessage', '0001_initial'),
+        ('chatmessage', '0002_chatmessage_sender_type_alter_chatmessage_client_id_and_more'),
+        ('account', '0002_test_data'),
     ]
 
     def generate_data(apps, schema_editor):
-        from chatmessage.models import Chatmessage
+        from chatmessage.models import Chatmessage, SenderType
+        from account.models.professional import Professional
+        from account.models.client import Client
 
         test_data = [
-            ('1', 'Test Pro1', 'Test Client1', 'A simple test message1'),
-            ('2', 'Test Pro2', 'Test Client2', 'A simple test message2'),
-            ('3', 'Test Pro3', 'Test Client3', 'A simple test message3'),
-            ('4', 'Test Pro4', 'Test Client4', 'A simple test message4'),
+            (Professional.filter_by_professional_id(1)[0], Client.filter_by_client_id(2)[0],
+             'A simple test message1', SenderType.Client),
+            (Professional.filter_by_professional_id(1)[0], Client.filter_by_client_id(2)[0],
+             'A simple test message2', SenderType.Client),
+            (Professional.filter_by_professional_id(1)[0], Client.filter_by_client_id(2)[0],
+             'A simple test message3', SenderType.Professional),
+            (Professional.filter_by_professional_id(1)[0], Client.filter_by_client_id(2)[0],
+             'A simple test message4', SenderType.Professional),
         ]
 
         with transaction.atomic():
-            for message_id, professional_id, client_id, message in test_data:
-                Chatmessage(message_id=message_id, professional_id=professional_id,
-                            client_id=client_id, message=message).save()
+            for professional_id, client_id, message, sender_type in test_data:
+                Chatmessage(professional_id=professional_id,
+                            client_id=client_id, message=message, sender_type=sender_type).save()
 
     operations = [
         migrations.RunPython(generate_data),
