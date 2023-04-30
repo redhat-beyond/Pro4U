@@ -1,6 +1,4 @@
 from .models import Chatmessage, SenderType
-from account.models.professional import Professional
-from account.models.client import Client
 import pytest
 
 
@@ -8,9 +6,9 @@ MESSAGE = "message1"
 
 
 @pytest.fixture
-def chatmessage():
-    return Chatmessage(professional_id=Professional.filter_by_professional_id(1)[0],
-                       client_id=Client.filter_by_client_id(1)[0], message=MESSAGE, sender_type=SenderType.Client)
+def chatmessage(professional, client):
+    return Chatmessage(professional_id=professional,
+                       client_id=client, message=MESSAGE, sender_type=SenderType.Client)
 
 
 @pytest.fixture
@@ -22,9 +20,9 @@ def persisted_chatmessage(chatmessage):
 
 @pytest.mark.django_db
 class TestChatmessageModel:
-    def test_new_member(self, chatmessage):
-        assert chatmessage.professional_id == Professional.filter_by_professional_id(1)[0]
-        assert chatmessage.client_id == Client.filter_by_client_id(1)[0]
+    def test_new_member(self, chatmessage, professional, client):
+        assert chatmessage.professional_id == professional
+        assert chatmessage.client_id == client
         assert chatmessage.message == MESSAGE
         assert chatmessage.sender_type == SenderType.Client
 
@@ -37,15 +35,14 @@ class TestChatmessageModel:
         chatmessage.delete()
         assert chatmessage not in Chatmessage.objects.all()
 
-    def test_get_professional_contacts(self, persisted_chatmessage):
+    def test_get_professional_contacts(self, persisted_chatmessage, professional):
         assert [persisted_chatmessage[2]] == \
-            [Chatmessage.get_all_professional_contacts(professional_id=Professional.filter_by_professional_id(1)[0])[0]]
+            Chatmessage.get_all_professional_contacts(professional_id=professional)
 
-    def test_get_client_contacts(self, persisted_chatmessage):
+    def test_get_client_contacts(self, persisted_chatmessage, client):
         assert [persisted_chatmessage[1]] == \
-            Chatmessage.get_all_client_contacts(client_id=Client.filter_by_client_id(1)[0])
+            Chatmessage.get_all_client_contacts(client_id=client)
 
-    def get_chat_between_professional_and_client(self, persisted_chatmessage):
+    def get_chat_between_professional_and_client(self, persisted_chatmessage, professional, client):
         assert persisted_chatmessage == \
-            Chatmessage.objects.filter(professional_id=Professional.filter_by_professional_id(1)[0],
-                                       client_id=Client.filter_by_client_id(1)[0])
+            Chatmessage.objects.filter(professional_id=professional, client_id=client)
