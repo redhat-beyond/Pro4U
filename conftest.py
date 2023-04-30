@@ -28,6 +28,18 @@ def user3():
 
 
 @pytest.fixture
+def user4():
+    return User.objects.create_user(username='professional2', password='password444', first_name='Paul',
+                                    last_name='Plumber', email='paul.plumber@example.com', last_login=LAST_LOGIN)
+
+
+@pytest.fixture
+def user5():
+    return User.objects.create_user(username='professional3', password='password555', first_name='Bob',
+                                    last_name='Builder', email='boby.builder@example.com', last_login=LAST_LOGIN)
+
+
+@pytest.fixture
 def profile1(user1):
     return Profile.objects.create(user_id=user1, phone_number='123456789', country='USA', city='New York',
                                   address='123 Main St', user_type='C')
@@ -59,3 +71,27 @@ def profile3(user3):
 def professional(profile3):
     return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
                                        description='I')
+
+
+@pytest.fixture
+def profile4(user4):
+    return Profile.objects.create(user_id=user4, phone_number='4444444', country='UK', city='London',
+                                  address='10 Blabla St', user_type='P')
+
+
+@pytest.fixture
+def professional2(profile4):
+    return Professional.objects.create(profile_id=profile4, profession=Professions.Plumber,
+                                       description='II')
+
+
+@pytest.fixture
+def profile5(user5):
+    return Profile.objects.create(user_id=user5, phone_number='5555555', country='USA', city='New York',
+                                  address='10 Elm St', user_type='P')
+
+
+@pytest.fixture
+def professional3(profile5):
+    return Professional.objects.create(profile_id=profile5, profession=Professions.Locksmith,
+                                       description='III')

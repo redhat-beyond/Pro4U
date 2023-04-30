@@ -36,6 +36,10 @@ class Profile(models.Model):
         return profile
 
     @staticmethod
+    def delete_profile(profile_id: int):
+        Profile.objects.filter(profile_id=profile_id).delete()
+
+    @staticmethod
     def filter_by_city(city):
 
         return Profile.objects.filter(city=city) if city else []
