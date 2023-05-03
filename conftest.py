@@ -4,11 +4,14 @@ from account.models.professional import Professions, Professional
 from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
 from reservation.models import TypeOfJob, Appointment, Schedule
-from datetime import datetime
+from datetime import timedelta, datetime
+from django.utils import timezone
 import pytest
 
+current_datetime = timezone.now()
+
 BIRTHDAY = datetime(2000, 1, 1)
-LAST_LOGIN = datetime.now()
+LAST_LOGIN = timezone.now()
 
 
 @pytest.fixture
@@ -77,14 +80,18 @@ def typeOfJob(professional):
 @pytest.fixture
 def appointment(typeOfJob, professional, client):
     return Appointment(professional_id=professional, client_id=client, typeOfJob_id=typeOfJob,
-                       start_appointment=datetime(2023, 4, 17, 12, 0, 0),
-                       end_appointment=datetime(2023, 4, 17, 13, 0, 0),
+                       start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
+                                                                                        second=0, microsecond=0),
+                       end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                                                                                      second=0, microsecond=0),
                        summary="")
 
 
 @pytest.fixture
 def schedule(professional):
     return Schedule(professional_id=professional,
-                    start_day=datetime(2023, 4, 17, 10, 0, 0),
-                    end_day=datetime(2023, 4, 17, 18, 0, 0),
+                    start_day=(current_datetime + timedelta(days=5)).replace(hour=10, minute=0,
+                                                                             second=0, microsecond=0),
+                    end_day=(current_datetime + timedelta(days=5)).replace(hour=18, minute=0,
+                                                                           second=0, microsecond=0),
                     meeting_time=60)

@@ -1,9 +1,11 @@
 from reservation.models import Appointment, TypeOfJob
-from datetime import datetime
+from datetime import timedelta
+from django.utils import timezone
 import pytest
 
-START_APPOINTMENT = datetime(2023, 4, 17, 12, 0, 0)
-END_APPOINTMENT = datetime(2023, 4, 17, 13, 0, 0)
+current_datetime = timezone.now()
+START_APPOINTMENT = (current_datetime + timedelta(days=5)).replace(hour=12, minute=0, second=0, microsecond=0)
+END_APPOINTMENT = (current_datetime + timedelta(days=5)).replace(hour=13, minute=0, second=0, microsecond=0)
 SUMMARY = ""
 
 
@@ -21,8 +23,10 @@ def persisted_appointment_pool(persisted_appointment, typeOfJob, professional, c
     appointment = Appointment(professional_id=professional,
                               client_id=client2,
                               typeOfJob_id=typeOfJob,
-                              start_appointment=datetime(2023, 4, 20, 12, 0, 0),
-                              end_appointment=datetime(2023, 4, 20, 13, 0, 0),
+                              start_appointment=(current_datetime + timedelta(days=3)).replace(hour=12, minute=0,
+                                                                                               second=0, microsecond=0),
+                              end_appointment=(current_datetime + timedelta(days=3)).replace(hour=13, minute=0,
+                                                                                             second=0, microsecond=0),
                               summary=SUMMARY)
     appointment.professional_id.save()
     appointment.client_id.save()
@@ -66,4 +70,4 @@ class TestAppointmentModel:
     def test_get_client_list_on_certain_day_by_professional_and_date(self, persisted_appointment_pool, professional):
         assert [persisted_appointment_pool[0]] == \
                list(Appointment.get_client_list_on_certain_day(professional_id=professional,
-                                                               date=datetime(2023, 4, 17)))
+                                                               date=(current_datetime + timedelta(days=5)).date()))

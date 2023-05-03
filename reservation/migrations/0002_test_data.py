@@ -1,5 +1,6 @@
 from django.db import migrations, transaction
-from datetime import datetime
+from datetime import timedelta
+from django.utils import timezone
 from account.models.professional import Professional
 from account.models.client import Client
 
@@ -13,11 +14,16 @@ class Migration(migrations.Migration):
     def generate_data(apps, schema_editor):
         from reservation.models import Schedule, Appointment, TypeOfJob
 
+        current_datetime = timezone.now()
         schedule_test_data = [
-            (1, 1, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
-            (2, 1, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
-            (3, 2, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
-            (4, 2, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
+            (1, 1, (current_datetime + timedelta(days=3)).replace(hour=14, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=3)).replace(hour=19, minute=0, second=0, microsecond=0), 60),
+            (2, 1, (current_datetime + timedelta(days=5)).replace(hour=14, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=5)).replace(hour=20, minute=0, second=0, microsecond=0), 60),
+            (3, 2, (current_datetime + timedelta(days=3)).replace(hour=14, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=3)).replace(hour=19, minute=0, second=0, microsecond=0), 60),
+            (4, 2, (current_datetime + timedelta(days=5)).replace(hour=14, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=5)).replace(hour=20, minute=0, second=0, microsecond=0), 60),
         ]
 
         typeOfJob_test_data = [
@@ -27,9 +33,12 @@ class Migration(migrations.Migration):
         ]
 
         appointment_test_data = [
-            (1, 1, 2, 2, datetime(2023, 4, 16, 15, 00, 0), datetime(2023, 4, 16, 16, 00, 0), ""),
-            (2, 3, 2, 2, datetime(2023, 4, 16, 16, 00, 0), datetime(2023, 4, 16, 17, 00, 0), ""),
-            (3, 2, 1, 1, datetime(2023, 4, 16, 18, 00, 0), datetime(2023, 4, 16, 19, 00, 0), ""),
+            (1, 1, 2, 2, (current_datetime + timedelta(days=3)).replace(hour=15, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=3)).replace(hour=16, minute=0, second=0, microsecond=0), ""),
+            (2, 3, 2, 2, (current_datetime + timedelta(days=3)).replace(hour=16, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=3)).replace(hour=17, minute=0, second=0, microsecond=0), ""),
+            (3, 2, 1, 1, (current_datetime + timedelta(days=3)).replace(hour=18, minute=0, second=0, microsecond=0),
+             (current_datetime + timedelta(days=3)).replace(hour=19, minute=0, second=0, microsecond=0), ""),
         ]
 
         with transaction.atomic():

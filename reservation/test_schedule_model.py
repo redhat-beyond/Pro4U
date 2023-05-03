@@ -1,10 +1,11 @@
 from reservation.models import Schedule, Appointment
-from datetime import datetime
+from datetime import timedelta
+from django.utils import timezone
 import pytest
 
-
-START_DAY = datetime(2023, 4, 17, 10, 0, 0)
-END_DAY = datetime(2023, 4, 17, 18, 0, 0)
+current_datetime = timezone.now()
+START_DAY = (current_datetime + timedelta(days=5)).replace(hour=10, minute=0, second=0, microsecond=0)
+END_DAY = (current_datetime + timedelta(days=5)).replace(hour=18, minute=0, second=0, microsecond=0)
 MEETING_TIME = 60
 
 
@@ -20,8 +21,11 @@ def persisted_schedule_pool(appointment, typeOfJob, persisted_schedule, professi
     appointment2 = Appointment(professional_id=professional,
                                client_id=client2,
                                typeOfJob_id=typeOfJob,
-                               start_appointment=datetime(2023, 4, 17, 13, 0, 0),
-                               end_appointment=datetime(2023, 4, 17, 14, 0, 0),
+                               start_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                                                                                                second=0,
+                                                                                                microsecond=0),
+                               end_appointment=(current_datetime + timedelta(days=5)).replace(hour=14, minute=0,
+                                                                                              second=0, microsecond=0),
                                summary="")
     appointment.typeOfJob_id.save()
     appointment.professional_id.save()
@@ -57,8 +61,10 @@ class TestScheduleModel:
 
     def test_get_possible_meetings_by_professional_and_date(self, persisted_schedule_pool, professional):
         assert persisted_schedule_pool[1] == \
-               list(Schedule.get_possible_meetings(professional_id=professional, date=datetime(2023, 4, 17)))
+               list(Schedule.get_possible_meetings(professional_id=professional, date=(current_datetime +
+                                                                                       timedelta(days=5)).date()))
 
     def test_get_free_meetings_by_professional_and_date(self, persisted_schedule_pool, professional):
         assert persisted_schedule_pool[0] == \
-              list(Schedule.get_free_meetings(professional_id=professional, date=datetime(2023, 4, 17)))
+              list(Schedule.get_free_meetings(professional_id=professional, date=(current_datetime +
+                                                                                  timedelta(days=5)).date()))
