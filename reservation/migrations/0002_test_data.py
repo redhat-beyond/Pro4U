@@ -14,26 +14,25 @@ class Migration(migrations.Migration):
         from reservation.models import Schedule, Appointment, TypeOfJob
 
         schedule_test_data = [
-        
             (1, 1, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
             (2, 1, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
             (3, 2, datetime(2023, 4, 16, 14, 00, 0), datetime(2023, 4, 16, 19, 00, 0), 60),
             (4, 2, datetime(2023, 4, 19, 14, 00, 0), datetime(2023, 4, 19, 20, 00, 0), 60),
         ]
-        
+
         typeOfJob_test_data = [
             (1, 1, "man haircut", 70),
             (2, 1, "woman haircut", 100),
             (3, 2, "Gel nail polish", 80),
         ]
-        
+
         appointment_test_data = [
             (1, 1, 2, 2, datetime(2023, 4, 16, 15, 00, 0), datetime(2023, 4, 16, 16, 00, 0), ""),
             (2, 3, 2, 2, datetime(2023, 4, 16, 16, 00, 0), datetime(2023, 4, 16, 17, 00, 0), ""),
             (3, 2, 1, 1, datetime(2023, 4, 16, 18, 00, 0), datetime(2023, 4, 16, 19, 00, 0), ""),
         ]
-        
-        with transaction.atomic():    
+
+        with transaction.atomic():
             for schedule_id, professional_id, start_day, end_day, meeting_time in schedule_test_data:
                 Schedule(
                     schedule_id=schedule_id,
@@ -42,7 +41,6 @@ class Migration(migrations.Migration):
                     end_day=end_day,
                     meeting_time=meeting_time
                 ).save()
-
 
             for typeOfJob_id, professional_id, typeOfJob_name, price in typeOfJob_test_data:
                 TypeOfJob(
@@ -53,7 +51,7 @@ class Migration(migrations.Migration):
                 ).save()
 
             for appointment_id, professional_id, client_id, typeOfJob_id, start_appointment, end_appointment, summary \
-                                                                                                        in appointment_test_data:
+                    in appointment_test_data:
                 Appointment(
                     appointment_id=appointment_id,
                     professional_id=Professional.objects.get(pk=professional_id),

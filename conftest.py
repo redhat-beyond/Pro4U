@@ -3,6 +3,7 @@ from account.models.profile import Profile
 from account.models.professional import Professions, Professional
 from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
+from reservation.models import TypeOfJob, Appointment, Schedule
 from datetime import datetime
 import pytest
 
@@ -66,3 +67,47 @@ def professional(profile3):
 def chatmessage(professional, client):
     return Chatmessage(professional_id=professional,
                        client_id=client, message="message1", sender_type=SenderType.Client)
+
+
+@pytest.fixture
+def typeOfJob(professional):
+    return TypeOfJob(professional_id=professional, typeOfJob_name="Gel nail polish", price=90)
+
+
+@pytest.fixture
+def persisted_typeOfJob(typeOfJob):
+    typeOfJob.professional_id.save()
+    typeOfJob.save()
+    return typeOfJob
+
+
+@pytest.fixture
+def appointment(typeOfJob, professional, client):
+    return Appointment(professional_id=professional, client_id=client, typeOfJob_id=typeOfJob,
+                       start_appointment=datetime(2023, 4, 17, 12, 0, 0),
+                       end_appointment=datetime(2023, 4, 17, 13, 0, 0),
+                       summary="")
+
+
+@pytest.fixture
+def persisted_appointment(appointment):
+    appointment.typeOfJob_id.save()
+    appointment.professional_id.save()
+    appointment.client_id.save()
+    appointment.save()
+    return appointment
+
+
+@pytest.fixture
+def schedule(professional):
+    return Schedule(professional_id=professional,
+                    start_day=datetime(2023, 4, 17, 10, 0, 0),
+                    end_day=datetime(2023, 4, 17, 18, 0, 0),
+                    meeting_time=60)
+
+
+@pytest.fixture
+def persisted_schedule(schedule):
+    schedule.professional_id.save()
+    schedule.save()
+    return schedule

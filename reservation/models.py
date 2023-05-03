@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import date, datetime, timedelta
-from account.models.profile import Profile, UserType
-from account.models.professional import Professions, Professional
+from account.models.professional import Professional
 from account.models.client import Client
 
 

@@ -1,4 +1,17 @@
-from tests.conftest import *
+from reservation.models import TypeOfJob, Appointment, Schedule
+from datetime import datetime
+import pytest
+
+TYPEOFJOB_NAME = "Gel nail polish"
+PRICE = 90
+
+START_APPOINTMENT = datetime(2023, 4, 17, 12, 0, 0)
+END_APPOINTMENT = datetime(2023, 4, 17, 13, 0, 0)
+SUMMARY = ""
+
+START_DAY = datetime(2023, 4, 17, 10, 0, 0)
+END_DAY = datetime(2023, 4, 17, 18, 0, 0)
+MEETING_TIME = 60
 
 
 @pytest.fixture
