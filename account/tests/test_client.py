@@ -1,54 +1,41 @@
-from account.models.profile import Profile
+from account.models.profile import Profile, UserType
 from account.models.client import Client
 from .test_profile import CITY
-from datetime import datetime
+from conftest import BIRTHDAY
 import pytest
-
-
-BIRTHDAY = datetime(2000, 1, 1)
-
-
-@pytest.fixture
-def save_clients(client, client2):
-    client.profile_id.user_id.save()
-    client.profile_id.save()
-    client.save()
-    client2.profile_id.user_id.save()
-    client2.profile_id.save()
-    client2.save()
 
 
 @pytest.mark.django_db
 class TestClientModel:
-    def test_new_client(self, client):
+    def test_new_client(self, make_client):
+        client = make_client()
         assert client.birthday == BIRTHDAY
 
-    def test_get_client(self, client):
-        client.profile_id.user_id.save()
-        client.profile_id.save()
-        client.save()
+    def test_get_client(self, make_client):
+        client = make_client()
         assert client in Client.objects.all()
 
-    def test_delete_client(self, client):
-        client.profile_id.user_id.save()
-        client.profile_id.save()
-        client.save()
+    def test_delete_client(self, make_client):
+        client = make_client()
         client.delete()
         assert client not in Client.objects.all()
 
-    def test_delete_user_deletes_client(self, client):
-        client.profile_id.user_id.save()
-        client.profile_id.save()
-        client.save()
+    def test_delete_user_deletes_client(self, make_client):
+        client = make_client()
         client.profile_id.delete()
         assert client not in Client.objects.all()
 
-    def test_delete_client_deletes_profile(self, client):
-        client.profile_id.user_id.save()
-        client.profile_id.save()
-        client.save()
+    def test_delete_client_deletes_profile(self, make_client):
+        client = make_client()
         Client.delete_client(client_id=client.client_id)
         assert client.profile_id not in Profile.objects.all()
 
-    def test_filter_by_city(self, save_clients, client):
+    def test_filter_by_city(self, make_client):
+        client = make_client(username='professional11', password='password1', email='john.doe@example.com',
+                             phone_number='111111', user_type=UserType.Client)
+        make_client(username='client22', password='password2', city="Toronto",
+                    email='john2.doe@example.com', phone_number='222222', user_type=UserType.Client)
+        make_client(username='client33', password='password3', city="London",
+                    email='john3.doe@example.com', phone_number='333333', user_type=UserType.Client)
+
         assert list(Client.filter_client_by_city(CITY)) == [client]
