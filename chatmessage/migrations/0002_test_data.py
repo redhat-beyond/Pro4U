@@ -3,9 +3,9 @@ from django.db import migrations, transaction
 
 class Migration(migrations.Migration):
     dependencies = [
+        ('account', '0002_test_data'),
         ('chatmessage', '0001_initial'),
         ('chatmessage', '0002_chatmessage_sender_type_alter_chatmessage_client_id_and_more'),
-        ('account', '0002_test_data'),
     ]
 
     def generate_data(apps, schema_editor):

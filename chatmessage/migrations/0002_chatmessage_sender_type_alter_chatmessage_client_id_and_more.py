@@ -7,7 +7,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '0002_test_data'),
         ('chatmessage', '0001_initial'),
     ]
 
