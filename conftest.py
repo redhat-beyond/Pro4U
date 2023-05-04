@@ -9,14 +9,22 @@ import pytest
 
 
 USERNAME = "testusername"
+USERNAME2 = "testusername2"
+USERNAME3 = "testusername3"
 PASSWORD = "testpassword"
+PASSWORD2 = "testpassword2"
+PASSWORD3 = "testpassword3"
 FIRST_NAME = 'Bob'
 LAST_NAME = 'Builder'
 EMAIL = "test@test.com"
+EMAIL2 = "test@test2.com"
+EMAIL3 = "test@test3.com"
 LAST_LOGIN = timezone.now()
 
 PROFILE_TYPE = 'C'
 PHONE_NUMBER = '123456789'
+PHONE_NUMBER2 = '987654321'
+PHONE_NUMBER3 = '1212121212'
 COUNTRY = 'USA'
 CITY = 'New York'
 ADDRESS = '123 Main St'
@@ -128,55 +136,18 @@ def make_client(make_profile):
 
 
 @pytest.fixture
-def user1():
-    return User.objects.create_user(username='client1', password='password123', first_name='John', last_name='Doe',
-                                    email='john.doe@example.com', last_login=LAST_LOGIN)
+def client(make_client):
+    return make_client()
 
 
 @pytest.fixture
-def user2():
-    return User.objects.create_user(username='client2', password='password456', first_name='Jane',
-                                    last_name='Doe', email='jane.doe@example.com', last_login=LAST_LOGIN)
+def client2(make_client):
+    return make_client(username=USERNAME2, password=PASSWORD2, email=EMAIL2, phone_number=PHONE_NUMBER2)
 
 
 @pytest.fixture
-def user3():
-    return User.objects.create_user(username='professional1', password='password789', first_name='Bob',
-                                    last_name='Builder', email='bob.builder@example.com', last_login=LAST_LOGIN)
-
-
-@pytest.fixture
-def profile1(user1):
-    return Profile.objects.create(user_id=user1, phone_number='123456789', country='USA', city='New York',
-                                  address='123 Main St', user_type='C')
-
-
-@pytest.fixture
-def profile2(user2):
-    return Profile.objects.create(user_id=user2, phone_number='987654321', country='Canada', city='Toronto',
-                                  address='456 King St', user_type='C')
-
-
-@pytest.fixture
-def client(profile1):
-    return Client.objects.create(profile_id=profile1, birthday=BIRTHDAY)
-
-
-@pytest.fixture
-def client2(profile2):
-    return Client.objects.create(profile_id=profile2, birthday=BIRTHDAY)
-
-
-@pytest.fixture
-def profile3(user3):
-    return Profile.objects.create(user_id=user3, phone_number='5551234', country='UK', city='London',
-                                  address='10 Downing St', user_type='P')
-
-
-@pytest.fixture
-def professional(profile3):
-    return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
-                                       description=DESCRIPTION)
+def professional(make_professional):
+    return make_professional(username=USERNAME3, password=PASSWORD3, email=EMAIL3, phone_number=PHONE_NUMBER3)
 
 
 @pytest.fixture
