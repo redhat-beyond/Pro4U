@@ -4,6 +4,7 @@ from account.models.professional import Professions, Professional
 from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
 from datetime import datetime
+from django.utils import timezone
 import pytest
 
 
@@ -12,7 +13,7 @@ PASSWORD = "testpassword"
 FIRST_NAME = 'Bob'
 LAST_NAME = 'Builder'
 EMAIL = "test@test.com"
-LAST_LOGIN = datetime.now()
+LAST_LOGIN = timezone.now()
 
 PROFILE_TYPE = 'C'
 PHONE_NUMBER = '123456789'
@@ -36,11 +37,10 @@ def make_user():
         email: str = EMAIL,
         last_login: datetime = LAST_LOGIN
     ):
-        user = User(
+        user = User.objects.create_user(
             username=username, password=password, first_name=first_name,
             last_name=last_name, email=email, last_login=last_login
         )
-        user.save()
         return user
 
     return make
@@ -61,12 +61,11 @@ def make_profile(make_user):
         address: str = ADDRESS,
         user_type: UserType = PROFILE_TYPE
     ):
-        profile = Profile(
+        profile = Profile.objects.create(
             user_id=make_user(username=username, password=password, first_name=first_name,
                               last_name=last_name, email=email, last_login=last_login),
             phone_number=phone_number, country=country, city=city, address=address, user_type=user_type
         )
-        profile.save()
         return profile
 
     return make
@@ -89,14 +88,13 @@ def make_professional(make_profile):
         profession: Professions = PROFESSION,
         description: str = DESCRIPTION,
     ):
-        professional = Professional(
+        professional = Professional.objects.create(
             profile_id=make_profile(username=username, password=password, first_name=first_name,
                                     last_name=last_name, email=email, last_login=last_login,
                                     phone_number=phone_number, country=country, city=city,
                                     address=address, user_type=user_type),
             profession=profession, description=description
         )
-        professional.save()
         return professional
 
     return make
@@ -118,13 +116,12 @@ def make_client(make_profile):
         user_type: UserType = PROFILE_TYPE,
         birthday: str = BIRTHDAY,
     ):
-        client = Client(
+        client = Client.objects.create(
             profile_id=make_profile(username=username, password=password, first_name=first_name,
                                     last_name=last_name, email=email, last_login=last_login,
                                     phone_number=phone_number, country=country, city=city,
                                     address=address, user_type=user_type), birthday=birthday
         )
-        client.save()
         return client
 
     return make
