@@ -2,21 +2,21 @@ import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from proImages.models import Images
 
-PROFESSIONAL_ID = 11111111
+
 IMAGE_NAME = "test_image.jpg"
 IMAGE_UPLOAD = SimpleUploadedFile(IMAGE_NAME, b"binary_data")
 LIKES = 100
 
 
 @pytest.fixture
-def image():
-    return Images(professional_id=PROFESSIONAL_ID, image=IMAGE_UPLOAD, likes=LIKES)
+def image(professional):
+    return Images(professional_id=professional, image=IMAGE_UPLOAD, likes=LIKES)
 
 
 @pytest.fixture
-def persisted_image(image):
+def persisted_image(image, professional):
     images_object = Images(
-        professional_id=PROFESSIONAL_ID,
+        professional_id=professional,
         image=SimpleUploadedFile("test_image1.jpg", b"binary_data"),
         likes=50
         )
@@ -27,8 +27,8 @@ def persisted_image(image):
 
 @pytest.mark.django_db()
 class TestImagesModel:
-    def test_create_image(self, image):
-        assert image.professional_id == PROFESSIONAL_ID
+    def test_create_image(self, image, professional):
+        assert image.professional_id == professional
         assert image.image == IMAGE_NAME
         assert image.likes == LIKES
 
@@ -41,6 +41,6 @@ class TestImagesModel:
         image.delete()
         assert image not in Images.objects.all()
 
-    def test_get_all_professional_images(self, persisted_image):
+    def test_get_all_professional_images(self, persisted_image, professional):
         assert persisted_image == \
-               list(Images.get_all_professional_images(professional_id=PROFESSIONAL_ID))
+               list(Images.get_all_professional_images(professional_id=professional))

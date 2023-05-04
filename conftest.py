@@ -131,10 +131,28 @@ def make_client(make_profile):
 
 
 @pytest.fixture
-def chatmessage(make_professional, make_client):
-    professional = make_professional(username='professional11', password='password1', email='john.doe@example.com',
-                                     phone_number='111111')
-    client = make_client(username='client22', password='password2', city="Toronto",
-                         email='john2.doe@example.com', phone_number='222222')
+def client(profile1):
+    return Client.objects.create(profile_id=profile1, birthday=BIRTHDAY)
+
+
+@pytest.fixture
+def client2(profile2):
+    return Client.objects.create(profile_id=profile2, birthday=BIRTHDAY)
+
+
+@pytest.fixture
+def profile3(user3):
+    return Profile.objects.create(user_id=user3, phone_number='5551234', country='UK', city='London',
+                                  address='10 Downing St', user_type='P')
+
+
+@pytest.fixture
+def professional(profile3):
+    return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
+                                       description='I')
+
+
+@pytest.fixture
+def chatmessage(professional, client):
     return Chatmessage(professional_id=professional,
                        client_id=client, message="message1", sender_type=SenderType.Client)
