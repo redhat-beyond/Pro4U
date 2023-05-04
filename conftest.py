@@ -131,6 +131,36 @@ def make_client(make_profile):
 
 
 @pytest.fixture
+def user1():
+    return User.objects.create_user(username='client1', password='password123', first_name='John', last_name='Doe',
+                                    email='john.doe@example.com', last_login=LAST_LOGIN)
+
+
+@pytest.fixture
+def user2():
+    return User.objects.create_user(username='client2', password='password456', first_name='Jane',
+                                    last_name='Doe', email='jane.doe@example.com', last_login=LAST_LOGIN)
+
+
+@pytest.fixture
+def user3():
+    return User.objects.create_user(username='professional1', password='password789', first_name='Bob',
+                                    last_name='Builder', email='bob.builder@example.com', last_login=LAST_LOGIN)
+
+
+@pytest.fixture
+def profile1(user1):
+    return Profile.objects.create(user_id=user1, phone_number='123456789', country='USA', city='New York',
+                                  address='123 Main St', user_type='C')
+
+
+@pytest.fixture
+def profile2(user2):
+    return Profile.objects.create(user_id=user2, phone_number='987654321', country='Canada', city='Toronto',
+                                  address='456 King St', user_type='C')
+
+
+@pytest.fixture
 def client(profile1):
     return Client.objects.create(profile_id=profile1, birthday=BIRTHDAY)
 
@@ -149,7 +179,7 @@ def profile3(user3):
 @pytest.fixture
 def professional(profile3):
     return Professional.objects.create(profile_id=profile3, profession=Professions.Locksmith,
-                                       description='I')
+                                       description=DESCRIPTION)
 
 
 @pytest.fixture
