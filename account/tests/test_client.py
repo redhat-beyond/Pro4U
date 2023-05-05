@@ -1,7 +1,7 @@
 from account.models.profile import Profile, UserType
 from account.models.client import Client
-from .test_profile import CITY
-from conftest import BIRTHDAY
+from .test_profile import PROFILE_INFORMATION
+from conftest import CLIENT_INFORMATION
 import pytest
 
 
@@ -9,7 +9,7 @@ import pytest
 class TestClientModel:
     def test_new_client(self, make_client):
         client = make_client()
-        assert client.birthday == BIRTHDAY
+        assert client.birthday == CLIENT_INFORMATION.get('birthday')[0]
 
     def test_get_client(self, make_client):
         client = make_client()
@@ -38,4 +38,4 @@ class TestClientModel:
         make_client(username='client33', password='password3', city="London",
                     email='john3.doe@example.com', phone_number='333333', user_type=UserType.Client)
 
-        assert list(Client.filter_client_by_city(CITY)) == [client]
+        assert list(Client.filter_client_by_city(PROFILE_INFORMATION.get('city')[0])) == [client]

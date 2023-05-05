@@ -8,42 +8,34 @@ from django.utils import timezone
 import pytest
 
 
-USERNAME = "testusername"
-USERNAME2 = "testusername2"
-USERNAME3 = "testusername3"
-PASSWORD = "testpassword"
-PASSWORD2 = "testpassword2"
-PASSWORD3 = "testpassword3"
-FIRST_NAME = 'Bob'
-LAST_NAME = 'Builder'
-EMAIL = "test@test.com"
-EMAIL2 = "test@test2.com"
-EMAIL3 = "test@test3.com"
-LAST_LOGIN = timezone.now()
+USER_INFORMATION = {'username': ['testusername', 'testusername2', 'testusername3'],
+                    'password': ['testpassword', 'testpassword2', 'testpassword3'],
+                    'first_name': ['Bob', 'john'],
+                    'last_name': ['Builder'],
+                    'email': ['test@test.com', 'test2@test.com', 'test3@test.com'],
+                    'last_login': [timezone.now()]}
 
-PROFILE_TYPE = 'C'
-PHONE_NUMBER = '123456789'
-PHONE_NUMBER2 = '987654321'
-PHONE_NUMBER3 = '1212121212'
-COUNTRY = 'USA'
-CITY = 'New York'
-ADDRESS = '123 Main St'
+PROFILE_INFORMATION = {'profile_type': [UserType.Client, UserType.Professional],
+                       'phone_number': ['123456789', '987654321', '1212121212'],
+                       'country': ['USA'],
+                       'city': ['New York'],
+                       'address': ['123 Main St']}
 
-PROFESSION = Professions.Locksmith
-DESCRIPTION = 'Test Description'
+PROFESSIONAL_INFORMATION = {'profession': [Professions.Locksmith, Professions.Plumber],
+                            'description': ['Test Description']}
 
-BIRTHDAY = datetime(2000, 1, 1)
+CLIENT_INFORMATION = {'birthday': [datetime(2000, 1, 1)]}
 
 
 @pytest.fixture
 def make_user():
     def make(
-        username: str = USERNAME,
-        password: str = PASSWORD,
-        first_name: str = FIRST_NAME,
-        last_name: str = LAST_NAME,
-        email: str = EMAIL,
-        last_login: datetime = LAST_LOGIN
+        username: str = USER_INFORMATION.get('username')[0],
+        password: str = USER_INFORMATION.get('password')[0],
+        first_name: str = USER_INFORMATION.get('first_name')[0],
+        last_name: str = USER_INFORMATION.get('last_name')[0],
+        email: str = USER_INFORMATION.get('email')[0],
+        last_login: datetime = USER_INFORMATION.get('last_login')[0]
     ):
         user = User.objects.create_user(
             username=username, password=password, first_name=first_name,
@@ -57,17 +49,17 @@ def make_user():
 @pytest.fixture
 def make_profile(make_user):
     def make(
-        username: str = USERNAME,
-        password: str = PASSWORD,
-        first_name: str = FIRST_NAME,
-        last_name: str = LAST_NAME,
-        email: str = EMAIL,
-        last_login: datetime = LAST_LOGIN,
-        phone_number: str = PHONE_NUMBER,
-        country: str = COUNTRY,
-        city: str = CITY,
-        address: str = ADDRESS,
-        user_type: UserType = PROFILE_TYPE
+        username: str = USER_INFORMATION.get('username')[0],
+        password: str = USER_INFORMATION.get('password')[0],
+        first_name: str = USER_INFORMATION.get('first_name')[0],
+        last_name: str = USER_INFORMATION.get('last_name')[0],
+        email: str = USER_INFORMATION.get('email')[0],
+        last_login: datetime = USER_INFORMATION.get('last_login')[0],
+        phone_number: str = PROFILE_INFORMATION.get('phone_number')[0],
+        country: str = PROFILE_INFORMATION.get('country')[0],
+        city: str = PROFILE_INFORMATION.get('city')[0],
+        address: str = PROFILE_INFORMATION.get('address')[0],
+        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[0]
     ):
         profile = Profile.objects.create(
             user_id=make_user(username=username, password=password, first_name=first_name,
@@ -82,19 +74,19 @@ def make_profile(make_user):
 @pytest.fixture
 def make_professional(make_profile):
     def make(
-        username: str = USERNAME,
-        password: str = PASSWORD,
-        first_name: str = FIRST_NAME,
-        last_name: str = LAST_NAME,
-        email: str = EMAIL,
-        last_login: datetime = LAST_LOGIN,
-        phone_number: str = PHONE_NUMBER,
-        country: str = COUNTRY,
-        city: str = CITY,
-        address: str = ADDRESS,
-        user_type: UserType = PROFILE_TYPE,
-        profession: Professions = PROFESSION,
-        description: str = DESCRIPTION,
+        username: str = USER_INFORMATION.get('username')[0],
+        password: str = USER_INFORMATION.get('password')[0],
+        first_name: str = USER_INFORMATION.get('first_name')[0],
+        last_name: str = USER_INFORMATION.get('last_name')[0],
+        email: str = USER_INFORMATION.get('email')[0],
+        last_login: datetime = USER_INFORMATION.get('last_login')[0],
+        phone_number: str = PROFILE_INFORMATION.get('phone_number')[0],
+        country: str = PROFILE_INFORMATION.get('country')[0],
+        city: str = PROFILE_INFORMATION.get('city')[0],
+        address: str = PROFILE_INFORMATION.get('address')[0],
+        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[0],
+        profession: Professions = PROFESSIONAL_INFORMATION.get('profession')[0],
+        description: str = PROFESSIONAL_INFORMATION.get('description')[0],
     ):
         professional = Professional.objects.create(
             profile_id=make_profile(username=username, password=password, first_name=first_name,
@@ -111,18 +103,18 @@ def make_professional(make_profile):
 @pytest.fixture
 def make_client(make_profile):
     def make(
-        username: str = USERNAME,
-        password: str = PASSWORD,
-        first_name: str = FIRST_NAME,
-        last_name: str = LAST_NAME,
-        email: str = EMAIL,
-        last_login: datetime = LAST_LOGIN,
-        phone_number: str = PHONE_NUMBER,
-        country: str = COUNTRY,
-        city: str = CITY,
-        address: str = ADDRESS,
-        user_type: UserType = PROFILE_TYPE,
-        birthday: str = BIRTHDAY,
+        username: str = USER_INFORMATION.get('username')[0],
+        password: str = USER_INFORMATION.get('password')[0],
+        first_name: str = USER_INFORMATION.get('first_name')[0],
+        last_name: str = USER_INFORMATION.get('last_name')[0],
+        email: str = USER_INFORMATION.get('email')[0],
+        last_login: datetime = USER_INFORMATION.get('last_login')[0],
+        phone_number: str = PROFILE_INFORMATION.get('phone_number')[0],
+        country: str = PROFILE_INFORMATION.get('country')[0],
+        city: str = PROFILE_INFORMATION.get('city')[0],
+        address: str = PROFILE_INFORMATION.get('address')[0],
+        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[0],
+        birthday: str = CLIENT_INFORMATION.get('birthday')[0],
     ):
         client = Client.objects.create(
             profile_id=make_profile(username=username, password=password, first_name=first_name,
@@ -142,12 +134,18 @@ def client(make_client):
 
 @pytest.fixture
 def client2(make_client):
-    return make_client(username=USERNAME2, password=PASSWORD2, email=EMAIL2, phone_number=PHONE_NUMBER2)
+    return make_client(username=USER_INFORMATION.get('username')[1],
+                       password=USER_INFORMATION.get('password')[1],
+                       email=USER_INFORMATION.get('email')[1],
+                       phone_number=PROFILE_INFORMATION.get('phone_number')[1])
 
 
 @pytest.fixture
 def professional(make_professional):
-    return make_professional(username=USERNAME3, password=PASSWORD3, email=EMAIL3, phone_number=PHONE_NUMBER3)
+    return make_professional(username=USER_INFORMATION.get('username')[2],
+                             password=USER_INFORMATION.get('password')[2],
+                             email=USER_INFORMATION.get('email')[2],
+                             phone_number=PROFILE_INFORMATION.get('phone_number')[2])
 
 
 @pytest.fixture

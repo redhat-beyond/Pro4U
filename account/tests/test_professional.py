@@ -1,10 +1,8 @@
 from account.models.profile import Profile, UserType
 from account.models.professional import Professions, Professional
-from .test_profile import CITY
-from .test_profile import FIRST_NAME
-from .test_profile import LAST_NAME
-from conftest import PROFESSION
-from conftest import DESCRIPTION
+from .test_profile import USER_INFORMATION
+from .test_profile import PROFILE_INFORMATION
+from conftest import PROFESSIONAL_INFORMATION
 import pytest
 
 
@@ -12,8 +10,8 @@ import pytest
 class TestProfessionalModel:
     def test_new_professional(self, make_professional):
         professional = make_professional()
-        assert professional.profession == PROFESSION
-        assert professional.description == DESCRIPTION
+        assert professional.profession == PROFESSIONAL_INFORMATION.get('profession')[0]
+        assert professional.description == PROFESSIONAL_INFORMATION.get('description')[0]
 
     def test_get_professional(self, make_professional):
         professional = make_professional()
@@ -43,7 +41,8 @@ class TestProfessionalModel:
         make_professional(username='professional33', password='password3', profession=Professions.Plumber,
                           email='john3.doe@example.com', phone_number='333333', user_type=UserType.Professional)
 
-        assert list(Professional.filter_by_profession(PROFESSION)) == [professional, professional2]
+        assert list(Professional.filter_by_profession(PROFESSIONAL_INFORMATION.get('profession')[0])) ==\
+               [professional, professional2]
 
     def test_filter_by_city(self, make_professional):
         professional = make_professional(username='professional11', password='password1', email='john.doe@example.com',
@@ -53,7 +52,7 @@ class TestProfessionalModel:
         make_professional(username='professional33', password='password3', city="London",
                           email='john3.doe@example.com', phone_number='333333', user_type=UserType.Professional)
 
-        assert list(Professional.filter_professionals_by_city(CITY)) == [professional]
+        assert list(Professional.filter_professionals_by_city(PROFILE_INFORMATION.get('city')[0])) == [professional]
 
     def test_filter_by_first_name(self, make_professional):
         professional = make_professional(username='professional11', password='password1', email='john.doe@example.com',
@@ -64,7 +63,8 @@ class TestProfessionalModel:
         make_professional(username='professional33', password='password3', first_name="Tal",
                           email='john3.doe@example.com', phone_number='333333', user_type=UserType.Professional)
 
-        assert list(Professional.filter_professionals_by_first_name(FIRST_NAME)) == [professional, professional2]
+        assert list(Professional.filter_professionals_by_first_name(USER_INFORMATION.get('first_name')[0])) ==\
+               [professional, professional2]
 
     def test_filter_by_last_name(self, make_professional):
         professional = make_professional(username='professional11', password='password1', email='john.doe@example.com',
@@ -75,4 +75,5 @@ class TestProfessionalModel:
         make_professional(username='professional33', password='password3', last_name="Tal",
                           email='john3.doe@example.com', phone_number='333333', user_type=UserType.Professional)
 
-        assert list(Professional.filter_professionals_by_last_name(LAST_NAME)) == [professional, professional2]
+        assert list(Professional.filter_professionals_by_last_name(USER_INFORMATION.get('last_name')[0])) ==\
+               [professional, professional2]
