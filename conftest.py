@@ -78,12 +78,12 @@ def chatmessage(professional, client):
 @pytest.fixture
 def make_typeOfJob(professional):
     def make(
-        professional_id : Professional = professional,
-        typeOfJob_name : str = TYPEOFJOB_NAME,
-        price : int = 100,
+        professional_id: Professional = professional,
+        typeOfJob_name: str = TYPEOFJOB_NAME,
+        price: int = 100,
 
     ):
-        typeOfJob=TypeOfJob(professional_id=professional_id, typeOfJob_name=typeOfJob_name, price=price)
+        typeOfJob = TypeOfJob(professional_id=professional_id, typeOfJob_name=typeOfJob_name, price=price)
         return typeOfJob
 
     return make
@@ -92,14 +92,14 @@ def make_typeOfJob(professional):
 @pytest.fixture
 def make_appointment(professional, client2, typeOfJob):
     def make(
-        professional_id : Professional = professional,
-        client_id : Client = client2,
-        typeOfJob_id : TypeOfJob = typeOfJob,
-        start_appointment : datetime = (current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
-                                                                                               second=0, microsecond=0),
-        end_appointment : datetime = (current_datetime + timedelta(days=5)).replace(hour=14, minute=0,
-                                                                                             second=0, microsecond=0),
-        summary : str = "",
+        professional_id: Professional = professional,
+        client_id: Client = client2,
+        typeOfJob_id: TypeOfJob = typeOfJob,
+        start_appointment: datetime = (current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                                                                                     second=0, microsecond=0),
+        end_appointment: datetime = (current_datetime + timedelta(days=5)).replace(hour=14, minute=0,
+                                                                                   second=0, microsecond=0),
+        summary: str = "",
     ):
         appointment = Appointment(professional_id=professional_id, client_id=client_id, typeOfJob_id=typeOfJob_id,
                                   start_appointment=start_appointment,
@@ -119,9 +119,9 @@ def typeOfJob(professional, make_typeOfJob):
 def appointment(typeOfJob, professional, client, make_appointment):
     return make_appointment(professional_id=professional, client_id=client, typeOfJob_id=typeOfJob,
                             start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
-                                                                                        second=0, microsecond=0),
+                                                                                             second=0, microsecond=0),
                             end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
-                                                                                      second=0, microsecond=0),
+                                                                                           second=0, microsecond=0),
                             summary="")
 
 

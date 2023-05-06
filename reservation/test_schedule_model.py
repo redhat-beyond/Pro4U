@@ -1,4 +1,4 @@
-from reservation.models import Schedule, Appointment
+from reservation.models import Schedule
 from datetime import timedelta
 from django.utils import timezone
 import pytest
