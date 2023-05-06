@@ -17,16 +17,8 @@ def persisted_schedule(schedule):
 
 
 @pytest.fixture
-def persisted_schedule_pool(appointment, typeOfJob, persisted_schedule, professional, client2):
-    appointment2 = Appointment(professional_id=professional,
-                               client_id=client2,
-                               typeOfJob_id=typeOfJob,
-                               start_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
-                                                                                                second=0,
-                                                                                                microsecond=0),
-                               end_appointment=(current_datetime + timedelta(days=5)).replace(hour=14, minute=0,
-                                                                                              second=0, microsecond=0),
-                               summary="")
+def persisted_schedule_pool(appointment, persisted_schedule, make_appointment):
+    appointment2 = make_appointment()
     appointment.typeOfJob_id.save()
     appointment.professional_id.save()
     appointment.client_id.save()

@@ -13,6 +13,9 @@ current_datetime = timezone.now()
 BIRTHDAY = datetime(2000, 1, 1)
 LAST_LOGIN = timezone.now()
 
+TYPEOFJOB_NAME = "Hair cut"
+PRICE = 100
+
 
 @pytest.fixture
 def user1():
@@ -73,18 +76,53 @@ def chatmessage(professional, client):
 
 
 @pytest.fixture
-def typeOfJob(professional):
-    return TypeOfJob(professional_id=professional, typeOfJob_name="Gel nail polish", price=90)
+def make_typeOfJob(professional):
+    def make(
+        professional_id : Professional = professional,
+        typeOfJob_name : str = TYPEOFJOB_NAME,
+        price : int = 100,
+
+    ):
+        typeOfJob=TypeOfJob(professional_id=professional_id, typeOfJob_name=typeOfJob_name, price=price)
+        return typeOfJob
+
+    return make
 
 
 @pytest.fixture
-def appointment(typeOfJob, professional, client):
-    return Appointment(professional_id=professional, client_id=client, typeOfJob_id=typeOfJob,
-                       start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
+def make_appointment(professional, client2, typeOfJob):
+    def make(
+        professional_id : Professional = professional,
+        client_id : Client = client2,
+        typeOfJob_id : TypeOfJob = typeOfJob,
+        start_appointment : datetime = (current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                                                                                               second=0, microsecond=0),
+        end_appointment : datetime = (current_datetime + timedelta(days=5)).replace(hour=14, minute=0,
+                                                                                             second=0, microsecond=0),
+        summary : str = "",
+    ):
+        appointment = Appointment(professional_id=professional_id, client_id=client_id, typeOfJob_id=typeOfJob_id,
+                                  start_appointment=start_appointment,
+                                  end_appointment=end_appointment,
+                                  summary=summary)
+        return appointment
+
+    return make
+
+
+@pytest.fixture
+def typeOfJob(professional, make_typeOfJob):
+    return make_typeOfJob(professional_id=professional, typeOfJob_name="Gel nail polish", price=90)
+
+
+@pytest.fixture
+def appointment(typeOfJob, professional, client, make_appointment):
+    return make_appointment(professional_id=professional, client_id=client, typeOfJob_id=typeOfJob,
+                            start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
                                                                                         second=0, microsecond=0),
-                       end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                            end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
                                                                                       second=0, microsecond=0),
-                       summary="")
+                            summary="")
 
 
 @pytest.fixture

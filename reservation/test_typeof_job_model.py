@@ -13,8 +13,8 @@ def persisted_typeOfJob(typeOfJob):
 
 
 @pytest.fixture
-def persisted_type_of_job_pool(persisted_typeOfJob, professional):
-    typeOfJob_object = TypeOfJob(professional_id=professional, typeOfJob_name="Hair cut", price=100)
+def persisted_type_of_job_pool(persisted_typeOfJob, make_typeOfJob):
+    typeOfJob_object = make_typeOfJob()
     typeOfJob_object.professional_id.save()
     typeOfJob_object.save()
     return [(persisted_typeOfJob.typeOfJob_name, persisted_typeOfJob.price),

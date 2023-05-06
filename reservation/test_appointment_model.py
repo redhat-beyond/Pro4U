@@ -19,15 +19,8 @@ def persisted_appointment(appointment):
 
 
 @pytest.fixture
-def persisted_appointment_pool(persisted_appointment, typeOfJob, professional, client2):
-    appointment = Appointment(professional_id=professional,
-                              client_id=client2,
-                              typeOfJob_id=typeOfJob,
-                              start_appointment=(current_datetime + timedelta(days=3)).replace(hour=12, minute=0,
-                                                                                               second=0, microsecond=0),
-                              end_appointment=(current_datetime + timedelta(days=3)).replace(hour=13, minute=0,
-                                                                                             second=0, microsecond=0),
-                              summary=SUMMARY)
+def persisted_appointment_pool(persisted_appointment, make_appointment):
+    appointment = make_appointment()
     appointment.professional_id.save()
     appointment.client_id.save()
     appointment.typeOfJob_id.save()
@@ -68,6 +61,6 @@ class TestAppointmentModel:
         assert persisted_appointment_pool == list(Appointment.get_clients(professional_id=professional))
 
     def test_get_client_list_on_certain_day_by_professional_and_date(self, persisted_appointment_pool, professional):
-        assert [persisted_appointment_pool[0]] == \
+        assert persisted_appointment_pool == \
                list(Appointment.get_client_list_on_certain_day(professional_id=professional,
                                                                date=(current_datetime + timedelta(days=5)).date()))
