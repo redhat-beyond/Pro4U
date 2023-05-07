@@ -10,18 +10,26 @@ MEETING_TIME = 60
 
 
 @pytest.fixture
-def persisted_schedule(schedule):
+def save_schedule(schedule):
     schedule.professional_id.save()
     schedule.save()
     return schedule
 
 
 @pytest.fixture
-def persisted_schedule_pool(appointment, persisted_schedule, make_appointment):
+def persisted_schedule_pool(save_schedule, make_appointment, client):
+    appointment = make_appointment(client_id=client,
+                                   start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
+                                                                                                    second=0,
+                                                                                                    microsecond=0),
+                                   end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
+                                                                                                  second=0,
+                                                                                                  microsecond=0),
+                                   summary="")
     appointment2 = make_appointment()
-    appointment.typeOfJob_id.save()
     appointment.professional_id.save()
     appointment.client_id.save()
+    appointment.typeOfJob_id.save()
     appointment.save()
     appointment2.professional_id.save()
     appointment2.client_id.save()
@@ -40,16 +48,16 @@ class TestScheduleModel:
         assert schedule.end_day == END_DAY
         assert schedule.meeting_time == MEETING_TIME
 
-    def test_persist_schedule(self, persisted_schedule):
-        assert persisted_schedule in Schedule.objects.all()
+    def test_persist_schedule(self, save_schedule):
+        assert save_schedule in Schedule.objects.all()
 
-    def test_del_schedule(self, persisted_schedule):
-        persisted_schedule.delete()
-        assert persisted_schedule not in Schedule.objects.all()
+    def test_del_schedule(self, save_schedule):
+        save_schedule.delete()
+        assert save_schedule not in Schedule.objects.all()
 
-    def test_delete_ref_professional(self, persisted_schedule):
-        persisted_schedule.professional_id.delete()
-        assert persisted_schedule not in Schedule.objects.all()
+    def test_delete_ref_professional(self, save_schedule):
+        save_schedule.professional_id.delete()
+        assert save_schedule not in Schedule.objects.all()
 
     def test_get_possible_meetings_by_professional_and_date(self, persisted_schedule_pool, professional):
         assert persisted_schedule_pool[1] == \
