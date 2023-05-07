@@ -26,6 +26,13 @@ class Client(models.Model):
         return client
 
     @staticmethod
+    def delete_client(client_id: int):
+        profile_id_delete = Client.objects.filter(client_id=client_id).values_list('profile_id', flat=True)[0]
+
+        Client.objects.filter(client_id=client_id).delete()
+        Profile.delete_profile(profile_id_delete)
+
+    @staticmethod
     def filter_by_client_id(client_id):
 
         return Client.objects.filter(client_id=client_id) if client_id else []
