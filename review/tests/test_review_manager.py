@@ -9,19 +9,11 @@ TEST_DATA = [
 ]
 
 
-def create_reviews(client, client2, professional, create_review: Callable[[str, str, str, str, int], Review]):
-    for client_fixture, rating, description, days in TEST_DATA:
-        if client_fixture == 1:
-            create_review(client, professional, rating, description, days)  # Using factory function
-        else:
-            create_review(client2, professional, rating, description, days)  # Using factory function
-
-
 @pytest.mark.django_db
 class TestReviewManager:
     def test_sort_review_by_oldest(self, client, client2, professional,
                                    create_review: Callable[[str, str, str, str, int], Review]):
-        create_reviews(client, client2, professional, create_review)
+        self.create_reviews(client, client2, professional, create_review)
         # Test sorting sorted_reviews by date (the oldest first)
         sorted_reviews = Review.objects.sort_review_by_oldest()
         self.assert_review(sorted_reviews.first(), rating='2',
@@ -33,7 +25,7 @@ class TestReviewManager:
 
     def test_sort_review_by_newest(self, client, client2, professional,
                                    create_review: Callable[[str, str, str, str, int], Review]):
-        create_reviews(client, client2, professional, create_review)
+        self.create_reviews(client, client2, professional, create_review)
         # Test sorting sorted_reviews by date (the newest first)
         sorted_reviews = Review.objects.sort_review_by_newest()
         self.assert_review(sorted_reviews.first(), rating='3',
@@ -45,7 +37,7 @@ class TestReviewManager:
 
     def test_sort_review_by_lowest_rating(self, client, client2, professional,
                                           create_review: Callable[[str, str, str, str, int], Review]):
-        create_reviews(client, client2, professional, create_review)
+        self.create_reviews(client, client2, professional, create_review)
         # Test sorting sorted_reviews by rating (the lowest first)
         sorted_reviews = Review.objects.sort_review_by_lowest_rating()
         self.assert_review(sorted_reviews.first(), rating='1',
@@ -57,7 +49,7 @@ class TestReviewManager:
 
     def test_sort_review_by_highest_rating(self, client, client2, professional,
                                            create_review: Callable[[str, str, str, str, int], Review]):
-        create_reviews(client, client2, professional, create_review)
+        self.create_reviews(client, client2, professional, create_review)
         # Sort the sorted_reviews by highest rating and verify the first one has the highest rating.
         sorted_reviews = Review.objects.sort_review_by_highest_rating()
         self.assert_review(sorted_reviews.first(), rating='5',
@@ -66,6 +58,14 @@ class TestReviewManager:
         self.assert_review(sorted_reviews.last(), rating='1',
                            client_full_name='Client3 Client3',
                            professional_full_name='Ido Singer')
+
+    @staticmethod
+    def create_reviews(client, client2, professional, create_review: Callable[[str, str, str, str, int], Review]):
+        for client_fixture, rating, description, days in TEST_DATA:
+            if client_fixture == 1:
+                create_review(client, professional, rating, description, days)  # Using factory function
+            else:
+                create_review(client2, professional, rating, description, days)  # Using factory function
 
     @staticmethod
     def assert_review(review, rating, client_full_name, professional_full_name):
