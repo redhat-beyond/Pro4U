@@ -42,6 +42,14 @@ class Professional(models.Model):
         return professional
 
     @staticmethod
+    def delete_professional(professional_id: int):
+        profile_id_delete = Professional.objects.filter(professional_id=professional_id).values_list('profile_id',
+                                                                                                     flat=True)[0]
+
+        Professional.objects.filter(professional_id=professional_id).delete()
+        Profile.delete_profile(profile_id_delete)
+
+    @staticmethod
     def filter_by_professional_id(professional_id):
 
         return Professional.objects.filter(professional_id=professional_id) if professional_id else []
