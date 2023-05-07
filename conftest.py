@@ -83,7 +83,8 @@ def make_typeOfJob(professional):
         price: int = 100,
 
     ):
-        typeOfJob = TypeOfJob.objects.create(professional_id=professional_id, typeOfJob_name=typeOfJob_name, price=price)
+        typeOfJob = TypeOfJob.objects.create(professional_id=professional_id, typeOfJob_name=typeOfJob_name,
+                                             price=price)
         return typeOfJob
 
     return make
@@ -101,7 +102,8 @@ def make_appointment(professional, client2, make_typeOfJob):
                                                                                    second=0, microsecond=0),
         summary: str = "",
     ):
-        appointment = Appointment.objects.create(professional_id=professional_id, client_id=client_id, typeOfJob_id=typeOfJob_id,
+        appointment = Appointment.objects.create(professional_id=professional_id, client_id=client_id,
+                                                 typeOfJob_id=typeOfJob_id,
                                                  start_appointment=start_appointment,
                                                  end_appointment=end_appointment,
                                                  summary=summary)

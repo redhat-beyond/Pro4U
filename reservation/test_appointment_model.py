@@ -9,7 +9,7 @@ END_APPOINTMENT = (current_datetime + timedelta(days=5)).replace(hour=14, minute
 SUMMARY = ""
 
 
-def save_appointment(appointment:Appointment):
+def save_appointment(appointment: Appointment):
     appointment.professional_id.save()
     appointment.client_id.save()
     appointment.typeOfJob_id.save()
@@ -21,9 +21,11 @@ def persisted_appointment_pool(make_appointment, client):
     appointment = make_appointment()
     appointment2 = make_appointment(client_id=client,
                                     start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
-                                                                                                     second=0, microsecond=0),
+                                                                                                     second=0,
+                                                                                                     microsecond=0),
                                     end_appointment=(current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
-                                                                                                   second=0, microsecond=0),
+                                                                                                   second=0,
+                                                                                                   microsecond=0),
                                     summary="")
     save_appointment(appointment)
     save_appointment(appointment2)

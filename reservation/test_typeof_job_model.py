@@ -4,9 +4,11 @@ import pytest
 TYPEOFJOB_NAME = "Hair cut"
 PRICE = 100
 
-def save_type_of_job(typeOfJob:TypeOfJob):
+
+def save_type_of_job(typeOfJob: TypeOfJob):
     typeOfJob.professional_id.save()
     typeOfJob.save()
+
 
 @pytest.fixture
 def persisted_type_of_job_pool(make_typeOfJob, professional):
@@ -27,7 +29,7 @@ class TestTypeOfJobModel:
         assert typeOfJob.price == PRICE
 
     def test_persist_typeOfJob(self, make_typeOfJob):
-        typeOfJob=make_typeOfJob()
+        typeOfJob = make_typeOfJob()
         assert typeOfJob in TypeOfJob.objects.all()
 
     def test_del_typeOfJob(self, make_typeOfJob):
