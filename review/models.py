@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.db.models import Avg
 
+from account.models.client import Client
+from account.models.professional import Professional
+
 
 class ReviewManager(models.Manager):
     """
@@ -35,28 +38,31 @@ class Review(models.Model):
         FIVE_STARS = ('5', '★★★★★ (5/5)')
         UNSPECIFIED = ('UN', 'Unspecified rating')
 
+    id = models.BigAutoField(primary_key=True, verbose_name="ID")
     rating = models.CharField(max_length=2, choices=Rating.choices, default=Rating.UNSPECIFIED)
     description = models.TextField(blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
-    client_id = models.CharField(max_length=512)
-    professional_id = models.CharField(max_length=512)
+    client = models.ForeignKey(Client, on_delete=models.RESTRICT)
+    professional = models.ForeignKey(Professional, on_delete=models.CASCADE)
 
     objects = ReviewManager()
 
     @staticmethod
-    def filter_by_professional_id(professional_id):
-        return Review.objects.filter(professional_id=professional_id)
+    def filter_by_professional(professional):
+        return Review.objects.filter(professional=professional)
 
     @staticmethod
-    def get_professional_avg_rating(professional_id):
-        filtered_reviews = Review.filter_by_professional_id(professional_id=professional_id)
+    def get_professional_avg_rating(professional):
+        filtered_reviews = Review.filter_by_professional(professional=professional)
         filtered_reviews = filtered_reviews.exclude(rating=Review.Rating.UNSPECIFIED)  # Cannot be calculated in average
         return filtered_reviews.aggregate(Avg('rating'))['rating__avg']
 
     def __str__(self):
-        # get_rating_display() returns the [1] value of an enum.
-        id = self.id
-        client = self.client_id
-        professional = self.professional_id
-        rating = self.get_rating_display()
-        return f"Review: #{id}, by {client} for {professional} ({rating})"
+        client_name = self.client.profile_id.user_id.get_full_name()
+        professional_name = self.professional.profile_id.user_id.get_full_name()
+        # Modifies review description if the review length is more than 51 letters
+        description = self.description[:50]
+        if len(description) < len(self.description):
+            description = description + '...'
+        rating = self.get_rating_display()  # get_rating_display() returns the [1] value of an enum.
+        return f"Review: #{self.id}, by '{client_name}' for '{professional_name}': {description} ({rating})"
