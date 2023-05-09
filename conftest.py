@@ -5,6 +5,7 @@ from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
 from reservation.models import TypeOfJob, Appointment, Schedule
 from datetime import timedelta, datetime
+from SearchHistory.models import SearchHistory
 from django.utils import timezone
 import pytest
 
@@ -208,3 +209,8 @@ def schedule(professional):
                     end_day=(current_datetime + timedelta(days=5)).replace(hour=18, minute=0,
                                                                            second=0, microsecond=0),
                     meeting_time=60)
+
+
+@pytest.fixture
+def searchHistory(professional, client):
+    return SearchHistory(professional_id=professional, client_id=client)
