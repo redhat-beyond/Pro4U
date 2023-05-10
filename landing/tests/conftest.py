@@ -4,6 +4,21 @@ import pytest
 from django.http import HttpResponse
 from django.urls import reverse
 
+from landing.models import TeamMember
+
+
+@pytest.fixture(scope='function')
+def create_team_member(demo_client) -> Callable[[str], TeamMember]:
+    def _team_member_factory(name: str) -> TeamMember:
+        name_without_whitespaces = ''.join(name.split())
+        team_member = TeamMember(
+            name=name,
+            img=f'/img/{name_without_whitespaces}.jpg',
+            alt=name_without_whitespaces,
+        )
+        return team_member
+    return _team_member_factory
+
 
 @pytest.fixture
 def get_url() -> Callable[[str], str]:
