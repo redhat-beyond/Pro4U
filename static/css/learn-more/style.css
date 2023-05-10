@@ -107,34 +107,25 @@ svg {
 }
 
 .team-members{
+    position: relative;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: auto;
+	align-items: end;
+	left: 43%;
+	width: 100%;
 }
 
 .team-members a{
-	position: relative;
 	color: #111;
 	font-size: 25px;
 	font-weight: 900;
 	transition: 0.3s;
 	transition-property: transform;
 	text-align: center;
-}
-
-.team-members a:not(:last-child){
-	margin-right: 60px;
+	padding: 20px;
 }
 
 .team-members a:hover{
 	transform: scale(1.1);
-}
-
-.team-members a p{
-	justify-content: center;
-	align-items: center;
-	margin-left: none;
 }
 
 .team-members a img{
@@ -143,27 +134,4 @@ svg {
     border-radius: 80px;
     height: 142px;
     width: 142px;
-}
-
-.media-icons{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-}
-
-
-.media-icons a{
-	position: relative;
-	color: #111;
-	transition: 0.3s;
-	transition-property: transform;
-}
-
-.media-icons a:not(:last-child){
-	margin-right: 60px;
-}
-
-.media-icons a:hover{
-	transform: scale(1.5);
 }

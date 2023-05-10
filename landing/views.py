@@ -1,8 +1,25 @@
 from django.shortcuts import render
-# from django.shortcuts import redirect
-# from .models import Message
-# from .forms import MessageForm
 
 
-def indexView(request):
-    return render(request, 'html/index.html')
+def learn_more(request):
+    team_members_names = [
+        'Guy Beckenstein',
+        'Ido Singer',
+        'Ido Yekutiel',
+        'Ofir Bachar',
+        'Patrisia Kaplun',
+        'Tal Reinfeld',
+    ]
+    team_members = []
+    for name in team_members_names:
+        name_without_whitespaces = ''.join(name.split())
+        team_members.append(
+            {
+                'name': name,
+                'img': f'/img/{name_without_whitespaces}.jpg',
+                'alt': name_without_whitespaces,
+            }
+        )
+
+    context = {'team_members': team_members}
+    return render(request, 'landing/learn-more.html', context=context)

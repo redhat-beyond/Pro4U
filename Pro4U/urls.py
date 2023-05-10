@@ -16,11 +16,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from landing import views
 from django.conf import settings
 from django.conf.urls.static import static
+from landing import views as landing_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.indexView, name='invokeIndexPage')
+    path('learn-more/', landing_views.learn_more, name='learn_more')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
