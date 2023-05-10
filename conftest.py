@@ -212,5 +212,5 @@ def schedule(professional):
 
 
 @pytest.fixture
-def searchHistory(professional, client):
-    return SearchHistory(professional_id=professional, client_id=client)
+def searchHistory(professional, demo_client):
+    return SearchHistory(professional_id=professional, client_id=demo_client)

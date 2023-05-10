@@ -12,9 +12,9 @@ def persisted_search_history(searchHistory):
 
 @pytest.mark.django_db
 class TestSearchHistoryModel:
-    def test_new_member(self, searchHistory, professional, client):
+    def test_new_member(self, searchHistory, professional, demo_client):
         assert searchHistory.professional_id == professional
-        assert searchHistory.client_id == client
+        assert searchHistory.client_id == demo_client
 
     def test_search_history(self, searchHistory):
         searchHistory.save()
@@ -25,8 +25,8 @@ class TestSearchHistoryModel:
         searchHistory.delete()
         assert searchHistory not in SearchHistory.objects.all()
 
-    def test_get_last_professionals_search_by_client(self, persisted_search_history, client, expected_result=5):
-        expected_professionals = SearchHistory.objects.filter(client_id=client)
+    def test_get_last_professionals_search_by_client(self, persisted_search_history, demo_client, expected_result=5):
+        expected_professionals = SearchHistory.objects.filter(client_id=demo_client)
         expected_professionals = expected_professionals.values('professional_id').annotate(max_date=Max('date'))
         expected_professionals = expected_professionals.order_by('-max_date')[:expected_result]
         expected_professionals = [p['professional_id'] for p in expected_professionals]
