@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.indexView, name='invokeIndexPage'),
     path('', include('reservation.urls')),
+    path('', include('SearchHistory.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
