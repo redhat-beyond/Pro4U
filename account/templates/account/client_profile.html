@@ -1,0 +1,97 @@
+{% extends 'account.html' %}
+
+{% block title %}{{ client.profile_id.user_id.first_name}}'s Profile{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Professionals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .filters {
+            flex-basis: 30%;
+        }
+
+        .search-results {
+            flex-basis: 65%;
+        }
+
+        .head-line-label {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .search-box input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .search-btn {
+            background-color: #6976eb;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 12px;
+        }
+
+        .professional-box h3 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .professional-box p {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .professional-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            grid-gap: 20px;
+            padding:50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="filters">
+            <label class="head-line-label" for="filters">Profile:</label>
+            <img src="../../../images/Pro4U_logo.jpeg" width="200" height="200">
+            <li><strong>Name:</strong> {{ client.profile_id.user_id.first_name }} {{ profile.user_id.last_name }}</li>
+            <li><strong>Email:</strong> {{ client.profile_id.user_id.email }}</li>
+            <li><strong>Phone Number:</strong> {{ client.profile_id.phone_number }}</li>
+            <li><strong>Live in:</strong> {{ client.profile_id.country }}, {{ client.profile_id.city }}, {{ client.profile_id.address }}</li>
+            <button class="search-btn">Edit Profile</button>
+            <div class="professional-grid">
+                <button class="search-btn">Search History</button>
+            </div>
+        </div>
+        <div class="search-results">
+            <label class="head-line-label" for="search-results">Details:</label>
+
+        </div>
+    </div>
+</body>
+
+</html>
+  <!-- add any other sections or information you want to display here -->
+{% endblock %}

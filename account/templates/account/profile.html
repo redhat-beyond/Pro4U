@@ -1,0 +1,17 @@
+{% extends 'account.html' %}
+
+{% block title %}{{ profile.user_id.first_name}}'s Profile{% endblock %}
+
+{% block content %}
+  <h1>{{ profile.user_id.first_name }}'s Profile</h1>
+
+  <h2>Basic Information</h2>
+  <ul>
+    <li><strong>Name:</strong> {{ profile.user_id.first_name }} {{ profile.user_id.last_name }}</li>
+    <li><strong>Email:</strong> {{ professional.profile_id.user_id.email }}</li>
+    <li><strong>Phone Number:</strong> {{ profile.phone_number }}</li>
+    <li><strong>Live in:</strong> {{ profile.country }}, {{ profile.city }}, {{ profile.address }}</li>
+  </ul>
+
+  <!-- add any other sections or information you want to display here -->
+{% endblock %}
