@@ -5,6 +5,7 @@ from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
 from reservation.models import TypeOfJob, Appointment, Schedule
 from datetime import timedelta, datetime
+from SearchHistory.models import SearchHistory
 from django.utils import timezone
 import pytest
 
@@ -137,12 +138,12 @@ def make_client(make_profile):
 
 
 @pytest.fixture
-def client(make_client):
+def demo_client(make_client):
     return make_client()
 
 
 @pytest.fixture
-def client2(make_client):
+def demo_client2(make_client):
     return make_client(username=USER_INFORMATION.get('username')[1],
                        password=USER_INFORMATION.get('password')[1],
                        email=USER_INFORMATION.get('email')[1],
@@ -158,9 +159,9 @@ def professional(make_professional):
 
 
 @pytest.fixture
-def chatmessage(professional, client):
+def chatmessage(professional, demo_client):
     return Chatmessage(professional_id=professional,
-                       client_id=client, message="message1", sender_type=SenderType.Client)
+                       client_id=demo_client, message="message1", sender_type=SenderType.Client)
 
 
 @pytest.fixture
@@ -179,10 +180,10 @@ def make_typeOfJob(professional):
 
 
 @pytest.fixture
-def make_appointment(professional, client2, make_typeOfJob):
+def make_appointment(professional, demo_client2, make_typeOfJob):
     def make(
         professional_id: Professional = professional,
-        client_id: Client = client2,
+        client_id: Client = demo_client2,
         typeOfJob_id: TypeOfJob = make_typeOfJob(),
         start_appointment: datetime = (current_datetime + timedelta(days=5)).replace(hour=13, minute=0,
                                                                                      second=0, microsecond=0),
@@ -208,3 +209,8 @@ def schedule(professional):
                     end_day=(current_datetime + timedelta(days=5)).replace(hour=18, minute=0,
                                                                            second=0, microsecond=0),
                     meeting_time=60)
+
+
+@pytest.fixture
+def searchHistory(professional, demo_client):
+    return SearchHistory(professional_id=professional, client_id=demo_client)

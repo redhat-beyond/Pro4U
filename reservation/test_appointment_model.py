@@ -17,9 +17,9 @@ def save_appointment(appointment: Appointment):
 
 
 @pytest.fixture
-def persisted_appointment_pool(make_appointment, client):
+def persisted_appointment_pool(make_appointment, demo_client):
     appointment = make_appointment()
-    appointment2 = make_appointment(client_id=client,
+    appointment2 = make_appointment(client_id=demo_client,
                                     start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
                                                                                                      second=0,
                                                                                                      microsecond=0),
@@ -34,11 +34,11 @@ def persisted_appointment_pool(make_appointment, client):
 
 @pytest.mark.django_db()
 class TestAppointmentModel:
-    def test_new_appointment(self, make_appointment, professional, client2, make_typeOfJob):
+    def test_new_appointment(self, make_appointment, professional, demo_client2, make_typeOfJob):
         typeOfJob = make_typeOfJob(professional_id=professional, typeOfJob_name="Gel nail polish", price=90)
         appointment = make_appointment(typeOfJob_id=typeOfJob)
         assert appointment.professional_id == professional
-        assert appointment.client_id == client2
+        assert appointment.client_id == demo_client2
         assert appointment.start_appointment == START_APPOINTMENT
         assert appointment.end_appointment == END_APPOINTMENT
         assert appointment.summary == SUMMARY
