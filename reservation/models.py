@@ -17,6 +17,11 @@ class TypeOfJob(models.Model):
         db_table = 'TypeOfJob'
 
     @staticmethod
+    def get_typeofjobs_by_professional(professional_id: int):
+        typeofjobs_by_professional = TypeOfJob.objects.filter(professional_id=professional_id)
+        return list(typeofjobs_by_professional)
+
+    @staticmethod
     def get_typeofjobs_name_and_price(professional_id: int):
         typeofjobs_name_and_price_list = TypeOfJob.objects.filter(professional_id=professional_id)\
                                                     .values_list('typeOfJob_name', 'price')
