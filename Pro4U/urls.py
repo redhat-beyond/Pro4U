@@ -24,5 +24,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.indexView, name='invokeIndexPage'),
     path('client/', include('account.urls.client_urls')),
-    path('professional/', include('account.urls.professional_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
