@@ -14,9 +14,9 @@ def persisted_chatmessage(chatmessage):
 
 @pytest.mark.django_db
 class TestChatmessageModel:
-    def test_new_member(self, chatmessage, professional, client):
+    def test_new_member(self, chatmessage, professional, demo_client):
         assert chatmessage.professional_id == professional
-        assert chatmessage.client_id == client
+        assert chatmessage.client_id == demo_client
         assert chatmessage.message == MESSAGE
         assert chatmessage.sender_type == SenderType.Client
 
@@ -33,10 +33,10 @@ class TestChatmessageModel:
         assert [persisted_chatmessage[2]] == \
             Chatmessage.get_all_professional_contacts(professional_id=professional)
 
-    def test_get_client_contacts(self, persisted_chatmessage, client):
+    def test_get_client_contacts(self, persisted_chatmessage, demo_client):
         assert [persisted_chatmessage[1]] == \
-            Chatmessage.get_all_client_contacts(client_id=client)
+            Chatmessage.get_all_client_contacts(client_id=demo_client)
 
-    def get_chat_between_professional_and_client(self, persisted_chatmessage, professional, client):
+    def get_chat_between_professional_and_client(self, persisted_chatmessage, professional, demo_client):
         assert persisted_chatmessage == \
-            Chatmessage.objects.filter(professional_id=professional, client_id=client)
+            Chatmessage.objects.filter(professional_id=professional, client_id=demo_client)

@@ -17,8 +17,8 @@ def save_schedule(schedule):
 
 
 @pytest.fixture
-def persisted_schedule_pool(save_schedule, make_appointment, client):
-    appointment = make_appointment(client_id=client,
+def persisted_schedule_pool(save_schedule, make_appointment, demo_client):
+    appointment = make_appointment(client_id=demo_client,
                                    start_appointment=(current_datetime + timedelta(days=5)).replace(hour=12, minute=0,
                                                                                                     second=0,
                                                                                                     microsecond=0),
