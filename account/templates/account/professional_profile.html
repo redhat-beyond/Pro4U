@@ -1,0 +1,15 @@
+{% extends 'account/profile.html' %}
+
+{% block title %}{{ professional.profile_id.user_id.first_name}}'s Profile{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div><strong>Description:</strong> {{ professional.description }}</div>
+</body>
+
+</html>
+  <!-- add any other sections or information you want to display here -->
+{% endblock %}
