@@ -1,12 +1,11 @@
 import pytest
+from .test_profile import TestProfileViews
 
 
 BASE_URL = '/client'
 
 
 @pytest.mark.django_db
-class TestFilmViews:
+class TestClientViews:
     def test_get_client_profile(self, client, demo_client):
-        test_client = demo_client
-        response = client.get(f"{BASE_URL}/profile/{test_client.client_id}/")
-        assert response.status_code == 200
+        TestProfileViews.get_profile(client=client, entity_id=demo_client.client_id, url=BASE_URL)
