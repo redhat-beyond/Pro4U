@@ -1,49 +1,27 @@
-from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 from reservation.models import Schedule
-from account.models.professional import Professional, Professions
-from account.models.profile import Profile, UserType
 from reservation.forms import ScheduleForm
-from django.contrib.auth.models import User
+import pytest
 
 current_datetime = timezone.now()
 
 
-class ScheduleTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username='testuser',
-            password='testpass'
-        )
-        self.profile = Profile.objects.create(
-            user_id=self.user,
-            phone_number='123456789',
-            country='USA',
-            city='New York',
-            address='123 Main St',
-            user_type=UserType.Professional
-        )
-        self.professional = Professional.objects.create(
-            profile_id=self.profile,
-            profession=Professions.Locksmith,
-            description='Test Description')
+@pytest.fixture
+def save_schedule(schedule):
+    schedule.professional_id.save()
+    schedule.save()
+    return schedule
 
-        self.schedule = Schedule.objects.create(
-            professional_id=self.professional,
-            start_day=(current_datetime + timedelta(days=5)).replace(hour=10, minute=0,
-                                                                     second=0, microsecond=0),
-            end_day=(current_datetime + timedelta(days=5)).replace(hour=18, minute=0,
-                                                                   second=0, microsecond=0),
-            meeting_time=60
-        )
 
-    def test_create_schedule(self):
-        self.client.force_login(self.user)
-        response = self.client.get(reverse('schedule_new'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "reservation/schedule.html")
+@pytest.mark.django_db
+class TestSchedule:
+    def test_create_schedule(self, client, professional, save_schedule):
+        client.force_login(professional.profile_id.user_id)
+        response = client.get(reverse('schedule_new'))
+        assert response.status_code == 200
+        assert 'reservation/schedule.html' in response.templates[0].name
         data = {
             'start_day': (current_datetime + timedelta(days=4)).replace(hour=10, minute=0,
                                                                         second=0, microsecond=0),
@@ -53,14 +31,15 @@ class ScheduleTestCase(TestCase):
         }
 
         form = ScheduleForm(data)
-        self.assertTrue(form.is_valid())
+        assert form.is_valid()
 
-        response = self.client.post(reverse('schedule_new'), data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Schedule.objects.filter(professional_id=self.professional).count(), 2)
+        response = client.post(reverse('schedule_new'), data)
+        assert response.status_code == 302
+        assert Schedule.objects.filter(professional_id=professional).count() == 2
+        assert response.url == reverse('calendar')
 
-    def test_create_schedule_invalid_data(self):
-        self.client.force_login(self.user)
+    def test_create_schedule_invalid_data(self, client, professional, save_schedule):
+        client.force_login(professional.profile_id.user_id)
         data = {
             'start_day': (current_datetime + timedelta(days=4)).replace(hour=10, minute=0,
                                                                         second=0, microsecond=0),
@@ -68,13 +47,13 @@ class ScheduleTestCase(TestCase):
                                                                       second=0, microsecond=0),
             'meeting_time': 60
         }
-        response = self.client.post(reverse('schedule_new'), data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Schedule.objects.filter(professional_id=self.professional).count(), 1)
-        self.assertRedirects(response, reverse('schedule_new'))
+        response = client.post(reverse('schedule_new'), data)
+        assert response.status_code == 302
+        assert Schedule.objects.filter(professional_id=professional).count() == 1
+        assert response.url == reverse('schedule_new')
 
-    def test_create_schedule_already_exists(self):
-        self.client.force_login(self.user)
+    def test_create_schedule_already_exists(self, client, professional, save_schedule):
+        client.force_login(professional.profile_id.user_id)
         data = {
             'start_day': (current_datetime + timedelta(days=5)).replace(hour=10, minute=0,
                                                                         second=0, microsecond=0),
@@ -82,51 +61,51 @@ class ScheduleTestCase(TestCase):
                                                                       second=0, microsecond=0),
             'meeting_time': 60
         }
-        response = self.client.post(reverse('schedule_new'), data)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('schedule_new'))
-        self.assertEqual(Schedule.objects.filter(professional_id=self.professional).count(), 1)
+        response = client.post(reverse('schedule_new'), data)
+        assert response.status_code == 302
+        assert response.url == reverse('schedule_new')
+        assert Schedule.objects.filter(professional_id=professional).count() == 1
 
-    def test_schedule_details(self):
-        self.client.force_login(self.user)
-        url = reverse('schedule_detail', args=[self.schedule.pk])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "reservation/schedule_details.html")
+    def test_schedule_details(self, client, professional, save_schedule):
+        client.force_login(professional.profile_id.user_id)
+        url = reverse('schedule_detail', args=[save_schedule.pk])
+        response = client.get(url)
+        assert response.status_code == 200
+        assert 'reservation/schedule_details.html' in response.templates[0].name
 
-    def test_schedule_edit(self):
-        start_day = (current_datetime + timedelta(days=4)).replace(hour=10, minute=0,
+    def test_schedule_edit(self, client, professional, save_schedule):
+        client.force_login(professional.profile_id.user_id)
+        start_day = (current_datetime + timedelta(days=5)).replace(hour=10, minute=0,
                                                                    second=0, microsecond=0)
-        end_day = (current_datetime + timedelta(days=4)).replace(hour=16, minute=0,
+        end_day = (current_datetime + timedelta(days=5)).replace(hour=16, minute=0,
                                                                  second=0, microsecond=0)
-        self.client.force_login(self.user)
-        url = reverse('schedule_edit', args=[self.schedule.pk])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        url = reverse('schedule_edit', args=[save_schedule.pk])
+        response = client.get(url)
+        assert response.status_code == 200
         data = {
             'start_day': start_day,
             'end_day': end_day,
             'meeting_time': 60
         }
         form = ScheduleForm(data)
-        self.assertTrue(form.is_valid())
+        assert form.is_valid()
 
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        self.schedule.refresh_from_db()
-        self.assertEqual(self.schedule.start_day, start_day)
-        self.assertEqual(self.schedule.end_day, end_day)
-        self.assertEqual(Schedule.objects.filter(professional_id=self.professional).count(), 1)
-        self.assertRedirects(response, reverse('schedule_detail', args=[self.schedule.pk]))
+        response = client.post(url, data)
+        assert response.status_code == 302
+        save_schedule.refresh_from_db()
+        assert save_schedule.start_day == start_day
+        assert save_schedule.end_day == end_day
+        assert Schedule.objects.filter(professional_id=professional).count() == 1
+        assert response.url == reverse('schedule_detail', args=[save_schedule.pk])
 
-    def test_schedule_delete(self):
-        self.client.force_login(self.user)
-        url = reverse('remove_schedule', args=[self.schedule.pk])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "reservation/schedule_delete.html")
-        response = self.client.post(url)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse('calendar'))
-        self.assertFalse(Schedule.objects.filter(pk=self.schedule.pk).exists())
-        self.assertEqual(Schedule.objects.filter(professional_id=self.professional).count(), 0)
+    def test_schedule_delete(self, client, save_schedule, professional):
+        client.force_login(professional.profile_id.user_id)
+        url = reverse('remove_schedule', args=[save_schedule.pk])
+        response = client.get(url)
+        assert response.status_code == 200
+        assert 'reservation/schedule_delete.html' in response.template_name
+        response = client.post(url)
+        assert response.status_code == 302
+        assert response.url == reverse('calendar')
+        assert not Schedule.objects.filter(pk=save_schedule.pk).exists()
+        assert Schedule.objects.filter(professional_id=professional).count() == 0

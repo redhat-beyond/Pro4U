@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils.safestring import mark_safe
-from django.contrib.auth.mixins import LoginRequiredMixin
 from reservation.utils import Calendar
 from reservation.forms import ScheduleForm
 from django.contrib import messages
@@ -52,8 +51,14 @@ def create_schedule(request):
             return redirect('schedule_new')
         else:
             schedule = list(Schedule.objects.filter(professional_id__profile_id__user_id=request.user))
+            if schedule:
+                professional_id = schedule[0].professional_id
+            else:
+                messages.error(request, "No schedule exists for this user")
+                return redirect('schedule_new')
+
             Schedule.objects.get_or_create(
-                professional_id=schedule[0].professional_id,
+                professional_id=professional_id,
                 start_day=start_day,
                 end_day=end_day,
                 meeting_time=meeting_time,
@@ -81,7 +86,7 @@ class ScheduleDeleteView(generic.DeleteView):
     success_url = reverse_lazy("calendar")
 
 
-class CalendarView(LoginRequiredMixin, generic.ListView):
+class CalendarView(generic.ListView):
     model = Schedule
     template_name = "reservation/calendar.html"
 
