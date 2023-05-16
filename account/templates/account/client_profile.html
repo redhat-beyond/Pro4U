@@ -10,7 +10,7 @@
         <div class="col-md-2 static">
             <div class="profile-card">
                 <img src="{% static 'img/blank_profile.png' %}" alt="user" class="profile-photo">
-                <h5><a href="#" class="text-white">{{user.username}}</a></h5>
+                <h5><a href="#" class="text-white">{{client.profile_id.user_id.first_name}}</a></h5>
             </div>
             <ul class="nav-news-feed">
               <li><i class="fa fa-list-alt icon1"></i><div><div class="litext" href="#">Feed</div></div></li>

@@ -1,6 +1,6 @@
 {% extends 'account/profile.html' %}
 
-{% block title %}{{ client.profile_id.user_id.first_name}}'s Profile{% endblock %}
+{% block title %}{{ professional.profile_id.user_id.first_name}}'s Profile{% endblock %}
 
 {% block content %}
 {% load static %}
@@ -10,13 +10,14 @@
         <div class="col-md-2 static">
             <div class="profile-card">
                 <img src="{% static 'img/blank_profile.png' %}" alt="user" class="profile-photo">
-                <h5><a href="#" class="text-white">{{user.username}}</a></h5>
+                <h5><a href="#" class="text-white">{{professional.profile_id.user_id.first_name}}</a></h5>
             </div>
             <ul class="nav-news-feed">
               <li><i class="fa fa-list-alt icon1"></i><div><div class="litext" href="#">Feed</div></div></li>
               <li><i class="fa fa-comments icon4"></i><div><div class="litext" href="#">Messages</div></div></li>
               <li><i class="fas fa-briefcase"></i><div><div class="litext" href="#">Type Of Jobs</div></div></li>
               <li><i class="fas fa-check-square"></i><div><div class="litext" href="#">Appointments</div></div></li>
+              <li><i class="far fa-clock"></i><div><div class="litext" href="#">Schedule</div></div></li>
             </ul>
         </div>
         <div class="col-md-10">{% block main_content %} {% endblock %}</div>
