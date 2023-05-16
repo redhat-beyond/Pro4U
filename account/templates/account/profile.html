@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{{ profile.user_id.first_name}}'s Profile{% endblock %}</title>
+  </head>
+<body>
+    <div>
+        <div class="container">
+            <div class="filters">
+                <img src="../../../images/Pro4U_logo.jpeg" width="200" height="200">
+                <div><strong>Name:</strong> {{ client.profile_id.user_id.first_name }} {{ profile.user_id.last_name }}</div>
+                <div><strong>Email:</strong> {{ client.profile_id.user_id.email }}</div>
+                <div><strong>Phone Number:</strong> {{ client.profile_id.phone_number }}</div>
+                <div><strong>Live in:</strong> {{ client.profile_id.country }}, {{ client.profile_id.city }}, {{ client.profile_id.address }}</div>
+                <div>{% block content %}{% endblock %}</div>
+                <button class="edit-btn">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
