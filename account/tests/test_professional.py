@@ -1,7 +1,7 @@
 from account.models.profile import Profile, UserType
 from account.models.professional import Professions, Professional
-from .test_profile import USER_INFORMATION
-from .test_profile import PROFILE_INFORMATION
+from conftest import USER_INFORMATION
+from conftest import PROFILE_INFORMATION
 from conftest import PROFESSIONAL_INFORMATION
 import pytest
 
