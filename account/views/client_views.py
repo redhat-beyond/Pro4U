@@ -5,4 +5,4 @@ from account.models.client import Client
 def show_profile(request, client_id):
     client = get_object_or_404(Client, pk=client_id)
     profile = client.profile_id
-    return render(request, 'account/client_profile.html', {'client': client, 'profile': profile})
+    return render(request, 'account/profile.html', {'client': client, 'profile': profile})
