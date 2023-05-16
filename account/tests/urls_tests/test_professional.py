@@ -15,7 +15,7 @@ class TestClientViews:
         assert 'account/profile.html' in [template.name for template in response.templates]
         assert f"{test_professional.profile_id.user_id.first_name}'s Profile" in response.content.decode('utf-8')
 
-    def test_show_profile_non_existent_client(self, client, professional):
+    def test_show_profile_non_existent_professional(self, client, professional):
         response = TestProfileViews.get_profile(client=client, entity_id=FAKE_ID, url=BASE_URL)
         assert response.status_code == 404
 
