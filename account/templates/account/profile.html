@@ -2,7 +2,6 @@
 {% load static %}
 <html lang="en">
   <head>
-{#    <title>{% block title %}{{ profile.user_id.first_name}}'s Profile{% endblock %}</title>#}
     <title>{% block title %}{{ profile.user_id.first_name}}'s Profile{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8">
@@ -28,12 +27,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/">Sign Up</a>
-            </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="/">Logout</a>
+              <a class="nav-link" href="#">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">
