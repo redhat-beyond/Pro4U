@@ -5,28 +5,27 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="{% static '/img/Pro4U_logo.jpg' %}" />
-	<link rel="stylesheet" href="{% static '/css/learn-more/style.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pro4U Website Landing Page</title>
   </head>
-  <body>
-	<section>
-	  <header>
-		<h2>
-		  <a href="{% url 'learn_more' %}" class="logo"><img src="{% static '/img/Pro4U_logo.jpg' %}" alt="Facebook link" height="200" width="209"></a>
-		</h2>
-        <div class="navigation">
-		  <a href="{% url 'learn_more' %}">Home</a>
-          <a href="#">About</a>
-          <a href="#">Info</a>
-          <a href="#">Services</a>
-          <a href="#">Contact</a>
-        </div>
-      </header>
-      <div class="content">
+  <body class="bg-light text-dark">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'learn_more' %}">
+          <img src="{% static '/img/Pro4U_logo.jpg' %}" width="70" height="70" class="d-inline-block align-top" alt="Pro4ULogo">
+        </a>
+        <a href="#" class="d-inline-block align-top navbar-brand mb-0 h1">
+          Home
+        </a>
+        <a href="#" class="d-inline-block align-top navbar-brand mb-0 h1">
+          Contact
+        </a>
+      </div>
+    </nav>
+    <div style="margin-top: 100px;">
         {% block content %}
         {% endblock %}
-      </div>
-    </section>
+    </div>
   </body>
 </html>
