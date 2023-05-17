@@ -2,6 +2,7 @@ from django.db import models
 from datetime import date, datetime, timedelta
 from account.models.professional import Professional
 from account.models.client import Client
+from django.urls import reverse
 
 
 class TypeOfJob(models.Model):
@@ -15,6 +16,11 @@ class TypeOfJob(models.Model):
 
     class Meta:
         db_table = 'TypeOfJob'
+
+    @staticmethod
+    def get_typeofjobs_by_professional(professional_id: int):
+        typeofjobs_by_professional = TypeOfJob.objects.filter(professional_id=professional_id)
+        return list(typeofjobs_by_professional)
 
     @staticmethod
     def get_typeofjobs_name_and_price(professional_id: int):
@@ -90,6 +96,16 @@ class Schedule(models.Model):
                 free_meetings.append(meetings[i])
 
         return free_meetings
+
+    @property
+    def get_html_url(self):
+        url = reverse("schedule_detail", args=(self.schedule_id,))
+        start_time = self.start_day.strftime("%H:%M:%S")
+        end_time = self.end_day.strftime("%H:%M:%S")
+        return f'<a href="{url}"> {start_time} - {end_time} </a>'
+
+    def get_absolute_url(self):
+        return reverse("schedule_detail", args=(self.schedule_id,))
 
     class Meta:
         db_table = 'Schedule'

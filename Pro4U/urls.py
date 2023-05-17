@@ -15,12 +15,13 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from landing import views as landing_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('learn-more/', landing_views.learn_more, name='learn_more')
+    path('learn-more/', landing_views.learn_more, name='learn_more'),
+    path('', include('reservation.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
