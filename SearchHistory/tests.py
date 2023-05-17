@@ -1,6 +1,5 @@
 from SearchHistory.models import SearchHistory
 import pytest
-# from django.db.models import Max
 
 
 @pytest.fixture

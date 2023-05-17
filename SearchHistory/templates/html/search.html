@@ -30,6 +30,7 @@
             <div class="filter-box">
                 <input type="text" name="city" class="city" placeholder="City" />
             </div>
+            <input type="hidden" name="opened" value="{{0}}">
             <button class="search-btn" type="submit">Search</button>
         </form>
     </div>
@@ -37,12 +38,22 @@
         <label class="head-line-label" for="search-results">Search results:</label>
         <div class="professional-grid">
             {% for professional in professionals.all %}
-            <div class="professional-box" id="professional-{{ professional.professional_id }}">
+            <div class="professional-box">
                 <p>Professional ID: {{ professional.professional_id }}</p>
                 <p>Profession: {{ professional.get_profession_display }}</p>
                 <p>First name: {{ professional.profile_id.user_id.first_name }}</p>
                 <p>Last name: {{ professional.profile_id.user_id.last_name }}</p>
                 <p>City: {{ professional.profile_id.city }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="search_results_professional_id" value="{{ professional.professional_id }}">
+                    <input type="hidden" name="profession" value="{{ professional.profession }}">
+                    <input type="hidden" name="first_name" value="{{ professional.profile_id.user_id.first_name }}">
+                    <input type="hidden" name="last_name" value="{{ professional.profile_id.user_id.last_name }}">
+                    <input type="hidden" name="city" value="{{ professional.profile_id.city }}">
+                    <input type="hidden" name="opened" value="{{1}}">
+                    <button class="search-btn" type="submit">Open</button>
+                </form>
             </div>
             {% endfor %}
         </div>
@@ -64,39 +75,4 @@
     </div>
 </div>
 {% endblock %}
-
-{% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-s9lT2w4UDTe8rDwWyTtHofbFH3fa6zvVnfwBlyUtdS+mxL/M9aQjvI99vHYMtoVw"
-    crossorigin="anonymous"></script>
-
-<!-- <script>
-        function handleProfessionalBoxClick(professionalId) {
-        var urlParams = new URLSearchParams(window.location.search);
-        var user_id = urlParams.get('user_id');
-
-        // Make an AJAX request to the server
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/create_search_history/');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        // Send the data to the server
-        var data = JSON.stringify({
-            client_id: user_id,
-            professional_id: professionalId
-        });
-        xhr.send(data);
-    }
-
-    // Add click event listeners to professional boxes
-    var professionalBoxes = document.getElementsByClassName('professional-box');
-    for (var i = 0; i < professionalBoxes.length; i++) {
-        professionalBoxes[i].addEventListener('click', function(event) {
-            var professionalId = event.currentTarget.id.replace('professional-', '');
-            handleProfessionalBoxClick(professionalId);
-        });
-    } -->
-</script>
-{% endblock %}
-
 </html>

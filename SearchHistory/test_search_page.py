@@ -26,8 +26,11 @@ def test_search_by_no_filters(client):
 def test_search_by_professional_id(client, make_professional):
     professional = make_professional()
     url = reverse('search history', args=[CLIENT_ID])
-
-    response = client.post(url, {'professional_id': professional.professional_id})
+    data = {
+            'professional_id': professional.professional_id,
+            'opened': '0',
+        }
+    response = client.post(url, data)
 
     assert response.status_code == 200
     assert 'html/search.html' in response.templates[0].name
@@ -35,3 +38,7 @@ def test_search_by_professional_id(client, make_professional):
     professionals = response.context['professionals']
     assert len(professionals) == 1
     assert professionals[0].professional_id == professional.professional_id
+    assert professionals[0].profession == professional.profession
+    assert professionals[0].profile_id.user_id.first_name == professional.profile_id.user_id.first_name
+    assert professionals[0].profile_id.user_id.last_name == professional.profile_id.user_id.last_name
+    assert professionals[0].profile_id.city == professional.profile_id.city

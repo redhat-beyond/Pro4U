@@ -1,3 +1,8 @@
+body {
+    background-color: #e0f2f1;
+    color: #263238;
+  }
+
 .container {
     display: flex;
     flex-direction: row;
@@ -109,7 +114,7 @@
 .search-history-box {
     width: 100%; 
     margin-bottom: 5px; 
-    background-color: #fff;
+    background-color: #c5c5da;
     padding: 1px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -133,7 +138,19 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.search-box {
+  background-color: #e6e6fa;
+}
 
+.search-btn {
+  background-color: #009688;
+}
 
+.professional-box {
+  background-color: #e6e6fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-
+.professional-box:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
