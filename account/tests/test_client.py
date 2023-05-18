@@ -1,6 +1,6 @@
 from account.models.profile import Profile, UserType
 from account.models.client import Client
-from .test_profile import PROFILE_INFORMATION
+from conftest import PROFILE_INFORMATION
 from conftest import CLIENT_INFORMATION
 import pytest
 

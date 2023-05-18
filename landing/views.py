@@ -1,8 +1,8 @@
 from django.shortcuts import render
-# from django.shortcuts import redirect
-# from .models import Message
-# from .forms import MessageForm
+
+from landing.models import TeamMember
 
 
-def indexView(request):
-    return render(request, 'html/index.html')
+def learn_more(request):
+    context = {'team_members': TeamMember.objects.all()}
+    return render(request, 'landing/learn-more.html', context=context)
