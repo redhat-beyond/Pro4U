@@ -16,12 +16,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from landing import views
 from django.conf import settings
 from django.conf.urls.static import static
+from landing import views as landing_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.indexView, name='invokeIndexPage'),
+    path('', landing_views.homepage, name='homepage'),
     path('', include('reservation.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
