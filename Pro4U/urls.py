@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('learn-more/', landing_views.learn_more, name='learn_more'),
     path('', include('reservation.urls')),
+    path('', include('chatmessage.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
