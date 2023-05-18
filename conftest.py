@@ -7,6 +7,7 @@ from account.models.profile import Profile, UserType
 from account.models.professional import Professions, Professional
 from account.models.client import Client
 from chatmessage.models import Chatmessage, SenderType
+from landing.models import TeamMember
 from reservation.models import TypeOfJob, Appointment, Schedule
 from datetime import timedelta, datetime
 from SearchHistory.models import SearchHistory
@@ -218,6 +219,19 @@ def schedule(professional):
 @pytest.fixture
 def searchHistory(professional, demo_client):
     return SearchHistory(professional_id=professional, client_id=demo_client)
+
+
+@pytest.fixture(scope='function')
+def create_team_member() -> Callable[[str], TeamMember]:
+    def _team_member_factory(name: str) -> TeamMember:
+        name_without_whitespaces = ''.join(name.split())
+        team_member = TeamMember(
+            name=name,
+            img=f'/img/{name_without_whitespaces}.jpg',
+            alt=name_without_whitespaces,
+        )
+        return team_member
+    return _team_member_factory
 
 
 @pytest.fixture

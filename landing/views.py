@@ -3,6 +3,7 @@ import random
 from django.db.models import Avg
 from django.shortcuts import render
 
+from landing.models import TeamMember
 from account.models.professional import Professional
 
 MAX_PROFESSIONALS = 48
@@ -33,3 +34,8 @@ def round_avg_rating(professionals):
             professional.avg_rating = round(professional.avg_rating, 1)
         else:
             professional.avg_rating = 'N/A'
+
+
+def learn_more(request):
+    context = {'team_members': TeamMember.objects.all()}
+    return render(request, 'landing/learn-more.html', context=context)
