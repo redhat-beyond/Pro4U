@@ -1,0 +1,41 @@
+{% extends "landing/base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="row" style="margin-top: 100px;">
+      <div class="col-md-6">
+        <h2>Pro4U</h2>
+        <h2>Innovative Solution!</h2>
+        <div class="list-group">
+          <a class="list-group-item list-group-item-action list-group-item-light">
+            Pro4U (professional for you) is an application that works like a social network. It gives you an option to schedule
+            appointments with private professionals throughout the country, including cosmetologists, plumbers, tinsmiths, glaziers,
+            gardeners, and more.
+          </a>
+
+        <a class="list-group-item list-group-item-action list-group-item-light">
+          Professionals can add the types of work done, products for sale, appointment availability, and prices.
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light">
+          Users can add opinions about professionals and schedule appointments during working hours.
+        </a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          {% for member in team_members %}
+            <div class="col-4 mb-4">
+              <div class="card">
+                <img src="{% static member.img %}" class="card-img-top" alt="{{ member.alt }}" style="height: 194px; width: 100%; object-fit: cover;">
+                <div class="card-body">
+                  <h6 class="card-title">{{ member.name }}</h6>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

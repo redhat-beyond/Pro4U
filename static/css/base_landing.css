@@ -1,0 +1,20 @@
+.user-btn {
+    cursor: pointer;
+}
+.user-btn svg {
+    display: block;
+    height: auto;
+    width: 100%;
+    margin-bottom: -5px;
+}
+.user-btn svg path {
+    fill: white;
+    transition: 0.2s;
+}
+.user-btn svg:hover path {
+    fill: rgb(255, 193, 7);
+}
+.user-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
