@@ -26,7 +26,7 @@ urlpatterns = [
     path('learn-more/', landing_views.learn_more, name='learn_more'),
     path('', include('reservation.urls')),
     path('', include('SearchHistory.urls')),
-    path('client/', include('account.urls.client_urls')),
-    path('professional/', include('account.urls.professional_urls')),
-    path('', include('chatmessage.urls'))
+    path('client/', include(('account.urls.client_urls', 'client_urls'))),
+    path('professional/', include(('account.urls.professional_urls', 'professional_urls'))),
+    path('', include('chatmessage.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
