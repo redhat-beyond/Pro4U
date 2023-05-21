@@ -1,5 +1,5 @@
 import random
-from django.contrib.auth.decorators import login_required
+
 from django.db.models import Avg
 from django.shortcuts import render
 
@@ -8,7 +8,7 @@ from account.models.professional import Professional
 
 MAX_PROFESSIONALS = 48
 
-@login_required
+
 def homepage(request):
     # TODO: add images for professionals
     db_professionals = Professional.objects.annotate(avg_rating=Avg('review__rating'))

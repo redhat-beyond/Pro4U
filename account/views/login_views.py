@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from account.forms import LoginForm
+from account.models.professional import Professional
 
 
 def sign_in(request):
@@ -20,6 +21,8 @@ def sign_in(request):
                 login(request, user)
                 messages.success(request, f'Hi {username.title()}, welcome back!')
                 # I'll change it when we have the proper page
-                return redirect('show_profile', professional_id=1)
+                professional = Professional.objects.filter(profile_id__user_id=request.user)[0]
+                professional_id = professional.professional_id
+                return redirect('show_profile', professional_id=professional_id)
         messages.error(request, 'Invalid username or password')
         return render(request, 'account/login.html', {'form': form})

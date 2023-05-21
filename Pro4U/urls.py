@@ -22,8 +22,8 @@ from landing import views as landing_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('homeProfile', landing_views.homepage, name='home_profile'),
-    path('', landing_views.learn_more, name='learn_more'),
+    path('', landing_views.homepage, name='homepage'),
+    path('learn-more/', landing_views.learn_more, name='learn_more'),
     path('', include('reservation.urls')),
     path('', include('account.urls.login_urls')),
     path('client/', include('account.urls.client_urls')),
