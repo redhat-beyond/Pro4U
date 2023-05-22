@@ -32,17 +32,19 @@
         </div>
         <!-- Search bar -->
         <div class="col-3">
-          <div class="input-group">
-            <input type="search" class="form-control" placeholder="Search...">
-            <button type="button" class="btn btn-warning">
-              <!-- TODO: implement search functionality -->
-              <i>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="margin-bottom: 2px;">
-                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                </svg>
-              </i>
-            </button>
-          </div>
+          {% if user_id %}
+            <div class="input-group">
+              <input type="search" class="form-control" placeholder="Search...">
+              <button type="button" class="btn btn-warning">
+                <!-- TODO: implement search functionality -->
+                <i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="margin-bottom: 2px;">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                  </svg>
+                </i>
+              </button>
+            </div>
+          {% endif %}
         </div>
         <div class="dropdown">
           <!-- User bar (guest or logged-in) | Originally from AirBNB, with modifications -->
@@ -68,11 +70,11 @@
               </li>
             {% else %}
               <li>
-                {% if user_id.profile_id.user_type == 'P' %}
+                {% if user_id.profile_id.user_type == user_type.PROFESSIONAL.value %}
                   <a class="dropdown-item" href="{% url 'professional_urls:show_profile' professional_id=user_id.professional_id %}">
                     Profile
                   </a>
-                {% else %}
+                {% elif user_id.profile_id.user_type == user_type.CLIENT.value %}
                   <a class="dropdown-item" href="{% url 'client_urls:show_profile' client_id=user_id.client_id %}">
                     Profile
                   </a>
