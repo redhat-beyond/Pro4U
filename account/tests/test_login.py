@@ -1,27 +1,9 @@
 import pytest
-from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-USERNAME = "test1"
-PASSWORD = 'PASSWORD'
-
-
-@pytest.fixture
-def new_user():
-    user = User(username=USERNAME,
-                first_name="test",
-                last_name="mctest",
-                email="test123@gmail.com")
-
-    user.set_password(PASSWORD)
-    return user
-
-
-@pytest.fixture
-def persist_user(new_user):
-    new_user.save()
-    return new_user
+USERNAME = "testusername3"
+PASSWORD = 'testpassword3'
 
 
 @pytest.mark.django_db
@@ -30,13 +12,13 @@ class TestLoginView:
         response = client.get('/login/')
         assert response.status_code == 200
 
-    def test_sign_in_POST_valid(self, client, persist_user):
+    def test_sign_in_POST_valid(self, client, professional):
         response = client.post('/login/', {
             'username': USERNAME,
             'password': PASSWORD,
         })
         assert response.status_code == 302
-        assert response.url == reverse('invokeIndexPage')
+        assert response.url == reverse('show_profile', args=[professional.pk])
 
     def test_sign_in_POST_invalid(self, client):
         response = client.post('/login/', {

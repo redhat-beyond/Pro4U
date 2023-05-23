@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from account.forms import LoginForm
 from account.models.professional import Professional
+from account.models.client import Client
 
 
 def sign_in(request):
@@ -21,8 +22,15 @@ def sign_in(request):
                 login(request, user)
                 messages.success(request, f'Hi {username.title()}, welcome back!')
                 # I'll change it when we have the proper page
-                professional = Professional.objects.filter(profile_id__user_id=request.user)[0]
-                professional_id = professional.professional_id
-                return redirect('show_profile', professional_id=professional_id)
+                professional_queryset = Professional.objects.filter(profile_id__user_id=request.user)
+                if professional_queryset.exists():
+                    professional = professional_queryset.first()
+                    professional_id = professional.professional_id
+                    return redirect('show_profile', professional_id=professional_id)
+                else:
+                    client = Client.objects.filter(profile_id__user_id=request.user)[0]
+                    client_id = client.client_id
+                    return redirect('show_profile', client_id=client_id)
+
         messages.error(request, 'Invalid username or password')
         return render(request, 'account/login.html', {'form': form})
