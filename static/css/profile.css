@@ -129,7 +129,7 @@ ul.online-users li span.online-dot{
   border: 2px solid #fff;
   left: 0;
   right: 0;
-  margin: auto;
+ margin: auto;
 }
 
 img.profile-photo {
@@ -166,3 +166,4 @@ ul.online-users {
      cursor: pointer;
      margin:left;
 }
+
