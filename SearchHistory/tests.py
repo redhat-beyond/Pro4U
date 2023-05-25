@@ -1,6 +1,5 @@
 from SearchHistory.models import SearchHistory
 import pytest
-from django.db.models import Max
 
 
 @pytest.fixture
@@ -26,9 +25,6 @@ class TestSearchHistoryModel:
         assert searchHistory not in SearchHistory.objects.all()
 
     def test_get_last_professionals_search_by_client(self, persisted_search_history, demo_client, expected_result=5):
-        expected_professionals = SearchHistory.objects.filter(client_id=demo_client)
-        expected_professionals = expected_professionals.values('professional_id').annotate(max_date=Max('date'))
-        expected_professionals = expected_professionals.order_by('-max_date')[:expected_result]
-        expected_professionals = [p['professional_id'] for p in expected_professionals]
+        expected_professionals = SearchHistory.objects.filter(client_id=demo_client).order_by('-date')[:expected_result]
         result = SearchHistory.get_last_professionals_search_by_client(persisted_search_history[2])
         assert sorted(result) == sorted(expected_professionals)

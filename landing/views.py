@@ -1,15 +1,35 @@
 import random
 
-from django.db.models import Avg
-from django.shortcuts import render
+from enum import Enum
 
+from django.db.models import Avg
+from django.shortcuts import render, get_object_or_404
+
+from account.models.client import Client
+from account.models.profile import Profile
 from landing.models import TeamMember
 from account.models.professional import Professional
 
 MAX_PROFESSIONALS = 48
 
 
+class UserType(Enum):
+    CLIENT = 'C'
+    PROFESSIONAL = 'P'
+
+
 def homepage(request):
+    user = request.user
+    user_id = None
+
+    if user.is_authenticated:
+        profile = get_object_or_404(Profile, user_id=user)
+
+        if profile.user_type == UserType['PROFESSIONAL'].value:
+            user_id = get_object_or_404(Professional, profile_id=profile)
+        elif profile.user_type == UserType.CLIENT.value:
+            user_id = get_object_or_404(Client, profile_id=profile)
+
     # TODO: add images for professionals
     db_professionals = Professional.objects.annotate(avg_rating=Avg('review__rating'))
     # Rounds average rating for each professional
@@ -19,15 +39,16 @@ def homepage(request):
     random.shuffle(professionals)
     # Context
     context = {
-        'client': None,
-        'professionals': professionals[:MAX_PROFESSIONALS]  # Shows only the 'MAX_PROFESSIONALS' first professionals
+        'user_id': user_id,
+        'user_type': UserType.__members__,
+        'professionals': professionals[:MAX_PROFESSIONALS],  # Shows only the 'MAX_PROFESSIONALS' first professionals
     }
     return render(request, 'landing/homepage.html', context=context)
 
 
 def round_avg_rating(professionals):
     """
-    f(3.55555555555555)=3.55 -> by rounding. It rounds the avg rating of a professional.
+    f(3.67124)=3.7 -> by rounding. It rounds the avg rating of a professional.
     """
     for professional in professionals:
         if professional.avg_rating is not None:
