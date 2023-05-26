@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('reservation.urls')),
     path('', include('account.urls.login_urls')),
     path('', include('SearchHistory.urls')),
-    path('client/', include(('account.urls.client_urls', 'client_urls'))),
-    path('professional/', include(('account.urls.professional_urls', 'professional_urls'))),
+    path('client/', include(('account.urls.profile_urls', 'profile_urls'))),
+    path('professional/', include(('account.urls.profile_urls', 'profile_urls'))),
     path('', include('chatmessage.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

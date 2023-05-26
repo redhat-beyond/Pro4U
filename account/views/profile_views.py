@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
-def user_profile(request):
+@login_required
+def user_profile(request, entity_id):
     if request.user.is_authenticated:
         return render(request, 'account/profile.html')
     return render(request, 'landing/homepage.html')

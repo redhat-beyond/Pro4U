@@ -26,11 +26,11 @@ def sign_in(request):
                 if professional_queryset.exists():
                     professional = professional_queryset.first()
                     professional_id = professional.professional_id
-                    return redirect('professional_urls:show_profile', professional_id=professional_id)
+                    return redirect('profile_urls:user_profile', entity_id=professional_id)
                 else:
                     client = Client.objects.filter(profile_id__user_id=request.user)[0]
                     client_id = client.client_id
-                    return redirect('client_urls:show_profile', client_id=client_id)
+                    return redirect('profile_urls:user_profile', entity_id=client_id)
 
         messages.error(request, 'Invalid username or password')
         return render(request, 'account/login.html', {'form': form})
