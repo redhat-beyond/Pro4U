@@ -1,13 +1,9 @@
 {% extends 'base_reservation.html' %}
 
-{% block title %}
-Schedule Details
-{% endblock %}
-
-{% block content %}
+{% block reservation_content %}
     <div class="container">
         <div class="clearfix">
-            <a class="btn btn-primary left" href=""> Calendar </a>
+            <a class="btn btn-primary left" href="{% url 'calendar' %}"> Calendar </a>
             <a class="btn btn-info right mr-2" href="{% url 'schedule_edit' schedule.pk %}"> Edit Schedule </a>
             <a class="btn btn-info right mr-2" href="{% url 'remove_schedule' schedule.pk %}"> Delete Schedule </a>
         </div>
