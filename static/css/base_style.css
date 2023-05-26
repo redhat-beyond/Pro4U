@@ -49,37 +49,6 @@ a:hover {
   text-decoration: underline;
 }
 
-
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0.5rem;
-}
-
-.header {
-  border-bottom: solid 1px var(--color-light);
-}
-
-.header .container {
-  display: flex;
-  align-items: center;
-  gap:1rem;
-
-}
-
-.nav {
-	display:flex;
-	gap:1rem;
-	align-items: center;
-	justify-content: center;
-	flex-basis: 100%;
-}
-
-.nav a:nth-last-child(2) {
-	margin-left: auto;
-	font-weight: bold;
-}
-
 /* form */
 
 .card {
