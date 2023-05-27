@@ -19,7 +19,7 @@ class BaseTemplateObjects(Enum):
     SEARCH_DIV_CLASS = b'<div class="input-group">'
     SEARCH = b'Search...'
     # Sidebar
-    SIDEBAR = b'\'s Sidebar...'
+    SIDEBAR = b'\'s Sidebar'
 
 
 @pytest.mark.django_db
@@ -50,7 +50,7 @@ class TestBaseNavigationBar:
         assert BaseTemplateObjects.SEARCH_DIV_CLASS.value in response.content
         assert BaseTemplateObjects.SEARCH.value in response.content
         # Sidebar
-        user_first_name_sidebar = (user.profile_id.user_id.first_name + BaseTemplateObjects.SIDEBAR.value.decode())[:-3]
+        user_first_name_sidebar = (user.profile_id.user_id.first_name + BaseTemplateObjects.SIDEBAR.value.decode())
         assert user_first_name_sidebar in response.content.decode()
         # User menu bar
         assert BaseTemplateObjects.PROFILE.value in response.content
