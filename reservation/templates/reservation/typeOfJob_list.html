@@ -1,18 +1,23 @@
-{%extends 'base.html'%}
+{%extends 'account/profile.html' %}
+{% load static %}
 
-{%block content%}
+<!--Add stylesheets dynamically-->
+{% block head_content2 %}
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+{% endblock %}
 
-<div class="center">
-	<h2>My type of Job List</h2>
-	<ul class="typeOfJob">
-		{% for typeOfjob in typeOfjobs_by_pro %}
-			<li><a>{{ typeOfjob.typeOfJob_name }}   {{ typeOfjob.price }}</a>
-				 <div  class="task-controls">
-				 	<a href="{%url 'typeOfJob_delete' typeOfjob.typeOfJob_id %}"><i class="bi bi-trash"></i> </a>
-					<a href="{%url 'typeOfJob_update' typeOfjob.typeOfJob_id %}"><i class="bi bi-pencil-square"></i></a>
-		         </div>
-		    </li>
-		{% endfor %}
-	</ul>
-</div>
-{%endblock content%}
+{%block center-content%}
+    <div class="center">
+        <h2>My type of Job List</h2>
+        <ul class="typeOfJob">
+            {% for typeOfjob in typeOfjobs_by_pro %}
+                <li><a>{{ typeOfjob.typeOfJob_name }}   {{ typeOfjob.price }}</a>
+                     <div class="typeOfJob-controls">
+                        <a href="{%url 'typeOfJob_delete' typeOfjob.typeOfJob_id %}"><i class="bi bi-trash"></i> </a>
+                        <a href="{%url 'typeOfJob_update' typeOfjob.typeOfJob_id %}"><i class="bi bi-pencil-square"></i></a>
+                     </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{%endblock %}
