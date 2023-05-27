@@ -1,0 +1,89 @@
+{%extends 'landing/base.html'%}
+{%load static %}
+<!--Add stylesheets dynamically-->
+{% block head_content %}
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+{% endblock %}
+<!--Add web title dynamically-->
+{% block title %}
+    Login
+{% endblock %}
+<!--Add body content dynamically-->
+{%block content%}
+	<div class="center" style="margin-top: 200px;">
+	  <form method="post" novaldiate class="card" enctype="multipart/form-data">
+	  	{% csrf_token %}
+	    <h2 class="text-center">Create your account</h2>
+		{% for field in form %}
+	    		{{ field.label_tag }}
+	        	{{ field }}
+	        	{% if field.errors %}
+	        		<small class="error">{{ field.errors|striptags  }}</small>
+	        	{% endif %}
+		{% endfor %}
+  <form>
+    <label>
+      <input type="radio" name="option" value="client" checked onclick="showFields()"> Client
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="option" value="professional" onclick="showFields()"> Professional
+    </label>
+    <br>
+
+    <div id="additionalFieldsClient" class="additional-fields">
+      <!-- Additional fields here -->
+      <label>
+        Birthday:
+        <input type="date" name="Birthday">
+      </label>
+    </div>
+	<div id="additionalFieldsProfessional" class="additional-fields">
+      <!-- Additional fields here -->
+      <label>
+        Profession:
+        <select name="Profession">
+          {% for profession in professions %}
+            <option value="{{ profession.0 }}">{{ profession.1 }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <br>
+      <label>
+        Description:
+        <textarea name="description" oninput="autoResizeTextarea(this)"></textarea>
+  <script>
+    function autoResizeTextarea(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+  </script>
+      </label>
+    </div>
+  </form>
+
+  <script>
+    function showFields() {
+      var additionalFieldsClient = document.getElementById('additionalFieldsClient');
+      var additionalFieldsProfessional = document.getElementById('additionalFieldsProfessional');
+
+      if (document.querySelector('input[value="client"]:checked')) {
+        additionalFieldsClient.style.display = 'block';
+        additionalFieldsProfessional.style.display = 'none';
+      } else if (document.querySelector('input[value="professional"]:checked')) {
+        additionalFieldsClient.style.display = 'none';
+        additionalFieldsProfessional.style.display = 'block';
+      }
+    }
+
+    showFields();
+
+  </script>
+
+		<input type="submit" value="Register" class="btn btn-primary full-width">
+		<hr>
+		<p class="text-center">Already have an account? <a href="{% url 'login'%}">Login Here</a></p>
+		</form>
+	</div>
+
+{%endblock content%}

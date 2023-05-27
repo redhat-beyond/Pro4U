@@ -29,5 +29,6 @@ urlpatterns = [
     path('', include('SearchHistory.urls')),
     path('client/', include(('account.urls.profile_urls', 'profile_urls'))),
     path('professional/', include(('account.urls.profile_urls', 'profile_urls'))),
+    path('register/', include(('account.urls.register_urls', 'register_urls'))),
     path('', include('chatmessage.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
