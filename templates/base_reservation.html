@@ -1,22 +1,17 @@
-<!-- cal/templates/cal/base.html -->
-
+{% extends 'account/profile.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
 
-<head>
+{% block head_content2 %}
   <!-- Required meta tags -->
-  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'css/calender.css' %}">
-  <title>Django Calendar App</title>
-</head>
-<body>
+{% endblock %}
+{% block center-content %}
 
-  {% block content %}
+  {% block reservation_content %}
 
   {% endblock %}
 
@@ -31,5 +26,4 @@
 
   {% block script %}
   {% endblock %}
-</body>
-</html>
+{% endblock %}
