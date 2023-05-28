@@ -19,7 +19,7 @@
     {% block style %}
     {% endblock %}
   </head>
-  <body class="bg-light text-dark">
+  <body class="bg-light text-dark" style="padding-bottom: 59px;">
     <!-- Navigation bar -->
     <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
       <div class="container">
@@ -105,7 +105,7 @@
     </nav>
     <!--Messages - Error message if the input is invalid, or success login-->
     <main>
-      <div class="container col-md-4" style="width:400px; margin-top: 100px;">
+      <div class="container col-md-4 container col-md-4 position-fixed start-50 translate-middle" style="width:400px; margin-top: -27px;">
         {% if messages %}
           {% for message in messages %}
             <div class="alert alert-{{message.tags}}">
