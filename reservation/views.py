@@ -1,4 +1,6 @@
-from reservation.models import Schedule, TypeOfJob
+from reservation.models import Schedule, TypeOfJob, Appointment
+from account.models.professional import Professional
+from account.models.client import Client
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views import generic
@@ -6,13 +8,18 @@ from django.utils.safestring import mark_safe
 from reservation.utils import Calendar
 from reservation.forms import ScheduleForm, TypeOfJobForm
 from django.contrib import messages
-from datetime import datetime, timezone, timedelta, date
+from datetime import datetime, timedelta, date
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import calendar
+import pytz
 
-now = datetime.now(timezone.utc)+timedelta(hours=3)
+israel_tz = pytz.timezone('Asia/Jerusalem')
+now = timezone.now().astimezone(israel_tz)
 
 
 @login_required
@@ -87,6 +94,7 @@ def next_month(d):
     return month
 
 
+@login_required
 def create_schedule(request):
     form = ScheduleForm(request.POST or None)
     if request.POST and form.is_valid():
@@ -96,10 +104,10 @@ def create_schedule(request):
         schedule = list(Schedule.objects.filter(professional_id__profile_id__user_id=request.user,
                                                 start_day__day=start_day.day))
         if start_day >= end_day or start_day.day != end_day.day or start_day < now:
-            messages.error(request, "Entering incorrect details")
+            messages.error(request, 'Entering incorrect details')
             return redirect('schedule_new')
         elif len(schedule) >= 1:
-            messages.error(request, "You have already set a meeting schedule for this day")
+            messages.error(request, 'You have already set a meeting schedule for this day')
             return redirect('schedule_new')
         else:
             schedule = list(Schedule.objects.filter(professional_id__profile_id__user_id=request.user))
@@ -114,19 +122,65 @@ def create_schedule(request):
     return render(request, "reservation/schedule.html", {"form": form})
 
 
+@login_required
 def schedule_details(request, schedule_id):
     schedule = Schedule.objects.get(schedule_id=schedule_id)
     context = {"schedule": schedule}
     return render(request, "reservation/schedule_details.html", context)
 
 
-class ScheduleEdit(generic.UpdateView):
+@login_required
+def confirm_appointment(request, professional_id, meeting, day, month, year):
+    start_meeting = meeting.split("-")[0]
+    end_meeting = meeting.split("-")[1]
+
+    if request.method == 'GET':
+        typeOfjobs = TypeOfJob.objects.filter(professional_id__professional_id=professional_id)
+        if typeOfjobs:
+            typeOfjobs_by_pro = TypeOfJob.get_typeofjobs_by_professional(typeOfjobs[0].professional_id.professional_id)
+        else:
+            return redirect('homepage')
+
+        return render(request, "reservation/confirm_appointment.html", {
+            'professional_id': professional_id,
+            'start_meeting': start_meeting,
+            'end_meeting': end_meeting,
+            'typeOfjobs_by_pro': typeOfjobs_by_pro,
+            'day': day,
+            'month': month,
+            'year': year
+        })
+
+    if request.method == 'POST':
+        selected_service = request.POST.get('service')
+        typeOfJob = TypeOfJob.objects.filter(typeOfJob_id=selected_service).first()  # Use first() instead of [0]
+        professional = Professional.objects.filter(
+            professional_id=professional_id).first()  # Use first() instead of [0]
+        client = Client.objects.filter(profile_id__user_id=request.user).first()  # Use first() instead of [0]
+
+        start_appointment = datetime(year, month, day, int(start_meeting.split(':')[0]),
+                                     int(start_meeting.split(':')[1]))
+        end_appointment = datetime(year, month, day, int(end_meeting.split(':')[0]), int(end_meeting.split(':')[1]))
+
+        appointment = Appointment.objects.create(
+            professional_id=professional,
+            client_id=client,
+            typeOfJob_id=typeOfJob,
+            start_appointment=start_appointment,
+            end_appointment=end_appointment
+        )
+        appointment.save()
+
+        return redirect('make_appointment', pk=professional_id)
+
+
+class ScheduleEdit(LoginRequiredMixin, generic.UpdateView):
     model = Schedule
     fields = ["start_day", "end_day", "meeting_time"]
     template_name = "reservation/schedule.html"
 
 
-class ScheduleDeleteView(generic.DeleteView):
+class ScheduleDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Schedule
     template_name = "reservation/schedule_delete.html"
     success_url = reverse_lazy("calendar")
@@ -134,13 +188,30 @@ class ScheduleDeleteView(generic.DeleteView):
 
 class CalendarView(LoginRequiredMixin, generic.ListView):
     model = Schedule
-    template_name = "reservation/calendar.html"
+    user = False
+
+    def get_template_names(self):
+        if self.user:
+            return ["reservation/make_appointment.html"]
+        else:
+            return ["reservation/calendar.html"]
 
     def get_context_data(self, **kwargs):
+        user = self.user
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get("month", None))
-        schedule = list(Schedule.objects.filter(professional_id__profile_id__user_id=self.request.user))
-        cal = Calendar(d.year, d.month, schedule[0].professional_id)
+        if user is False:
+            schedule = list(Schedule.objects.filter(professional_id__profile_id__user_id=self.request.user))
+        else:
+            professional_id = self.kwargs['pk']
+            schedule = list(Schedule.objects.filter(professional_id__professional_id=professional_id))
+            context["professional_id"] = professional_id
+
+        if schedule:
+            cal = Calendar(d.year, d.month, schedule[0].professional_id.professional_id, user)
+        else:
+            cal = Calendar(d.year, d.month, None, user)
+
         html_cal = cal.formatmonth(withyear=True)
         context["calendar"] = mark_safe(html_cal)
         context["prev_month"] = prev_month(d)

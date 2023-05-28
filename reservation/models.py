@@ -64,15 +64,20 @@ class Schedule(models.Model):
     meeting_time = models.PositiveIntegerField(null=False, blank=False)
 
     @staticmethod
-    def get_possible_meetings(professional_id: int, date: date):
+    def get_possible_meetings(professional_id: int, day: int, month: int, year: int):
         professional_schedule_day = Schedule.objects.filter(professional_id=professional_id,
-                                                            start_day__year=date.year,
-                                                            start_day__month=date.month,
-                                                            start_day__day=date.day)
+                                                            start_day__day=day,
+                                                            start_day__month=month,
+                                                            start_day__year=year)
+
+        if not professional_schedule_day:
+            return []
         meeting_time = professional_schedule_day[0].meeting_time
         meetings = []
-        start_time = datetime.combine(date, professional_schedule_day[0].start_day.time())
-        end_time = datetime.combine(date, professional_schedule_day[0].end_day.time())
+        start_time = datetime.combine(professional_schedule_day[0].start_day.date(),
+                                      professional_schedule_day[0].start_day.time())
+        end_time = datetime.combine(professional_schedule_day[0].end_day.date(),
+                                    professional_schedule_day[0].end_day.time())
         while start_time + timedelta(minutes=meeting_time) <= end_time:
             meetings_str = f"{start_time.time().strftime('%H:%M')}-" \
                            f"{(start_time + timedelta(minutes=meeting_time)).time().strftime('%H:%M')}"
@@ -81,15 +86,15 @@ class Schedule(models.Model):
         return meetings
 
     @staticmethod
-    def get_free_meetings(professional_id: int, date: date):
+    def get_free_meetings(professional_id: int, day: int, month: int, year: int):
         free_meetings = []
-        meetings = Schedule.get_possible_meetings(professional_id, date)
+        meetings = Schedule.get_possible_meetings(professional_id, day, month, year)
         for i, j in enumerate(meetings):
             start_meetings = meetings[i].split("-")[0]
             exists_appointment = Appointment.objects.filter(professional_id=professional_id,
-                                                            start_appointment__year=date.year,
-                                                            start_appointment__month=date.month,
-                                                            start_appointment__day=date.day,
+                                                            start_appointment__day=day,
+                                                            start_appointment__month=month,
+                                                            start_appointment__year=year,
                                                             start_appointment__hour=int(start_meetings.split(":")[0]),
                                                             start_appointment__minute=int(start_meetings.split(":")[1]))
             if len(exists_appointment) == 0:

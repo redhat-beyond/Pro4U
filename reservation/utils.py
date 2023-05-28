@@ -1,19 +1,45 @@
 from calendar import HTMLCalendar
 from reservation.models import Schedule
+from django.urls import reverse
+from django.utils import timezone
+import pytz
+
+israel_tz = pytz.timezone('Asia/Jerusalem')
+now = timezone.now().astimezone(israel_tz)
 
 
 class Calendar(HTMLCalendar):
-    def __init__(self, year=None, month=None, professional_id=None):
+    def __init__(self, year=None, month=None, professional_id=None, user=None):
         self.year = year
         self.month = month
         self.professional_id = professional_id
+        self.user = user
         super(Calendar, self).__init__()
 
     def formatday(self, day, schedule):
-        schedule_per_day = schedule.filter(start_day__day=day)
+        if self.user is False:
+            schedule_per_day = schedule.filter(start_day__day=day)
+        else:
+            schedule_per_day = Schedule.get_possible_meetings(self.professional_id, day, self.month, self.year)
         d = ""
         for schedule in schedule_per_day:
-            d += f"<li>  {schedule.get_html_url}  </li>"
+            if self.user is False:
+                if schedule.start_day.day < now.day:
+                    start_time = schedule.start_day.strftime("%H:%M:%S")
+                    end_time = schedule.end_day.strftime("%H:%M:%S")
+                    d += f"<li> {start_time} - {end_time}  </li>"
+                else:
+                    d += f"<li>  {schedule.get_html_url}  </li>"
+            else:
+                if day < now.day or (day == now.day and int(schedule.split(':')[0]) < now.hour) or \
+                        (day == now.day and int(schedule.split(':')[0]) == now.hour
+                         and int(schedule.split(':')[1].split('-')[0]) < now.minute)\
+                        or schedule not in Schedule.get_free_meetings(self.professional_id, day, self.month, self.year):
+                    d += f"<li> {schedule}</li>"
+                else:
+                    url = reverse("confirm_appointment",
+                                  args=[self.professional_id, day, self.month, self.year, schedule])
+                    d += f'<a href="{url}"> {schedule},</a>'
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return "<td></td>"

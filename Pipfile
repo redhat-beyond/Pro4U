@@ -12,6 +12,7 @@ pytest-lazy-fixture = "*"
 flake8 = "*"
 pytest = "*"
 pytest-django = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.9"
