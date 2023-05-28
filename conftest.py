@@ -116,7 +116,7 @@ def make_professional(make_profile):
 
 
 @pytest.fixture
-def make_client(make_profile):
+def make_client(make_profile) -> Callable:
     def make(
         username: str = USER_INFORMATION.get('username')[0],
         password: str = USER_INFORMATION.get('password')[0],
