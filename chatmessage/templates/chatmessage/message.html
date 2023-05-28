@@ -17,7 +17,7 @@
         </div>
         <div class="inbox_chat">
           {% for contact in contacts %}
-      <a href="http://127.0.0.1:8000/chatmessage/{{ user }}/{% if sender_type == 'P' %}{{ contact.professional_id }}{% else %}{{ contact.client_id }}{% endif %}/{{ sender_type }}/">
+      <a href="/chatmessage/{{ user }}/{% if sender_type == 'P' %}{{ contact.professional_id }}{% else %}{{ contact.client_id }}{% endif %}/{{ sender_type }}/">
             <div class="chat_list">
               <div class="chat_people">
                 <div class="chat_ib">
