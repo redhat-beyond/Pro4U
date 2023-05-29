@@ -1,0 +1,51 @@
+{% extends 'landing/base.html' %}
+{% load static %}
+
+{% block head_content %}
+  <link rel="stylesheet" href="{% static 'css/review_forms.css' %}">
+{% endblock %}
+
+<!-- Your Review - Joe Doe -->
+{% block title %}
+  Your Review - {{ professional.profile_id.user_id.first_name }} {{ professional.profile_id.user_id.last_name }}
+{% endblock %}
+
+{% block content %}
+  <div class="container" style="margin-top: 156px;">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="star-rating" dir="rtl" style="margin-top: -14px;">
+        {% for i in "54321" %}
+          {% if form.rating.value and form.rating.value|stringformat:"s" == i %}
+            <!-- ONLY for update review - "remembers" recent user rating -->
+            <input type="radio" name="{{ form.rating.name }}" id="rating-{{ i }}" value="{{ i }}" checked>
+          {% else %}
+            <input type="radio" name="{{ form.rating.name }}" id="rating-{{ i }}" value="{{ i }}">
+          {% endif %}
+          <label for="rating-{{ i }}">&#9733;</label>
+        {% endfor %}
+      </div>
+      <h5 style="margin: 10px 0 25px 0;">
+        Share more about your experience
+      </h5>
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col">
+            <textarea class="form-control" name="description" id="description" placeholder="Share details of your own experience with this professional">
+{{ form.description.value }}</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row p-0">
+        <div class="col" style="padding-top: 10px;">
+          <a href="{% url 'reviews' pk=professional.pk %}" class="btn" style="text-decoration: none; padding: 0;">
+            <button type="button" class="btn btn-primary">
+              Cancel
+            </button>
+          </a>
+          <input type="submit" class="btn btn-dark" value="Post" style="margin-left: 10px;">
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

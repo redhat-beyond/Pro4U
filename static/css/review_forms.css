@@ -1,0 +1,26 @@
+.star-rating {
+    display: inline-block;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    color: rgb(220, 220, 220);
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: rgb(255,215,0);
+}
+
+.star-rating label:hover:before,
+.star-rating label:hover ~ label:before,
+.star-rating input:checked ~ label:before {
+    content: "\2605";
+    position: absolute;
+}
