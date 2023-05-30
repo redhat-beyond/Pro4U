@@ -166,31 +166,3 @@ textarea {
   justify-content: center;
   min-height: 70vh;
 }
-
-.typeOfJob {
-  list-style: none;
-  width: 100%;
-  max-width: 450px;
-}
-
-.typeOfJob li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-bottom: solid 1px var(--color-dark);
-  padding: 0.5rem 0;
-}
-.typeOfJob li:last-of-type {
-  border-bottom: none;
-}
-
-.typeOfJob-controls {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.typeOfJob-controls a {
-  color: var(--color-dark);
-}

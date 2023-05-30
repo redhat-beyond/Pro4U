@@ -3,10 +3,10 @@ from . import views
 
 
 urlpatterns = [
-    path('typeOfJob/<int:professional>/', views.typeOfJob_list, name='typeOfJob'),
-    path('typeOfJob/create/<int:professional>/', views.create_typeOfJob, name='typeOfJob_create'),
+    path('typeOfJob/', views.typeOfJob_list, name='typeOfJob'),
+    path('typeOfJob/create/', views.create_typeOfJob, name='typeOfJob_create'),
     path('typeOfJob/update/<int:pk>/', views.TypeOfJobUpdate.as_view(), name='typeOfJob_update'),
-    path('typeOfJob/delete/<int:pk>/', views.TypeOfJobDelete.as_view(), name='typeOfJob_delete'),
+    path('typeOfJob/delete/<int:pk>/', views.type_of_job_delete, name='typeOfJob_delete'),
     path("calendar/", views.CalendarView.as_view(), name="calendar"),
     path("schedule_new/", views.create_schedule, name="schedule_new"),
     path("schedule/<int:schedule_id>/details/", views.schedule_details, name="schedule_detail"),
