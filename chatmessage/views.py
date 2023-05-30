@@ -21,7 +21,7 @@ def chat(request, contact_id):
         contacts = list(set(Chatmessage.get_all_client_contacts(client)))
         contact_name = professional.profile_id.user_id.first_name
         sender_type = 'C'
-    
+
     chat = Chatmessage.get_chat_between_professional_and_client(professional_id=professional, client_id=client)
 
     context = {
@@ -60,7 +60,7 @@ def all_chats(request):
         sender_type = 'C'
         if contacts != []:
             return chat(request, contacts[0].professional_id)
-        
+    
     if contacts == []:
         contact_name = ''
 
