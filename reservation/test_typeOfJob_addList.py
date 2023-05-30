@@ -14,11 +14,13 @@ def save_type_of_job(make_typeOfJob):
 
 @pytest.mark.django_db
 class TestTypeOfJob:
-    def test_typeOfJob_list(self, client, professional):
+    def test_typeOfJob_list(self, client, professional, make_typeOfJob):
+        typeOfJob = make_typeOfJob()
         client.force_login(professional.profile_id.user_id)
         response = client.get(reverse('typeOfJob'))
         assert response.status_code == 200
         assert 'reservation/typeOfJob_list.html' in response.templates[0].name
+        assert any(typeOfJob.pk == existed_typeOfJob.pk for existed_typeOfJob in response.context['typeOfjobs_by_pro'])
 
     def test_create_typeOfJob(self, client, professional, save_type_of_job):
         client.force_login(professional.profile_id.user_id)
