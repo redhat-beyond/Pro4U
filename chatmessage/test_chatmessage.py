@@ -5,10 +5,9 @@ import pytest
 
 @pytest.mark.django_db
 def test_get_chat(client, professional, demo_client):
+    client.force_login(demo_client.profile_id.user_id)
     contact_id = professional.professional_id
-    sender_id = demo_client.client_id
-    sender_type = 'C'
-    url = reverse('chat_message', args=[sender_id, contact_id, sender_type])
+    url = reverse('chat_message', args=[contact_id])
     response = client.get(url)
     assert response.status_code == 200
     assert 'chatmessage/message.html' in response.templates[0].name
@@ -16,15 +15,14 @@ def test_get_chat(client, professional, demo_client):
 
 @pytest.mark.django_db
 def test_send_message_from_professional_to_client(client, professional, demo_client):
+    client.force_login(professional.profile_id.user_id)
     contact_id = demo_client.client_id
-    sender_id = professional.professional_id
-    sender_type = 'P'
 
     post_data = {
         'msg_sent': 'Test message!',
     }
 
-    url = reverse('chat_message', args=[sender_id, contact_id, sender_type])
+    url = reverse('chat_message', args=[contact_id])
     response = client.post(url, post_data)
 
     assert response.status_code == 200
@@ -39,15 +37,14 @@ def test_send_message_from_professional_to_client(client, professional, demo_cli
 
 @pytest.mark.django_db
 def test_send_message_from_client_to_professional(client, professional, demo_client):
+    client.force_login(demo_client.profile_id.user_id)
     contact_id = professional.professional_id
-    sender_id = demo_client.client_id
-    sender_type = 'C'
 
     post_data = {
         'msg_sent': 'Test message!',
     }
 
-    url = reverse('chat_message', args=[sender_id, contact_id, sender_type])
+    url = reverse('chat_message', args=[contact_id])
     response = client.post(url, post_data)
 
     assert response.status_code == 200
@@ -62,11 +59,10 @@ def test_send_message_from_client_to_professional(client, professional, demo_cli
 
 @pytest.mark.django_db
 def test_cant_send_empty_message(client, professional, demo_client):
+    client.force_login(professional.profile_id.user_id)
     contact_id = demo_client.client_id
-    sender_id = professional.professional_id
-    sender_type = 'P'
 
-    url = reverse('chat_message', args=[sender_id, contact_id, sender_type])
+    url = reverse('chat_message', args=[contact_id])
 
     post_data = {
         'msg_sent': 'The message sent before the empty message',
