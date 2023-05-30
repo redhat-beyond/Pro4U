@@ -60,7 +60,7 @@ def all_chats(request):
         sender_type = 'C'
         if contacts != []:
             return chat(request, contacts[0].professional_id)
-    
+
     if contacts == []:
         contact_name = ''
 
