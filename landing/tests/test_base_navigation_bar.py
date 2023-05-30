@@ -35,14 +35,13 @@ class TestBaseNavigationBar:
         assert BaseTemplateObjects.SIGN_UP.value in response.content
         assert BaseTemplateObjects.LOG_IN.value in response.content
 
-    def test_professional_user_sees_relevant_elements_and_links(self, client, get_response, professional):
-        self.logged_in_user_sees_relevant_elements_and_links(client, get_response, professional)
-
-    def test_client_user_sees_relevant_elements_and_links(self, client, get_response, demo_client):
-        self.logged_in_user_sees_relevant_elements_and_links(client, get_response, demo_client)
-
-    @staticmethod
-    def logged_in_user_sees_relevant_elements_and_links(client, get_response, user):
+    @pytest.mark.parametrize("user_type_fixture", [
+        pytest.lazy_fixture("make_professional"),
+        pytest.lazy_fixture("make_client")
+    ])
+    def test_logged_user_sees_relevant_elements_and_links(self, client, get_response, make_profile, user_type_fixture):
+        profile = make_profile
+        user = user_type_fixture(profile)
         client.force_login(user.profile_id.user_id)
 
         response = get_response(HOMEPAGE_VIEW_NAME)
