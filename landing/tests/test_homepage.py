@@ -27,3 +27,7 @@ class TestHomepage:
 
     def test_homepage_GET_success(self, client, get_response: Callable[[str], HttpResponse]):
         assertTemplateUsed(get_response(HOMEPAGE_VIEW_NAME), 'landing/homepage.html')
+
+    def test_homepage_GET_fail(self, client, get_response: Callable[[str], HttpResponse]):
+        with pytest.raises(AssertionError):
+            assertTemplateUsed(get_response(HOMEPAGE_VIEW_NAME), 'landing/wrong-template.html')
