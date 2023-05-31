@@ -49,37 +49,6 @@ a:hover {
   text-decoration: underline;
 }
 
-
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0.5rem;
-}
-
-.header {
-  border-bottom: solid 1px var(--color-light);
-}
-
-.header .container {
-  display: flex;
-  align-items: center;
-  gap:1rem;
-
-}
-
-.nav {
-	display:flex;
-	gap:1rem;
-	align-items: center;
-	justify-content: center;
-	flex-basis: 100%;
-}
-
-.nav a:nth-last-child(2) {
-	margin-left: auto;
-	font-weight: bold;
-}
-
 /* form */
 
 .card {
@@ -196,32 +165,4 @@ textarea {
   align-items: center;
   justify-content: center;
   min-height: 70vh;
-}
-
-.typeOfJob {
-  list-style: none;
-  width: 100%;
-  max-width: 450px;
-}
-
-.typeOfJob li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-bottom: solid 1px var(--color-dark);
-  padding: 0.5rem 0;
-}
-.typeOfJob li:last-of-type {
-  border-bottom: none;
-}
-
-.typeOfJob-controls {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.typeOfJob-controls a {
-  color: var(--color-dark);
 }

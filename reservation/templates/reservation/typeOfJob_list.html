@@ -1,18 +1,55 @@
-{%extends 'base.html'%}
+{% extends 'account/profile.html' %}
+{% load static %}
 
-{%block content%}
+<!-- Add stylesheets dynamically -->
+{% block head_content2 %}
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+{% endblock %}
 
-<div class="center">
-	<h2>My type of Job List</h2>
-	<ul class="typeOfJob">
-		{% for typeOfjob in typeOfjobs_by_pro %}
-			<li><a>{{ typeOfjob.typeOfJob_name }}   {{ typeOfjob.price }}</a>
-				 <div  class="task-controls">
-				 	<a href="{%url 'typeOfJob_delete' typeOfjob.typeOfJob_id %}"><i class="bi bi-trash"></i> </a>
-					<a href="{%url 'typeOfJob_update' typeOfjob.typeOfJob_id %}"><i class="bi bi-pencil-square"></i></a>
-		         </div>
-		    </li>
-		{% endfor %}
-	</ul>
-</div>
-{%endblock content%}
+{% block center-content %}
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col col-lg-10 col-xl-8 mx-auto">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+
+            <h2 class="text-center my-3 pb-3">My type of jobs</h2>
+
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Type of job name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for typeOfjob in typeOfjobs_by_pro %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                      <td>{{ typeOfjob.typeOfJob_name }}</td>
+                      <td>{{ typeOfjob.price }}</td>
+                      <td>
+                        <a href="{% url 'typeOfJob_delete' typeOfjob.typeOfJob_id %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'typeOfJob_update' typeOfjob.typeOfJob_id %}" class="btn btn-success btn-sm">Edit</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4 pt-2">
+                <a href="{% url 'typeOfJob_create' %}" class="btn" style="background-color: orange; color: white;">Create Type of Job</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

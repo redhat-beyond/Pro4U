@@ -19,14 +19,21 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from landing import views as landing_views
+from review import views as review_views
+from review.models import Review
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', landing_views.homepage, name='homepage'),
     path('learn-more/', landing_views.learn_more, name='learn_more'),
     path('', include('reservation.urls')),
+    path('', include('account.urls.login_urls')),
     path('', include('SearchHistory.urls')),
     path('client/', include(('account.urls.client_urls', 'client_urls'))),
     path('professional/', include(('account.urls.professional_urls', 'professional_urls'))),
+    path('professional/<int:pk>/reviews/', review_views.ReviewListView.as_view(model=Review, paginate_by=10),
+         name='reviews'),
+    path('professional/<int:pk>/reviews/new/', review_views.ReviewCreateView.as_view(), name='review-create'),
+    path('professional/<int:pk>/reviews/update/', review_views.ReviewUpdateView.as_view(), name='review-update'),
     path('', include('chatmessage.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
