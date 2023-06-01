@@ -1,6 +1,7 @@
 from calendar import HTMLCalendar
 from reservation.models import Schedule
 from django.urls import reverse
+from datetime import date
 from django.utils import timezone
 import pytz
 
@@ -31,8 +32,9 @@ class Calendar(HTMLCalendar):
                 else:
                     d += f"<li>  {schedule.get_html_url}  </li>"
             else:
-                if day < now.day or (day == now.day and int(schedule.split(':')[0]) < now.hour) or \
-                        (day == now.day and int(schedule.split(':')[0]) == now.hour
+                date_in_calendar = date(self.year, self.month, day)
+                if date_in_calendar < now.date() or (date_in_calendar == now.date() and int(schedule.split(':')[0]) < now.hour) or \
+                        (date_in_calendar == now.date() and int(schedule.split(':')[0]) == now.hour
                          and int(schedule.split(':')[1].split('-')[0]) < now.minute)\
                         or schedule not in Schedule.get_free_meetings(self.professional_id, day, self.month, self.year):
                     d += f"<li> {schedule}</li>"
