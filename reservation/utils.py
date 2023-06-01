@@ -33,7 +33,8 @@ class Calendar(HTMLCalendar):
                     d += f"<li>  {schedule.get_html_url}  </li>"
             else:
                 date_in_calendar = date(self.year, self.month, day)
-                if date_in_calendar < now.date() or (date_in_calendar == now.date() and int(schedule.split(':')[0]) < now.hour) or \
+                if date_in_calendar < now.date() or \
+                        (date_in_calendar == now.date() and int(schedule.split(':')[0]) < now.hour) or \
                         (date_in_calendar == now.date() and int(schedule.split(':')[0]) == now.hour
                          and int(schedule.split(':')[1].split('-')[0]) < now.minute)\
                         or schedule not in Schedule.get_free_meetings(self.professional_id, day, self.month, self.year):

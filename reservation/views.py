@@ -9,8 +9,6 @@ from reservation.utils import Calendar
 from reservation.forms import ScheduleForm, TypeOfJobForm
 from django.contrib import messages
 from datetime import datetime, timedelta, date
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
