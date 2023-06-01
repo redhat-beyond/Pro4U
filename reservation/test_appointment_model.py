@@ -29,7 +29,7 @@ def persisted_appointment_pool(make_appointment, demo_client):
                                     summary="")
     save_appointment(appointment)
     save_appointment(appointment2)
-    return [appointment.client_id.client_id, appointment2.client_id.client_id]
+    return [appointment, appointment2]
 
 
 @pytest.mark.django_db()
@@ -68,10 +68,12 @@ class TestAppointmentModel:
         appointment.delete()
         assert appointment not in TypeOfJob.objects.all()
 
-    def test_get_clients_by_professional(self, persisted_appointment_pool, professional):
-        assert persisted_appointment_pool == list(Appointment.get_clients(professional_id=professional))
-
-    def test_get_client_list_on_certain_day_by_professional_and_date(self, persisted_appointment_pool, professional):
+    def test_get_appointment_list_after_current_day_by_professional(self, persisted_appointment_pool, professional):
         assert persisted_appointment_pool == \
-               list(Appointment.get_client_list_on_certain_day(professional_id=professional,
-                                                               date=(current_datetime + timedelta(days=5)).date()))
+               list(Appointment.get_appointments_list_after_current_day(profile_id=professional.professional_id,
+                                                                        type_of_user=True))
+
+    def test_get_appointment_list_after_current_day_by_client(self, persisted_appointment_pool, demo_client):
+        assert persisted_appointment_pool[1] == \
+               Appointment.get_appointments_list_after_current_day(profile_id=demo_client.client_id,
+                                                                   type_of_user=False)[0]
