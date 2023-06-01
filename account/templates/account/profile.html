@@ -1,6 +1,4 @@
-{% extends 'landing/homepage.html' %}
 {% load static %}
-
 {% block head_content %}
     <!--Add stylesheets dynamically-->
     {% block head_content2 %}
@@ -23,7 +21,7 @@
                         <h5><a href="#" class="text-white">{{user.first_name}}</a></h5>
                     </div>
                     <ul class="nav-news-feed">
-                        <li><i class="fa fa-comments icon4"></i><div><div class="litext">
+                           <li><i class="fa fa-comments icon4"></i><div><div class="litext">
                             <a href="#">
                             Messages
                             </a>
@@ -58,7 +56,7 @@
                         </div></div></li>
                     </ul>
                 </div>
-                <div class="col-md-10">
+                 <div class="col-md-10">
                     {% block center-content %}
                     {% endblock %}
                 </div>
@@ -66,4 +64,3 @@
         </div>
     </div>
 {% endblock %}
-

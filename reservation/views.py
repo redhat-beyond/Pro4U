@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from account.models.professional import Professional
 from account.models.client import Client
 from reservation.utils import Calendar
+from django.contrib.auth.mixins import LoginRequiredMixin
 from reservation.forms import ScheduleForm, TypeOfJobForm
 from django.contrib import messages
 from datetime import datetime, timedelta, date
