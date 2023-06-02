@@ -12,14 +12,16 @@ def save_schedule(schedule):
 
 @pytest.mark.django_db
 class TestMakeAppointment:
-    def test_make_appointment_view(self, client, demo_client, professional):
-        client.force_login(demo_client.profile_id.user_id)
+    def test_make_appointment_view(self, client, make_client, professional):
+        client1 = make_client()
+        client.force_login(client1.profile_id.user_id)
         response = client.get(reverse('make_appointment', kwargs={'pk': professional.pk}))
         assert response.status_code == 200
         assert 'reservation/make_appointment.html' in response.templates[0].name
 
-    def test_confirm_appointment_view(self, client, demo_client, professional, save_schedule, make_typeOfJob):
-        client.force_login(demo_client.profile_id.user_id)
+    def test_confirm_appointment_view(self, client, make_client, professional, save_schedule, make_typeOfJob):
+        client1 = make_client()
+        client.force_login(client1.profile_id.user_id)
         typeOfJob1 = make_typeOfJob()
 
         data = {
@@ -59,4 +61,4 @@ class TestMakeAppointment:
         assert appointment.end_appointment.day == save_schedule.start_day.day
         assert appointment.end_appointment.hour == 11
         assert appointment.end_appointment.minute == 0
-        assert appointment.client_id == demo_client
+        assert appointment.client_id == client1
