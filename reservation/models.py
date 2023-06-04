@@ -3,6 +3,11 @@ from datetime import date, datetime, timedelta
 from account.models.professional import Professional
 from account.models.client import Client
 from django.urls import reverse
+from django.utils import timezone
+import pytz
+
+israel_tz = pytz.timezone('Asia/Jerusalem')
+now = timezone.now().astimezone(israel_tz)
 
 
 class TypeOfJob(models.Model):
@@ -42,18 +47,16 @@ class Appointment(models.Model):
         db_table = 'Appointment'
 
     @staticmethod
-    def get_clients(professional_id: int):
-        clients_list = Appointment.objects.filter(professional_id=professional_id).values_list('client_id', flat=True)
-        return clients_list
-
-    @staticmethod
-    def get_client_list_on_certain_day(professional_id: int, date: date):
-        client_list_on_certain_day = Appointment.objects.filter(professional_id=professional_id,
-                                                                start_appointment__year=date.year,
-                                                                start_appointment__month=date.month,
-                                                                start_appointment__day=date.day)\
-                                                                .values_list('client_id', flat=True)
-        return client_list_on_certain_day
+    def get_appointments_list_after_current_day(profile_id: int, type_of_user: bool):
+        appointment_list_after_current_day = []
+        if type_of_user is True:
+            appointment_list = Appointment.objects.filter(professional_id=profile_id)
+        else:
+            appointment_list = Appointment.objects.filter(client_id=profile_id)
+        for appointment in appointment_list:
+            if appointment.start_appointment >= now:
+                appointment_list_after_current_day.append(appointment)
+        return appointment_list_after_current_day
 
 
 class Schedule(models.Model):

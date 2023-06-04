@@ -11,6 +11,8 @@ urlpatterns = [
     path("make-Appointment/<int:pk>/", views.CalendarView.as_view(user=True), name="make_appointment"),
     path("confirm-Appointment/<int:professional_id>/<int:day>:<int:month>:<int:year>/<str:meeting>/",
          views.confirm_appointment, name="confirm_appointment"),
+    path('my-appointments/', views.appointment_list, name='my_appointments'),
+    path('appointment/delete/<int:pk>/', views.appointment_delete, name='appointment_delete'),
     path("schedule_new/", views.create_schedule, name="schedule_new"),
     path("schedule/<int:schedule_id>/details/", views.schedule_details, name="schedule_detail"),
     path("schedule/edit/<int:pk>/", views.ScheduleEdit.as_view(), name="schedule_edit"),

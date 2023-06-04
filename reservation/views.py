@@ -215,3 +215,29 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context["prev_month"] = prev_month(d)
         context["next_month"] = next_month(d)
         return context
+
+
+@login_required
+def appointment_list(request):
+    if request.method == 'GET':
+        professional = Professional.objects.filter(profile_id__user_id=request.user).first()
+        if professional:
+            is_pro = True
+            my_appointments = Appointment.get_appointments_list_after_current_day(professional.professional_id, True)
+        else:
+            is_pro = False
+            client = Client.objects.filter(profile_id__user_id=request.user).first()
+            my_appointments = Appointment.get_appointments_list_after_current_day(client.client_id, False)
+        if my_appointments:
+            return render(request, "reservation/myAppointments_list.html", {'my_appointments': my_appointments,
+                                                                            'is_pro': is_pro})
+        else:
+            return render(request, "reservation/myAppointments_list.html", {'my_appointments': [],
+                                                                            'is_pro': is_pro})
+
+
+@login_required
+def appointment_delete(request, pk):
+    appointment = Appointment.objects.filter(appointment_id=pk)[0]
+    appointment.delete()
+    return redirect('my_appointments')
