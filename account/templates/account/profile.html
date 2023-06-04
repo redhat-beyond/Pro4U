@@ -46,6 +46,11 @@
                                 Schedule
                             </a>
                             </div></div></li>
+                            <li><i class="far fa-star"></i><div><div class="litext">
+                            <a href="{% url 'reviews' user.profile.professional.professional_id%}">
+                                Reviews
+                            </a>
+                            </div></div></li>
                         {% elif user.profile.user_type == 'C' %}
                             <li><i class="fa fa-search"></i><div><div class="litext">
                             <a href="#">
