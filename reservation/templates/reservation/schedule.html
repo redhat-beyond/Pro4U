@@ -1,12 +1,9 @@
 {% extends 'base_reservation.html' %}
 
-{% block title %}
-Event
-{% endblock %}
 
-{% block content %}
+{% block reservation_content %}
 <div class="clearfix">
-  <a class="btn btn-info left" href=""> Calendar </a>
+  <a class="btn btn-info left" href="{% url 'calendar' %}"> Calendar </a>
 </div>
 
 <form method="post">

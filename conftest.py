@@ -116,7 +116,7 @@ def make_professional(make_profile):
 
 
 @pytest.fixture
-def make_client(make_profile):
+def make_client(make_profile) -> Callable:
     def make(
         username: str = USER_INFORMATION.get('username')[0],
         password: str = USER_INFORMATION.get('password')[0],
@@ -201,6 +201,10 @@ def make_appointment(professional, demo_client2, make_typeOfJob):
                                                  start_appointment=start_appointment,
                                                  end_appointment=end_appointment,
                                                  summary=summary)
+        appointment.professional_id.save()
+        appointment.client_id.save()
+        appointment.typeOfJob_id.save()
+        appointment.save()
         return appointment
 
     return make

@@ -1,0 +1,140 @@
+{% extends 'landing/base.html' %}
+{% load static %}
+
+<!-- Reviews - Joe Doe -->
+{% block title %}
+  Reviews about {{ professional.profile_id.user_id.first_name }} {{ professional.profile_id.user_id.last_name }}
+{% endblock %}
+
+{% block content %}
+  <div class="container" style="margin-top: 140px;">
+    {% if reviews %}
+      <!-- Mean rating and total reviews -->
+      <h1 class="display-4" style="font-weight: 500">
+        &#9733;
+        {% if avg_rating %}
+          {{ avg_rating }}
+        {% endif %}
+        &#8226;
+        {{ review_count }} reviews
+      </h1>
+      <div>
+        {% if reviews %}
+          <div class="d-flex justify-content-between" style="padding: 10px 0px 50px 0px; position: relative;">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons" style="position: absolute; left: 0;">
+              <!-- A button is 'marked' if we sort reviews according to this button -->
+              <a href="?sort_by=newest" class="btn btn-outline-secondary {% if request.GET.sort_by == 'newest' %}active{% endif %}">
+                Newest
+              </a>
+              <a href="?sort_by=oldest" class="btn btn-outline-secondary {% if request.GET.sort_by == 'oldest' %}active{% endif %}">
+                Oldest
+              </a>
+              <a href="?sort_by=highest" class="btn btn-outline-secondary {% if request.GET.sort_by == 'highest' %}active{% endif %}">
+                Highest
+              </a>
+              <a href="?sort_by=lowest" class="btn btn-outline-secondary {% if request.GET.sort_by == 'lowest' %}active{% endif %}">
+                Lowest
+              </a>
+            </div>
+            <button class="btn btn-primary btn-sm" style="position: absolute; top: 15%; right: 0;">
+              {% if not user_review %}
+                <a class="btn btn-primary btn-sm" href="{% url 'review-create' pk=professional.pk %}">
+                  Write a review
+                </a>
+              {% else %}
+                <a class="btn btn-primary btn-sm" href="{% url 'review-update' pk=professional.pk %}">
+                  Edit your review
+                </a>
+              {% endif %}
+            </button>
+          </div>
+        {% endif %}
+        <div class="infinite-container">
+          {% for review in reviews %}
+            <!-- Reviews -->
+            <div class="card mb-3 infinite-item">
+              <div class="row g-0">
+                <div class="col-md-2">
+                  {% if review.client.profile_id.img %}
+                    <img src="{{ review.client.profile_id.img }}" width="125" alt="{{ review.client.profile_id.user_id.first_name }} {{ review.client.profile_id.user_id.last_name }}">
+                  {% else %}
+                    <img src="{% static 'img/blank_profile.png' %}" width="125" alt="{{ review.client.profile_id.user_id.first_name }} {{ review.client.profile_id.user_id.last_name }}">
+                  {% endif %}
+                </div>
+                <div class="col-md-10">
+                  <div class="card-body">
+                    <!-- Review's client rating -->
+                    <h4 style="color: rgb(255,215,0); font-weight: 800;">
+                      {% if review.rating == '1' %}
+                        &#9733;<strong style="color: rgb(220, 220, 220); font-weight: 800;">&#9733;&#9733;&#9733;&#9733;</strong>
+                      {% elif review.rating == '2' %}
+                        &#9733;&#9733;<strong style="color: rgb(220, 220, 220); font-weight: 800;">&#9733;&#9733;&#9733;</strong>
+                      {% elif review.rating == '3' %}
+                        &#9733;&#9733;&#9733;<strong style="color: rgb(220, 220, 220); font-weight: 800;">&#9733;&#9733;</strong>
+                      {% elif review.rating == '4' %}
+                        &#9733;&#9733;&#9733;&#9733;<strong style="color: rgb(220, 220, 220); font-weight: 800;">&#9733;</strong>
+                      {% elif review.rating == '5' %}
+                        &#9733;&#9733;&#9733;&#9733;&#9733;
+                      {% endif %}
+                    </h4>
+                    <!-- Review's client full name & date posted -->
+                    <div class="d-flex align-items-start">
+                      <p class="card-title d-inline" style="font-weight: 600;">
+                        {{ review.client.profile_id.user_id.first_name }} {{ review.client.profile_id.user_id.last_name }}
+                      </p>
+                      <p style="margin: 0 5px;">
+                        &#183;
+                      </p>
+                      <p class="card-title d-inline" style="color: rgb(150, 150, 150);">
+                        {{ review.date_posted|date:"F d, Y" }}
+                      </p>
+                    </div>
+                    <!-- Review's description -->
+                    <p class="card-text">{{ review.description }}</p>
+                    <!-- Review's professional reply -->
+                    {% if review.reply %}
+                      <div class="card-body">
+                        <div class="d-flex align-items-start">
+                          <p class="card-title d-inline" style="font-weight: 600;">
+                            {{ review.reply.profile_id.user_id.first_name }} {{ review.reply.profile_id.user_id.last_name }}
+                          </p>
+                          <p style="margin: 0 5px;">
+                            &#183;
+                          </p>
+                          <p class="card-title d-inline" style="color: rgb(150, 150, 150);">
+                            {{ review.reply.date_posted|date:"F d, Y" }}
+                          </p>
+                          <p class="card-text">{{ review.reply.description }}</p>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <!-- Infinite scroll using pagination -->
+        {% if page_obj.has_next %}
+          <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div>
+        <h1 class="display-4" style="font-weight: 500">
+          No reviews to display.
+        </h1>
+        <div>
+          <div>
+            <a href="{% url 'review-create' pk=professional.pk %}" class="btn btn-primary">
+              Write a review
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  <script src="{% static '/js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static '/js/infinite.min.js' %}"></script>
+  <script src="{% static '/js/infinite.js' %}"></script>
+{% endblock %}

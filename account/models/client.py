@@ -6,7 +6,7 @@ from django.db.models import Q
 class Client(models.Model):
     client_id = models.BigAutoField(primary_key=True)
     profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    birthday = models.DateField()
+    birthday = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'client'
