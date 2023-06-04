@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from account.models.professional import Professional
 from account.models.client import Client
 from django.urls import reverse
