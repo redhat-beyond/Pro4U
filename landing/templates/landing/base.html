@@ -11,8 +11,6 @@
     <script src="https://kit.fontawesome.com/297bbe7878.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/base_landing.css' %}">
-    {% block head_content %}
-    {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
       {% block title %}
@@ -77,20 +75,9 @@
               </li>
             {% else %}
               <li>
-                {% with professional=request.user|retrieve_professional_by_user_id %}
-                  {% if professional %}
-                      <a class="dropdown-item" href="{% url 'professional_urls:show_profile' professional_id=professional.professional_id %}">
+                      <a class="dropdown-item" href="{% url 'profile_urls:user_profile' %}">
                           Profile
                       </a>
-                  {% endif %}
-                {% endwith %}
-                {% with client=request.user|retrieve_client_by_user_id %}
-                  {% if client %}
-                    <a class="dropdown-item" href="{% url 'client_urls:show_profile' client_id=client.client_id %}">
-                      Profile
-                    </a>
-                  {% endif %}
-                {% endwith %}
               </li>
               <li>
                 <hr class="dropdown-divider">

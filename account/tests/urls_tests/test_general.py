@@ -6,7 +6,7 @@ PROFILE_URL = '/profile/'
 
 @pytest.mark.django_db
 class TestGeneral:
-    def test_get_not_registered_entity(self, client):
+    def test_redirection_of_not_registered_entity(self, client):
         urls = ['']
         for url in urls:
             response = client.get(f"{PROFILE_URL}{url}")
