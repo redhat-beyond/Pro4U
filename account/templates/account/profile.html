@@ -1,71 +1,69 @@
-<!DOCTYPE html>
+{% extends 'landing/homepage.html' %}
 {% load static %}
-<html lang="en">
-  <head>
-    <title>{% block title %}{{ profile.user_id.first_name}}'s Profile{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8">
+
+{% block head_content %}
+    <!--Add stylesheets dynamically-->
+    {% block head_content2 %}
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    <link href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/297bbe7878.js" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-md navbar-light" style="background-color: dodgerblue;">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Pro4U</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="#">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="/admin">Login</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <script src=https://kit.fontawesome.com/297bbe7878.js crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block title %}{{ user.first_name}}'s Profile{% endblock %}
+
+{% block content %}
     <div>
         <div class="container-fluid" style="margin-top: 40px; float: left; width: 30">
             <div class="row">
                 <div class="col-md-2 static">
                     <div class="profile-card">
                         <img src="{% static 'img/blank_profile.png' %}" alt="user" class="profile-photo">
-                        <h5><a href="#" class="text-white">{{profile.user_id.first_name}}</a></h5>
+                        <h5><a href="#" class="text-white">{{user.first_name}}</a></h5>
                     </div>
                     <ul class="nav-news-feed">
-                        <li><i class="fa fa-list-alt icon1"></i><div><div class="litext" href="#">Feed</div></div></li>
-                        <li><i class="fa fa-comments icon4"></i><div><div class="litext" href="#">Messages</div></div></li>
-                        <li><i class="fas fa-calendar-alt"></i><div><div class="litext" href="#">Appointments</div></div></li>
-                        {% if profile.user_type == 'P' %}
-                            <li><i class="fas fa-briefcase"></i><div><div class="litext" href="#">Type Of Jobs</div></div></li>
-                            <li><i class="far fa-clock"></i><div><div class="litext" href="#">Schedule</div></div></li>
-                            <li><i class="fas fa-cog"></i><div><div class="litext"><a href="#">Settings</a>
+                        <li><i class="fa fa-comments icon4"></i><div><div class="litext">
+                            <a href="#">
+                            Messages
+                            </a>
+                        </div></div></li>
+                        <li><i class="fas fa-calendar-alt"></i><div><div class="litext">
+                            <a href="#">
+                            My Appointments
+                            </a>
+                        </div></div></li>
+                        {% if user.profile.user_type == 'P' %}
+                            <li><i class="fas fa-briefcase"></i><div><div class="litext">
+                            <a href="{% url 'typeOfJob'%}">
+                                Type Of Jobs
+                            </a>
+                            </div></div></li>
+                            <li><i class="far fa-clock"></i><div><div class="litext">
+                            <a href="{% url 'calendar'%}">
+                                Schedule
+                            </a>
+                            </div></div></li>
+                        {% elif user.profile.user_type == 'C' %}
+                            <li><i class="fa fa-search"></i><div><div class="litext">
+                            <a href="#">
+                                Search
+                            </a>
+                            </div></div></li>
                         {% endif %}
-                        {% if profile.user_type == 'C' %}
-                            <li><i class="fa fa-search"></i><div><div class="litext" href="#">Search</div></div></li>
-                        {% endif %}
+                            <li><i class="fas fa-cog"></i><div><div class="litext">
+                            <a href="#">
+                            Settings
+                            </a>
+                        </div></div></li>
                     </ul>
                 </div>
-                <div class="col-md-10">{% block main_content %} {% endblock %}</div>
+                <div class="col-md-10">
+                    {% block center-content %}
+                    {% endblock %}
+                </div>
             </div>
         </div>
     </div>
-  </body>
-</html>
+{% endblock %}
 
