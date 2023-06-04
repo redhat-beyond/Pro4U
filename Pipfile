@@ -8,10 +8,12 @@ django = "*"
 pillow = "*"
 pytest-lazy-fixture = "*"
 
+
 [dev-packages]
 flake8 = "*"
-pytest = "*"
 pytest-django = "*"
+pytest = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.9"

@@ -1,18 +1,23 @@
-from reservation.models import Schedule, TypeOfJob
+from reservation.models import Schedule, TypeOfJob, Appointment
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils.safestring import mark_safe
+from account.models.professional import Professional
+from account.models.client import Client
 from reservation.utils import Calendar
 from reservation.forms import ScheduleForm, TypeOfJobForm
 from django.contrib import messages
-from datetime import datetime, timezone, timedelta, date
+from datetime import datetime, timedelta, date
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import calendar
+from django.utils import timezone
+import pytz
 
-now = datetime.now(timezone.utc)+timedelta(hours=3)
+israel_tz = pytz.timezone('Asia/Jerusalem')
+now = timezone.now().astimezone(israel_tz)
 
 
 @login_required
@@ -146,3 +151,29 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context["prev_month"] = prev_month(d)
         context["next_month"] = next_month(d)
         return context
+
+
+@login_required
+def appointment_list(request):
+    if request.method == 'GET':
+        professional = Professional.objects.filter(profile_id__user_id=request.user).first()
+        if professional:
+            is_pro = True
+            my_appointments = Appointment.get_appointments_list_after_current_day(professional.professional_id, True)
+        else:
+            is_pro = False
+            client = Client.objects.filter(profile_id__user_id=request.user).first()
+            my_appointments = Appointment.get_appointments_list_after_current_day(client.client_id, False)
+        if my_appointments:
+            return render(request, "reservation/myAppointments_list.html", {'my_appointments': my_appointments,
+                                                                            'is_pro': is_pro})
+        else:
+            return render(request, "reservation/myAppointments_list.html", {'my_appointments': [],
+                                                                            'is_pro': is_pro})
+
+
+@login_required
+def appointment_delete(request, pk):
+    appointment = Appointment.objects.filter(appointment_id=pk)[0]
+    appointment.delete()
+    return redirect('my_appointments')

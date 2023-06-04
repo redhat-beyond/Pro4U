@@ -201,6 +201,10 @@ def make_appointment(professional, demo_client2, make_typeOfJob):
                                                  start_appointment=start_appointment,
                                                  end_appointment=end_appointment,
                                                  summary=summary)
+        appointment.professional_id.save()
+        appointment.client_id.save()
+        appointment.typeOfJob_id.save()
+        appointment.save()
         return appointment
 
     return make
