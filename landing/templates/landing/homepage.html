@@ -15,7 +15,7 @@
             {% for professional in professionals %}
               <div class="col-md-3" style="margin-bottom: 18px;">
                 <div style="">
-                  <a href="#" style="text-decoration: none;">
+                  <a href="{% url 'show_business_page' professional.professional_id %}" style="text-decoration: none;">
                     <!-- TODO: add link to profile -->
                     {% if professional.thumbnail %}
                       <img class="img-fluid" src="{% static professional.thumbnail %}">
