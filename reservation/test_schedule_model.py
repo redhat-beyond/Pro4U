@@ -61,10 +61,10 @@ class TestScheduleModel:
 
     def test_get_possible_meetings_by_professional_and_date(self, persisted_schedule_pool, professional):
         assert persisted_schedule_pool[1] == \
-               list(Schedule.get_possible_meetings(professional_id=professional, date=(current_datetime +
-                                                                                       timedelta(days=5)).date()))
+               list(Schedule.get_possible_meetings(professional_id=professional.professional_id, day=START_DAY.day,
+                                                   month=START_DAY.month, year=START_DAY.year))
 
     def test_get_free_meetings_by_professional_and_date(self, persisted_schedule_pool, professional):
         assert persisted_schedule_pool[0] == \
-              list(Schedule.get_free_meetings(professional_id=professional, date=(current_datetime +
-                                                                                  timedelta(days=5)).date()))
+               list(Schedule.get_free_meetings(professional_id=professional.professional_id, day=START_DAY.day,
+                                               month=START_DAY.month, year=START_DAY.year))
