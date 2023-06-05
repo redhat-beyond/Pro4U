@@ -8,7 +8,6 @@ django = "*"
 pillow = "*"
 pytest-lazy-fixture = "*"
 
-
 [dev-packages]
 flake8 = "*"
 pytest-django = "*"

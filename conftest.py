@@ -99,7 +99,7 @@ def make_professional(make_profile):
         country: str = PROFILE_INFORMATION.get('country')[0],
         city: str = PROFILE_INFORMATION.get('city')[0],
         address: str = PROFILE_INFORMATION.get('address')[0],
-        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[0],
+        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[1],
         profession: Professions = PROFESSIONAL_INFORMATION.get('profession')[0],
         description: str = PROFESSIONAL_INFORMATION.get('description')[0],
     ):
