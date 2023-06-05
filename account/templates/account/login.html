@@ -1,19 +1,18 @@
 {%extends 'landing/base.html'%}
 {%load static %}
 <!--Add stylesheets dynamically-->
-
+{% block head_content %}
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+{% endblock %}
 <!--Add web title dynamically-->
 {% block title %}
     Login
 {% endblock %}
-{% block style %}
-    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
-{% endblock %}
 <!--Add body content dynamically-->
 {%block content%}
-  <div class="center login-center">
+  <div class="center login-center" style="margin-top: -50px;">
         <!--Login input-->
-	  <form method="post" class="card" novalidate style="margin-top: 100px">
+	  <form method="post" class="card" novalidate style="">
 	  	{% csrf_token %}
 	    <h2 class="text-center">Log in to your account</h2>
 		{% for field in form %}
