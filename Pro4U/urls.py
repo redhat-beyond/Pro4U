@@ -29,7 +29,7 @@ urlpatterns = [
     path('', include('reservation.urls')),
     path('', include('account.urls.login_urls')),
     path('', include('SearchHistory.urls')),
-    path('', include(('account.urls.profile_urls', 'profile_urls'))),
+    path('', include('account.urls.profile_urls')),
     path('professional/<int:pk>/reviews/', review_views.ReviewListView.as_view(model=Review, paginate_by=10),
          name='reviews'),
     path('professional/<int:pk>/reviews/new/', review_views.ReviewCreateView.as_view(), name='review-create'),

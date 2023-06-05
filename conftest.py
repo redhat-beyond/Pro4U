@@ -26,15 +26,15 @@ PRICE = 100
 USER_INFORMATION = {'username': ['testusername', 'testusername2', 'testusername3'],
                     'password': ['testpassword', 'testpassword2', 'testpassword3'],
                     'first_name': ['Bob', 'john'],
-                    'last_name': ['Builder'],
+                    'last_name': ['Builder', 'Doe'],
                     'email': ['test@test.com', 'test2@test.com', 'test3@test.com'],
                     'last_login': [timezone.now()]}
 
 PROFILE_INFORMATION = {'profile_type': [UserType.Client, UserType.Professional],
                        'phone_number': ['123456789', '987654321', '1212121212'],
-                       'country': ['USA'],
-                       'city': ['New York'],
-                       'address': ['123 Main St']}
+                       'country': ['USA', 'Israel'],
+                       'city': ['New York', 'Tel Aviv'],
+                       'address': ['123 Main St', '456 Main St']}
 
 PROFESSIONAL_INFORMATION = {'profession': [Professions.Locksmith, Professions.Plumber],
                             'description': ['Test Description']}
