@@ -17,7 +17,7 @@
 
 {% block content %}
     <div>
-        <div class="container-fluid" style="margin-top: 120px; float: left; width: 30">
+        <div class="container-fluid" style="margin-top: 50px; float: left; width: 30">
             <div class="row">
                 <div class="col-md-2 static">
                     <div class="profile-card">
@@ -33,7 +33,7 @@
                             </div></div></li>
                         {%endif%}
                            <li><i class="fa fa-comments icon4"></i><div><div class="litext">
-                            <a href="#">
+                            <a href="{% url 'all_chats'%}">
                             Messages
                             </a>
                         </div></div></li>
