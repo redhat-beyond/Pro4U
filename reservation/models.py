@@ -1,8 +1,13 @@
 from django.db import models
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from account.models.professional import Professional
 from account.models.client import Client
 from django.urls import reverse
+from django.utils import timezone
+import pytz
+
+israel_tz = pytz.timezone('Asia/Jerusalem')
+now = timezone.now().astimezone(israel_tz)
 
 
 class TypeOfJob(models.Model):
@@ -42,18 +47,16 @@ class Appointment(models.Model):
         db_table = 'Appointment'
 
     @staticmethod
-    def get_clients(professional_id: int):
-        clients_list = Appointment.objects.filter(professional_id=professional_id).values_list('client_id', flat=True)
-        return clients_list
-
-    @staticmethod
-    def get_client_list_on_certain_day(professional_id: int, date: date):
-        client_list_on_certain_day = Appointment.objects.filter(professional_id=professional_id,
-                                                                start_appointment__year=date.year,
-                                                                start_appointment__month=date.month,
-                                                                start_appointment__day=date.day)\
-                                                                .values_list('client_id', flat=True)
-        return client_list_on_certain_day
+    def get_appointments_list_after_current_day(profile_id: int, type_of_user: bool):
+        appointment_list_after_current_day = []
+        if type_of_user is True:
+            appointment_list = Appointment.objects.filter(professional_id=profile_id)
+        else:
+            appointment_list = Appointment.objects.filter(client_id=profile_id)
+        for appointment in appointment_list:
+            if appointment.start_appointment >= now:
+                appointment_list_after_current_day.append(appointment)
+        return appointment_list_after_current_day
 
 
 class Schedule(models.Model):
@@ -64,15 +67,20 @@ class Schedule(models.Model):
     meeting_time = models.PositiveIntegerField(null=False, blank=False)
 
     @staticmethod
-    def get_possible_meetings(professional_id: int, date: date):
+    def get_possible_meetings(professional_id: int, day: int, month: int, year: int):
         professional_schedule_day = Schedule.objects.filter(professional_id=professional_id,
-                                                            start_day__year=date.year,
-                                                            start_day__month=date.month,
-                                                            start_day__day=date.day)
+                                                            start_day__day=day,
+                                                            start_day__month=month,
+                                                            start_day__year=year)
+
+        if not professional_schedule_day:
+            return []
         meeting_time = professional_schedule_day[0].meeting_time
         meetings = []
-        start_time = datetime.combine(date, professional_schedule_day[0].start_day.time())
-        end_time = datetime.combine(date, professional_schedule_day[0].end_day.time())
+        start_time = datetime.combine(professional_schedule_day[0].start_day.date(),
+                                      professional_schedule_day[0].start_day.time())
+        end_time = datetime.combine(professional_schedule_day[0].end_day.date(),
+                                    professional_schedule_day[0].end_day.time())
         while start_time + timedelta(minutes=meeting_time) <= end_time:
             meetings_str = f"{start_time.time().strftime('%H:%M')}-" \
                            f"{(start_time + timedelta(minutes=meeting_time)).time().strftime('%H:%M')}"
@@ -81,15 +89,15 @@ class Schedule(models.Model):
         return meetings
 
     @staticmethod
-    def get_free_meetings(professional_id: int, date: date):
+    def get_free_meetings(professional_id: int, day: int, month: int, year: int):
         free_meetings = []
-        meetings = Schedule.get_possible_meetings(professional_id, date)
+        meetings = Schedule.get_possible_meetings(professional_id, day, month, year)
         for i, j in enumerate(meetings):
             start_meetings = meetings[i].split("-")[0]
             exists_appointment = Appointment.objects.filter(professional_id=professional_id,
-                                                            start_appointment__year=date.year,
-                                                            start_appointment__month=date.month,
-                                                            start_appointment__day=date.day,
+                                                            start_appointment__day=day,
+                                                            start_appointment__month=month,
+                                                            start_appointment__year=year,
                                                             start_appointment__hour=int(start_meetings.split(":")[0]),
                                                             start_appointment__minute=int(start_meetings.split(":")[1]))
             if len(exists_appointment) == 0:

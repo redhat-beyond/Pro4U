@@ -99,7 +99,7 @@ def make_professional(make_profile):
         country: str = PROFILE_INFORMATION.get('country')[0],
         city: str = PROFILE_INFORMATION.get('city')[0],
         address: str = PROFILE_INFORMATION.get('address')[0],
-        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[0],
+        user_type: UserType = PROFILE_INFORMATION.get('profile_type')[1],
         profession: Professions = PROFESSIONAL_INFORMATION.get('profession')[0],
         description: str = PROFESSIONAL_INFORMATION.get('description')[0],
     ):
@@ -201,6 +201,10 @@ def make_appointment(professional, demo_client2, make_typeOfJob):
                                                  start_appointment=start_appointment,
                                                  end_appointment=end_appointment,
                                                  summary=summary)
+        appointment.professional_id.save()
+        appointment.client_id.save()
+        appointment.typeOfJob_id.save()
+        appointment.save()
         return appointment
 
     return make
