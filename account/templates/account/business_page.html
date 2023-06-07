@@ -1,0 +1,57 @@
+{% extends 'account/profile.html' %}
+{% load static %}
+
+{% block head_content %}
+    <!--Add stylesheets dynamically-->
+    {% block head_content2 %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/business_page.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    <link href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src=https://kit.fontawesome.com/297bbe7878.js crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block title %}{{ professional.profile_id.user_id.first_name}}'s Profile{% endblock %}
+
+{% block center-content %}
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-7">
+            <div class="card p-3 py-4">
+                <div class="text-center">
+                    <img src="{% static 'img/blank_profile.png' %}" alt="user" class="profile-photo" style="width: 150px; height: 150px;">
+                </div>
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">{{professional.profile_id.user_id.first_name}} {{professional.profile_id.user_id.last_name}}</h5>
+                    <span>{{professional.profession}}</span>
+                    <div class="px-4 mt-1">
+                        <p class="fonts">{{professional.description}} </p>
+                    </div>
+                    <div>
+                              {% for typeOfjob in typeOfjobs_by_pro %}
+                <li><a>{{ typeOfjob.typeOfJob_name }}   {{ typeOfjob.price }}</a>
+
+                </li>
+            {% endfor %}
+                    </div>
+                    <div>
+                        <p class="fonts">The reviews will be here! </p>
+                    </div>
+                    <ul class="social-list">
+                        <li><i class="fa fa-facebook"></i></li>
+                        <li><i class="fa fa-dribbble"></i></li>
+                        <li><i class="fa fa-instagram"></i></li>
+                        <li><i class="fa fa-linkedin"></i></li>
+                        <li><i class="fa fa-google"></i></li>
+                    </ul>
+                    <div class="buttons">
+                        <button class="btn btn-outline-primary px-4">Message</button>
+                        <button class="btn btn-primary px-4 ms-3">Make Appointment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

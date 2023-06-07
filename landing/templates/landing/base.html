@@ -73,11 +73,11 @@
             {% else %}
               <li>
                 {% if user_id.profile_id.user_type == user_type.PROFESSIONAL.value %}
-                  <a class="dropdown-item" href="{% url 'professional_urls:show_profile' professional_id=user_id.professional_id %}">
+                  <a class="dropdown-item" href="{% url 'user_profile' entity_id=user_id.professional_id %}">
                     Profile
                   </a>
                 {% elif user_id.profile_id.user_type == user_type.CLIENT.value %}
-                  <a class="dropdown-item" href="{% url 'client_urls:show_profile' client_id=user_id.client_id %}">
+                  <a class="dropdown-item" href="{% url 'user_profile' entity_id=user_id.client_id %}">
                     Profile
                   </a>
                 {% endif %}

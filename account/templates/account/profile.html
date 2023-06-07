@@ -1,5 +1,3 @@
-
-
 {% extends 'landing/base.html' %}
 {% load static %}
 
@@ -12,9 +10,7 @@
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <script src=https://kit.fontawesome.com/297bbe7878.js crossorigin="anonymous"></script>
 {% endblock %}
-
 {% block title %}{{ user.first_name}}'s Profile{% endblock %}
-
 {% block content %}
     <div>
         <div class="container-fluid" style="margin-top: 50px; float: left; width: 30">
@@ -60,7 +56,7 @@
                             </div></div></li>
                         {% elif user.profile.user_type == 'C' %}
                             <li><i class="fa fa-search"></i><div><div class="litext">
-                            <a href="{% url 'calendar'%}">
+                            <a href="#">
                                 Search
                             </a>
                             </div></div></li>
