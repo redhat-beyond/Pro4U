@@ -12,7 +12,6 @@ def user_profile(request):
     return render(request, 'landing/homepage.html')
 
 
-
 @login_required
 def show_settings(request):
     if request.user.is_authenticated:

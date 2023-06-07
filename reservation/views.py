@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 from django.views import generic
 from django.utils.safestring import mark_safe
 from reservation.utils import Calendar
-from django.contrib.auth.mixins import LoginRequiredMixin
 from reservation.forms import ScheduleForm, TypeOfJobForm
 from django.contrib import messages
 from datetime import datetime, timedelta, date
