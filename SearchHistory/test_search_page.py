@@ -1,11 +1,12 @@
 from account.models.professional import Professional
-from reservation.models import TypeOfJob
+# from reservation.models import TypeOfJob
 from django.urls import reverse
 import pytest
-from account.tests.urls_tests.test_general import PROFILE_URL
+# from account.tests.urls_tests.test_general import PROFILE_URL
 
 CLIENT_ID = 2
 PROFESSIONAL_ID = 2
+
 
 @pytest.mark.django_db
 def test_search_page(client):

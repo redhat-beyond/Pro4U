@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from account.models.professional import Professional
 from django.db.models import Q
 from SearchHistory.models import SearchHistory
