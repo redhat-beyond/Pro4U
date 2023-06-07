@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-{% extends 'landing/base.html' %}
+{% extends 'account/profile.html' %}
 {% load static %}
 
-{% block head_content %}
+{% block head_content2 %}
     <!--Add stylesheets dynamically-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/search_page.css' %}">
     <link href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css rel="stylesheet"
@@ -11,7 +9,7 @@
     <script src=https://kit.fontawesome.com/297bbe7878.js crossorigin="anonymous"></script>
 {% endblock %}
 
-{% block content %}
+{% block center-content %}
 <div class="container">
     <div class="filters">
         <label class="head-line-label" for="filters">Please search professional by one or more from the following
@@ -76,4 +74,3 @@
     </div>
 </div>
 {% endblock %}
-</html>
