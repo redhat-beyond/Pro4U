@@ -23,6 +23,7 @@ class ReviewListTemplateObjects(Enum):
 
     WRITE_REVIEW = b'Write a review'  # Client did not review
     EDIT_REVIEW = b'Edit your review'  # Client already have reviewed
+    BUSINESS_PAGE = b'\'s Business Page'  # Always shown
 
 
 @pytest.mark.django_db
@@ -42,6 +43,10 @@ class TestReviewList:
         # Page with no reviews check
         assert ReviewListTemplateObjects.NO_REVIEWS.value in response.content
         assert ReviewListTemplateObjects.WRITE_REVIEW.value in response.content
+        # Now we test the business page button
+        first_name = professional.profile_id.user_id.first_name
+        business_page_name = first_name + ReviewListTemplateObjects.BUSINESS_PAGE.value.decode()
+        assert business_page_name.encode() in response.content
 
         reviews = response.context['reviews']
         expected_review_count = 0
@@ -98,6 +103,10 @@ class TestReviewList:
         assert ReviewListTemplateObjects.OLDEST.value in response.content
         assert ReviewListTemplateObjects.HIGHEST.value in response.content
         assert ReviewListTemplateObjects.LOWEST.value in response.content
+        # Now we test the business page button
+        first_name = Professional.filter_by_professional_id(PROFESSIONAL_ID).first().profile_id.user_id.first_name
+        business_page_name = first_name + ReviewListTemplateObjects.BUSINESS_PAGE.value.decode()
+        assert business_page_name.encode() in response.content
 
     def test_template_buttons_are_up_of_existing_professional(self, client, make_client):
         # existing professional (with previous reviews)
