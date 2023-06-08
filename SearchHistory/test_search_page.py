@@ -60,7 +60,7 @@ def test_redirection_to_professional_page(client, make_professional):
     assert 'account/business_page.html' in [template.name for template in response.templates]
     returned_professional = response.context.get("professional")
     assert returned_professional == professional
-    assert f"{professional.profession}" in response.content.decode('utf-8')
+    assert f"{professional.get_profession_display()}" in response.content.decode('utf-8')
     assert f"{professional.description}" in response.content.decode('utf-8')
     assert f"{professional.profile_id.user_id.first_name}" in response.content.decode('utf-8')
     assert f"{professional.profile_id.user_id.last_name}" in response.content.decode('utf-8')
