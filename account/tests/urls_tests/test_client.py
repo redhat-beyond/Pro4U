@@ -91,7 +91,7 @@ class TestClientProfile:
         assert 'account/business_page.html' in [template.name for template in response.templates]
         returned_professional = response.context.get("professional")
         assert returned_professional == test_professional
-        assert f"{test_professional.profession}" in response.content.decode('utf-8')
+        assert f"{test_professional.get_profession_display()}" in response.content.decode('utf-8')
         assert f"{test_professional.description}" in response.content.decode('utf-8')
         assert f"{test_professional.profile_id.user_id.first_name}" in response.content.decode('utf-8')
         assert f"{test_professional.profile_id.user_id.last_name}" in response.content.decode('utf-8')

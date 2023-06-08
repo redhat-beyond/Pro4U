@@ -1,4 +1,4 @@
-{% extends 'landing/base.html' %}
+{% extends 'account/profile.html' %}
 {% load static %}
 
 <!-- Reviews - Joe Doe -->
@@ -6,7 +6,7 @@
   Reviews about {{ professional.profile_id.user_id.first_name }} {{ professional.profile_id.user_id.last_name }}
 {% endblock %}
 
-{% block content %}
+{% block center-content %}
   <div class="container" style="margin-top: 140px;">
     {% if reviews %}
       <!-- Mean rating and total reviews -->
@@ -36,17 +36,20 @@
                 Lowest
               </a>
             </div>
-            <button class="btn btn-primary btn-sm" style="position: absolute; top: 15%; right: 0;">
+            <div style="position: absolute; top: 15%; right: 0;">
+              <a class="btn btn-dark" href="{% url 'show_business_page' professional.professional_id %}">
+                {{ professional.profile_id.user_id.first_name }}'s Business Page
+              </a>
               {% if not user_review %}
-                <a class="btn btn-primary btn-sm" href="{% url 'review-create' pk=professional.pk %}">
+                <a class="btn btn-primary" href="{% url 'review-create' pk=professional.pk %}">
                   Write a review
                 </a>
               {% else %}
-                <a class="btn btn-primary btn-sm" href="{% url 'review-update' pk=professional.pk %}">
+                <a class="btn btn-primary" href="{% url 'review-update' pk=professional.pk %}">
                   Edit your review
                 </a>
               {% endif %}
-            </button>
+            </div>
           </div>
         {% endif %}
         <div class="infinite-container">
@@ -124,13 +127,12 @@
         <h1 class="display-4" style="font-weight: 500">
           No reviews to display.
         </h1>
-        <div>
-          <div>
-            <a href="{% url 'review-create' pk=professional.pk %}" class="btn btn-primary">
-              Write a review
-            </a>
-          </div>
-        </div>
+        <a class="btn btn-primary" href="{% url 'review-create' pk=professional.pk %}">
+          Write a review
+        </a>
+        <a class="btn btn-dark" href="{% url 'show_business_page' professional.professional_id %}">
+          {{ professional.profile_id.user_id.first_name }}'s Business Page
+        </a>
       </div>
     {% endif %}
   </div>
