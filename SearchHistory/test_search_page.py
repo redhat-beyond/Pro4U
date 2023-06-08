@@ -1,8 +1,7 @@
 from account.models.professional import Professional
-# from reservation.models import TypeOfJob
+from reservation.models import TypeOfJob
 from django.urls import reverse
 import pytest
-# from account.tests.urls_tests.test_general import PROFILE_URL
 
 CLIENT_ID = 2
 PROFESSIONAL_ID = 2
@@ -45,16 +44,18 @@ def test_search_by_professional_id(client, make_professional):
     assert professionals[0].profile_id.user_id.last_name == professional.profile_id.user_id.last_name
     assert professionals[0].profile_id.city == professional.profile_id.city
 
-# @pytest.mark.django_db
-# def test_redirection_to_professional_page(client, make_professional):
-#     professional = make_professional()
-#     typeOfjobs_by_pro = TypeOfJob.get_typeofjobs_by_professional(professional_id=professional.professional_id)
-#     url = reverse('show professional', args=[PROFESSIONAL_ID])
-#     data = {
-#         'professional': professional, 'typeOfjobs_by_pro': typeOfjobs_by_pro
-#     }
 
-#     response = client.post(url, data)
+@pytest.mark.django_db
+def test_redirection_to_professional_page(client, make_professional):
+    professional = make_professional()
+    typeOfjobs_by_pro = TypeOfJob.get_typeofjobs_by_professional(professional_id=professional.professional_id)
+    client.force_login(professional.profile_id.user_id)
+    url = reverse('show professional', args=[PROFESSIONAL_ID])
+    data = {
+        'professional': professional, 'typeOfjobs_by_pro': typeOfjobs_by_pro
+    }
 
-#     assert response.status_code == 200
-#     assert 'account/profile.html' in response.templates[0].name
+    response = client.post(url, data)
+
+    assert response.status_code == 200
+    assert 'account/business_page.html' in response.templates[0].name
