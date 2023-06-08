@@ -4,7 +4,6 @@ from django.urls import reverse
 import pytest
 
 CLIENT_ID = 2
-PROFESSIONAL_ID = 2
 
 
 @pytest.mark.django_db
