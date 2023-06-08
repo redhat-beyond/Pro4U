@@ -73,11 +73,11 @@
             {% else %}
               <li>
                 {% if user_id.profile_id.user_type == user_type.PROFESSIONAL.value %}
-                  <a class="dropdown-item" href="{% url 'user_profile' entity_id=user_id.professional_id %}">
+                  <a class="dropdown-item" href="{% url 'user_profile' %}">
                     Profile
                   </a>
                 {% elif user_id.profile_id.user_type == user_type.CLIENT.value %}
-                  <a class="dropdown-item" href="{% url 'user_profile' entity_id=user_id.client_id %}">
+                  <a class="dropdown-item" href="{% url 'user_profile' %}">
                     Profile
                   </a>
                 {% endif %}
@@ -118,7 +118,6 @@
           </a>
           <span class="mb-3 mb-md-0 text-muted">© 2023 Pro4U, RedHat Beyond</span>
         </div>
-
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
           <!--Facebook SVG icon-->
           <li class="ms-3">
