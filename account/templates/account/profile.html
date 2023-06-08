@@ -12,8 +12,9 @@
 {% endblock %}
 {% block title %}{{ user.first_name}}'s Profile{% endblock %}
 {% block content %}
+  {% if request.user.is_authenticated %}
     <div>
-        <div class="container-fluid" style="margin-top: 50px; float: left; width: 30">
+        <div class="container-fluid" style="margin-top: 50px; float: left; width: 30; margin-bottom: 59px;">
             <div class="row">
                 <div class="col-md-2 static">
                     <div class="profile-card">
@@ -62,17 +63,18 @@
                             </div></div></li>
                         {% endif %}
                             <li><i class="fas fa-cog"></i><div><div class="litext">
-                            <a href="#">
+                            <a href="/profile/settings/">
                             Settings
                             </a>
                         </div></div></li>
                     </ul>
                 </div>
-                 <div class="col-md-10">
+                <div class="col-md-10">
                     {% block center-content %}
                     {% endblock %}
                 </div>
             </div>
         </div>
     </div>
+  {% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
-{% extends 'landing/base.html' %}
+{% extends 'account/profile.html' %}
 {% load static %}
 
-{% block head_content %}
+{% block head_content2 %}
   <link rel="stylesheet" href="{% static 'css/review_forms.css' %}">
 {% endblock %}
 
@@ -10,7 +10,7 @@
   Your Review - {{ professional.profile_id.user_id.first_name }} {{ professional.profile_id.user_id.last_name }}
 {% endblock %}
 
-{% block content %}
+{% block center-content %}
   <div class="container" style="margin-top: 156px;">
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -32,7 +32,7 @@
         <div class="row g-0">
           <div class="col">
             <textarea class="form-control" name="description" id="description" placeholder="Share details of your own experience with this professional">
-{{ form.description.value }}</textarea>
+{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
           </div>
         </div>
       </div>
